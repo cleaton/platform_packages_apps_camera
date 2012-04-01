@@ -22,8 +22,6 @@
 <resources>
     <!-- Samsung Camcorder Mode -->
     <bool name="needsSamsungCamMode">false</bool>
-    <!-- Samsung Video Size -->
-    <bool name="needsSamsungVideoSize">false</bool>
     <!-- Samsung Camera Settings -->
     <bool name="hasSamsungCamSettings">false</bool>
 </resources>
