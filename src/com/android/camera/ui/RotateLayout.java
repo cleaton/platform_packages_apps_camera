@@ -24,9 +24,10 @@ import android.view.ViewGroup;
 // A RotateLayout is designed to display a single item and provides the
 // capabilities to rotate the item.
 public class RotateLayout extends ViewGroup implements Rotatable {
+    @SuppressWarnings("unused")
     private static final String TAG = "RotateLayout";
     private int mOrientation;
-    private View mChild;
+    protected View mChild;
 
     public RotateLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -101,8 +102,14 @@ public class RotateLayout extends ViewGroup implements Rotatable {
         mChild.setRotation(-mOrientation);
     }
 
+    @Override
+    public boolean shouldDelayChildPressedState() {
+        return false;
+    }
+
     // Rotate the view counter-clockwise
-    public void setOrientation(int orientation) {
+    @Override
+    public void setOrientation(int orientation, boolean animation) {
         orientation = orientation % 360;
         if (mOrientation == orientation) return;
         mOrientation = orientation;

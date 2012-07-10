@@ -16,21 +16,23 @@
 
 package com.android.camera.ui;
 
-import com.android.camera.R;
-
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import com.android.camera.R;
+
 // This is an indicator button and pressing it opens a popup window. Ex: flash or other settings.
 public abstract class AbstractIndicatorButton extends RotateImageView implements
         PopupManager.OnOtherPopupShowedListener {
-    private final String TAG = "AbstractIndicatorButton";
+    @SuppressWarnings("unused")
+    private static final String TAG = "AbstractIndicatorButton";
     protected Animation mFadeIn, mFadeOut;
     protected final int HIGHLIGHT_COLOR;
     protected AbstractSettingPopup mPopup;
@@ -105,10 +107,10 @@ public abstract class AbstractIndicatorButton extends RotateImageView implements
     }
 
     @Override
-    public void setOrientation(int orientation) {
-        super.setOrientation(orientation);
+    public void setOrientation(int orientation, boolean animation) {
+        super.setOrientation(orientation, animation);
         if (mPopup != null) {
-            mPopup.setOrientation(orientation);
+            mPopup.setOrientation(orientation, animation);
         }
     }
 
@@ -120,7 +122,7 @@ public abstract class AbstractIndicatorButton extends RotateImageView implements
         if (mPopup == null) initializePopup();
 
         mPopup.setVisibility(View.VISIBLE);
-        mPopup.setOrientation(getDegree());
+        mPopup.setOrientation(getDegree(), false);
         mPopup.clearAnimation();
         mPopup.startAnimation(mFadeIn);
         if (mListener != null) mListener.onShowIndicator(this, true);
@@ -148,6 +150,14 @@ public abstract class AbstractIndicatorButton extends RotateImageView implements
             return mPopup;
         } else {
             return null;
+        }
+    }
+
+    public void removePopupWindow() {
+        if (mPopup != null) {
+            ViewGroup root = (ViewGroup) getRootView().findViewById(R.id.frame_layout);
+            root.removeView(mPopup);
+            mPopup = null;
         }
     }
 

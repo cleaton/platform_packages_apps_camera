@@ -32,16 +32,14 @@
     <string name="preparing_sd" product="default" msgid="2914969119574812666">"Preparando tarjeta SD…"</string>
     <string name="access_sd_fail" product="nosdcard" msgid="8147993984037859354">"No se ha podido acceder al almacenamiento USB."</string>
     <string name="access_sd_fail" product="default" msgid="1584968646870054352">"No se ha podido acceder a la tarjeta SD."</string>
-    <string name="confirm_restore_title" msgid="1229914538263792180">"Restaurar valores"</string>
-    <string name="confirm_restore_message" msgid="6649481842684452641">"¿Restaurar ajustes predeterminados de la cámara?"</string>
+    <string name="confirm_restore_message" msgid="4726518572923160939">"¿Quieres restaurar los ajustes predeterminados de la cámara?"</string>
     <string name="review_play" msgid="6378271587740884696">"Reproducir"</string>
     <string name="review_cancel" msgid="8188009385853399254">"CANCELAR"</string>
     <string name="review_ok" msgid="1156261588693116433">"LISTO"</string>
     <string name="review_retake" msgid="7804864054896088338">"VOLVER A REALIZAR"</string>
     <string name="camera_gallery_photos_text" msgid="6558048736561932758">"Galería"</string>
-    <string name="switch_camera_id" msgid="837545176602471325">"Cambiar cámara"</string>
     <string name="time_lapse_title" msgid="4360632427760662691">"Grabación a intervalos de tiempo"</string>
-    <string name="pref_camera_id_title" msgid="6023059405578511534">"Seleccionar cámara"</string>
+    <string name="pref_camera_id_title" msgid="4040791582294635851">"Seleccionar cámara"</string>
     <string name="pref_camera_id_entry_back" msgid="5142699735103692485">"Trasera"</string>
     <string name="pref_camera_id_entry_front" msgid="5668958706828733669">"Delantera"</string>
     <string name="pref_camera_recordlocation_title" msgid="371208839215448917">"Añadir ubicación"</string>
@@ -80,9 +78,6 @@
     <string name="spaceIsLow_content" product="nosdcard" msgid="4401325203349203177">"No queda espacio en el almacenamiento USB. Cambia la configuración de calidad o elimina algunas imágenes u otros archivos."</string>
     <string name="spaceIsLow_content" product="default" msgid="1732882643101247179">"No queda espacio en la tarjeta SD. Cambia la configuración de calidad o elimina algunas imágenes u otros archivos."</string>
     <string name="video_reach_size_limit" msgid="6179877322015552390">"Se ha alcanzado el límite de tamaño."</string>
-    <string name="switch_to_camera_label" msgid="9148663083850199582">"Cambiar a cámara"</string>
-    <string name="switch_to_video_label" msgid="1167994386902254398">"Cambiar a vídeo"</string>
-    <string name="switch_to_panorama_label" msgid="858801335653517864">"Cambiar a modo panorámico"</string>
     <string name="share_picture_via" msgid="1375127849431890447">"Compartir imagen por"</string>
     <string name="share_video_via" msgid="5152302809166549015">"Compartir vídeo por"</string>
     <string name="no_picture_to_share" msgid="5352574090121328815">"No hay imágenes para compartir."</string>
@@ -92,6 +87,7 @@
     <string name="pano_dialog_panorama_failed" msgid="2155692796549642116">"Error al guardar imagen panorámica"</string>
     <string name="pano_dialog_title" msgid="5755531234434437697">"Panorámico"</string>
     <string name="pano_capture_indication" msgid="8248825828264374507">"Capturando panorámica"</string>
+    <string name="pano_dialog_waiting_previous" msgid="7800325815031423516">"Esperando foto panorámica anterior..."</string>
     <string name="pano_review_saving_indication_str" msgid="2054886016665130188">"Guardando..."</string>
     <string name="tap_to_focus" msgid="8863427645591903760">"Toca para enfocar"</string>
     <string name="pref_video_effect_title" msgid="8243182968457289488">"Efectos"</string>
@@ -104,11 +100,10 @@
     <string name="effect_goofy_face_small_eyes" msgid="1070355596290331271">"Ojos pequeños"</string>
     <string name="effect_backdropper_space" msgid="7935661090723068402">"En el espacio"</string>
     <string name="effect_backdropper_sunset" msgid="45198943771777870">"Atardecer"</string>
-    <string name="effect_backdropper_disco" msgid="8494822051982972854">"Disco"</string>
-    <string name="effect_backdropper_gallery" msgid="3271387403091819540">"Personalizada"</string>
-    <string name="bg_replacement_message" msgid="6828585054971662284">"Desactiva el dispositivo."\n"Deja de usarlo durante unos minutos."</string>
-    <string name="not_selectable_in_effect" msgid="7967729203855039239">"No se puede seleccionar si el efecto está activado."</string>
-    <string name="video_snapshot_hint" msgid="8159602664271448241">"Toca la pantalla de vista previa para hacer una foto mientras grabas vídeo."</string>
+    <string name="effect_backdropper_gallery" msgid="959158844620991906">"Tu vídeo"</string>
+    <string name="bg_replacement_message" msgid="9184270738916564608">"Desactiva el dispositivo."\n"Deja de usarlo durante unos minutos."</string>
+    <string name="not_selectable_in_effect" msgid="4568604144269499202">"No se puede seleccionar si el efecto está activado."</string>
+    <string name="video_snapshot_hint" msgid="18833576851372483">"Toca para hacer una foto mientras grabas un vídeo."</string>
     <string name="disable_video_snapshot_hint" msgid="4957723267826476079">"La instantánea de vídeo se inhabilita al activar efectos especiales."</string>
     <string name="clear_effects" msgid="5485339175014139481">"Borrar efectos"</string>
     <string name="effect_silly_faces" msgid="8107732405347155777">"CARAS GRACIOSAS"</string>
@@ -123,4 +118,7 @@
     <string name="accessibility_decrement" msgid="1411194318538035666">"Reducir %1$s"</string>
     <string name="accessibility_increment" msgid="8447850530444401135">"Aumentar %1$s"</string>
     <string name="accessibility_switch" msgid="6995966685498958895">"Interruptor %1$s"</string>
+    <string name="accessibility_switch_to_camera" msgid="5951340774212969461">"Cambiar a la cámara"</string>
+    <string name="accessibility_switch_to_video" msgid="4991396355234561505">"Cambiar a vídeo"</string>
+    <string name="accessibility_switch_to_panorama" msgid="604756878371875836">"Cambiar a modo panorámico"</string>
 </resources>

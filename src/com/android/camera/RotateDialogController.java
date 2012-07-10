@@ -16,9 +16,6 @@
 
 package com.android.camera;
 
-import com.android.camera.ui.Rotatable;
-import com.android.camera.ui.RotateLayout;
-
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,11 +23,15 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import com.android.camera.ui.Rotatable;
+import com.android.camera.ui.RotateLayout;
 
 public class RotateDialogController implements Rotatable {
 
+    @SuppressWarnings("unused")
     private static final String TAG = "RotateDialogController";
     private static final long ANIM_DURATION = 150;  // millis
 
@@ -78,9 +79,9 @@ public class RotateDialogController implements Rotatable {
     }
 
     @Override
-    public void setOrientation(int orientation) {
+    public void setOrientation(int orientation, boolean animation) {
         inflateDialogLayout();
-        mRotateDialog.setOrientation(orientation);
+        mRotateDialog.setOrientation(orientation, animation);
     }
 
     public void resetRotateDialog() {
@@ -112,13 +113,16 @@ public class RotateDialogController implements Rotatable {
                 final Runnable r1, String button2Text, final Runnable r2) {
         resetRotateDialog();
 
-        mRotateDialogTitle.setText(title);
-        mRotateDialogTitleLayout.setVisibility(View.VISIBLE);
+        if (title != null) {
+            mRotateDialogTitle.setText(title);
+            mRotateDialogTitleLayout.setVisibility(View.VISIBLE);
+        }
 
         mRotateDialogText.setText(msg);
 
         if (button1Text != null) {
             mRotateDialogButton1.setText(button1Text);
+            mRotateDialogButton1.setContentDescription(button1Text);
             mRotateDialogButton1.setVisibility(View.VISIBLE);
             mRotateDialogButton1.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -131,6 +135,7 @@ public class RotateDialogController implements Rotatable {
         }
         if (button2Text != null) {
             mRotateDialogButton2.setText(button2Text);
+            mRotateDialogButton2.setContentDescription(button2Text);
             mRotateDialogButton2.setVisibility(View.VISIBLE);
             mRotateDialogButton2.setOnClickListener(new View.OnClickListener() {
                 @Override

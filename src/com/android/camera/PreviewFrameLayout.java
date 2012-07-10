@@ -16,35 +16,40 @@
 
 package com.android.camera;
 
-import com.android.camera.R;
-
-import android.app.Activity;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
-import android.view.View;
+import android.content.res.Configuration;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.RelativeLayout;
+
 /**
  * A layout which handles the preview aspect ratio.
  */
 public class PreviewFrameLayout extends RelativeLayout {
     /** A callback to be invoked when the preview frame's size changes. */
     public interface OnSizeChangedListener {
-        public void onSizeChanged();
+        public void onSizeChanged(int width, int height);
     }
 
     private double mAspectRatio;
+    private View mBorder;
+    private OnSizeChangedListener mListener;
 
     public PreviewFrameLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         setAspectRatio(4.0 / 3.0);
     }
 
+    @Override
+    protected void onFinishInflate() {
+        mBorder = findViewById(R.id.preview_border);
+    }
+
     public void setAspectRatio(double ratio) {
         if (ratio <= 0.0) throw new IllegalArgumentException();
 
-        if (((Activity) getContext()).getRequestedOrientation()
-                == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+        if (getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_PORTRAIT) {
             ratio = 1 / ratio;
         }
 
@@ -55,8 +60,11 @@ public class PreviewFrameLayout extends RelativeLayout {
     }
 
     public void showBorder(boolean enabled) {
-        findViewById(R.id.preview_border).setVisibility(
-                enabled ? View.VISIBLE : View.INVISIBLE);
+        mBorder.setVisibility(enabled ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    public void fadeOutBorder() {
+        Util.fadeOut(mBorder);
     }
 
     @Override
@@ -65,8 +73,8 @@ public class PreviewFrameLayout extends RelativeLayout {
         int previewHeight = MeasureSpec.getSize(heightSpec);
 
         // Get the padding of the border background.
-        int hPadding = mPaddingLeft + mPaddingRight;
-        int vPadding = mPaddingTop + mPaddingBottom;
+        int hPadding = getPaddingLeft() + getPaddingRight();
+        int vPadding = getPaddingTop() + getPaddingBottom();
 
         // Resize the preview frame with correct aspect ratio.
         previewWidth -= hPadding;
@@ -84,5 +92,14 @@ public class PreviewFrameLayout extends RelativeLayout {
         // Ask children to follow the new preview dimension.
         super.onMeasure(MeasureSpec.makeMeasureSpec(previewWidth, MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(previewHeight, MeasureSpec.EXACTLY));
+    }
+
+    public void setOnSizeChangedListener(OnSizeChangedListener listener) {
+        mListener = listener;
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        if (mListener != null) mListener.onSizeChanged(w, h);
     }
 }

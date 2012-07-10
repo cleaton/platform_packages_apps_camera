@@ -32,16 +32,14 @@
     <string name="preparing_sd" product="default" msgid="2914969119574812666">"Se pregăteşte cardul SD..."</string>
     <string name="access_sd_fail" product="nosdcard" msgid="8147993984037859354">"Nu s-a putut accesa stocarea USB."</string>
     <string name="access_sd_fail" product="default" msgid="1584968646870054352">"Nu s-a putut accesa cardul SD."</string>
-    <string name="confirm_restore_title" msgid="1229914538263792180">"Restabiliţi valorile prestabilite"</string>
-    <string name="confirm_restore_message" msgid="6649481842684452641">"Reveniţi la setările prestabilite ale camerei foto?"</string>
+    <string name="confirm_restore_message" msgid="4726518572923160939">"Restabiliţi setările prestabilite pentru camera foto?"</string>
     <string name="review_play" msgid="6378271587740884696">"Redaţi"</string>
     <string name="review_cancel" msgid="8188009385853399254">"Anulaţi"</string>
     <string name="review_ok" msgid="1156261588693116433">"TERMINAT"</string>
     <string name="review_retake" msgid="7804864054896088338">"ALTĂ FOTOGRAFIE"</string>
     <string name="camera_gallery_photos_text" msgid="6558048736561932758">"Galerie"</string>
-    <string name="switch_camera_id" msgid="837545176602471325">"Schimbaţi camera foto"</string>
     <string name="time_lapse_title" msgid="4360632427760662691">"Înregistrare cu filmare lentă"</string>
-    <string name="pref_camera_id_title" msgid="6023059405578511534">"Select. camera foto"</string>
+    <string name="pref_camera_id_title" msgid="4040791582294635851">"Alegeţi camera foto"</string>
     <string name="pref_camera_id_entry_back" msgid="5142699735103692485">"Înapoi"</string>
     <string name="pref_camera_id_entry_front" msgid="5668958706828733669">"Frontal"</string>
     <string name="pref_camera_recordlocation_title" msgid="371208839215448917">"Stocaţi locaţia"</string>
@@ -80,9 +78,6 @@
     <string name="spaceIsLow_content" product="nosdcard" msgid="4401325203349203177">"Spaţiul de stocare USB este aproape ocupat. Editaţi setarea de calitate sau ştergeţi câteva imagini ori alte fişiere."</string>
     <string name="spaceIsLow_content" product="default" msgid="1732882643101247179">"Cardul SD rămâne fără spaţiu de stocare. Editaţi setarea de calitate sau ştergeţi câteva imagini sau alte fişiere."</string>
     <string name="video_reach_size_limit" msgid="6179877322015552390">"Dimensiune limită depăşită."</string>
-    <string name="switch_to_camera_label" msgid="9148663083850199582">"Comutaţi la Cameră foto"</string>
-    <string name="switch_to_video_label" msgid="1167994386902254398">"Comutaţi la camera video"</string>
-    <string name="switch_to_panorama_label" msgid="858801335653517864">"Comutaţi la panoramă"</string>
     <string name="share_picture_via" msgid="1375127849431890447">"Distribuiţi fotografia prin"</string>
     <string name="share_video_via" msgid="5152302809166549015">"Distribuiţi videoclipul prin"</string>
     <string name="no_picture_to_share" msgid="5352574090121328815">"Nicio imagine de distribuit."</string>
@@ -92,6 +87,7 @@
     <string name="pano_dialog_panorama_failed" msgid="2155692796549642116">"Panorama nu a putut fi salvată."</string>
     <string name="pano_dialog_title" msgid="5755531234434437697">"Panoramă"</string>
     <string name="pano_capture_indication" msgid="8248825828264374507">"Se capturează panorama"</string>
+    <string name="pano_dialog_waiting_previous" msgid="7800325815031423516">"Se aşteaptă panorama anterioară"</string>
     <string name="pano_review_saving_indication_str" msgid="2054886016665130188">"Se salvează.."</string>
     <string name="tap_to_focus" msgid="8863427645591903760">"Atingeţi pentru a focaliza."</string>
     <string name="pref_video_effect_title" msgid="8243182968457289488">"Efecte"</string>
@@ -104,11 +100,10 @@
     <string name="effect_goofy_face_small_eyes" msgid="1070355596290331271">"Ochi mici"</string>
     <string name="effect_backdropper_space" msgid="7935661090723068402">"În spaţiu"</string>
     <string name="effect_backdropper_sunset" msgid="45198943771777870">"Apus de soare"</string>
-    <string name="effect_backdropper_disco" msgid="8494822051982972854">"Disco"</string>
-    <string name="effect_backdropper_gallery" msgid="3271387403091819540">"Propriu"</string>
-    <string name="bg_replacement_message" msgid="6828585054971662284">"Aşezaţi dispozitivul jos"\n"Ieşiţi din cadru un moment"</string>
-    <string name="not_selectable_in_effect" msgid="7967729203855039239">"Nu este selectabil când efectul este activat."</string>
-    <string name="video_snapshot_hint" msgid="8159602664271448241">"Pozaţi în timpul înregistrării atingând ecranul previzualizare."</string>
+    <string name="effect_backdropper_gallery" msgid="959158844620991906">"Videoclip"</string>
+    <string name="bg_replacement_message" msgid="9184270738916564608">"Aşezaţi dispozitivul jos."\n"Ieşiţi din cadru un moment."</string>
+    <string name="not_selectable_in_effect" msgid="4568604144269499202">"Nu este selectabil când efectul este activat."</string>
+    <string name="video_snapshot_hint" msgid="18833576851372483">"Atingeţi pentru a fotografia în timpul înregistrării."</string>
     <string name="disable_video_snapshot_hint" msgid="4957723267826476079">"Instant. video este dezact. când efectele speciale sunt pornite."</string>
     <string name="clear_effects" msgid="5485339175014139481">"Ştergeţi efectul"</string>
     <string name="effect_silly_faces" msgid="8107732405347155777">"FEŢE PROSTUŢE"</string>
@@ -123,4 +118,7 @@
     <string name="accessibility_decrement" msgid="1411194318538035666">"Reduceţi %1$s"</string>
     <string name="accessibility_increment" msgid="8447850530444401135">"Măriţi %1$s"</string>
     <string name="accessibility_switch" msgid="6995966685498958895">"Comutator %1$s"</string>
+    <string name="accessibility_switch_to_camera" msgid="5951340774212969461">"Comutaţi la camera foto"</string>
+    <string name="accessibility_switch_to_video" msgid="4991396355234561505">"Comutaţi la camera video"</string>
+    <string name="accessibility_switch_to_panorama" msgid="604756878371875836">"Comutaţi la panoramă"</string>
 </resources>

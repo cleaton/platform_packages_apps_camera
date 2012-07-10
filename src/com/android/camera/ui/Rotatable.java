@@ -17,5 +17,6 @@
 package com.android.camera.ui;
 
 public interface Rotatable {
-    public void setOrientation(int orientation);
+    // Set parameter 'animation' to true to have animation when rotation.
+    public void setOrientation(int orientation, boolean animation);
 }

@@ -56,34 +56,36 @@ public class RotateImageView extends TwoStateImageView implements Rotatable {
         super(context);
     }
 
-    public void enableAnimation(boolean enable) {
-        mEnableAnimation = enable;
-    }
-
     protected int getDegree() {
         return mTargetDegree;
     }
 
     // Rotate the view counter-clockwise
-    public void setOrientation(int degree) {
+    @Override
+    public void setOrientation(int degree, boolean animation) {
+        mEnableAnimation = animation;
         // make sure in the range of [0, 359]
         degree = degree >= 0 ? degree % 360 : degree % 360 + 360;
         if (degree == mTargetDegree) return;
 
         mTargetDegree = degree;
-        mStartDegree = mCurrentDegree;
-        mAnimationStartTime = AnimationUtils.currentAnimationTimeMillis();
+        if (mEnableAnimation) {
+            mStartDegree = mCurrentDegree;
+            mAnimationStartTime = AnimationUtils.currentAnimationTimeMillis();
 
-        int diff = mTargetDegree - mCurrentDegree;
-        diff = diff >= 0 ? diff : 360 + diff; // make it in range [0, 359]
+            int diff = mTargetDegree - mCurrentDegree;
+            diff = diff >= 0 ? diff : 360 + diff; // make it in range [0, 359]
 
-        // Make it in range [-179, 180]. That's the shorted distance between the
-        // two angles
-        diff = diff > 180 ? diff - 360 : diff;
+            // Make it in range [-179, 180]. That's the shorted distance between the
+            // two angles
+            diff = diff > 180 ? diff - 360 : diff;
 
-        mClockwise = diff >= 0;
-        mAnimationEndTime = mAnimationStartTime
-                + Math.abs(diff) * 1000 / ANIMATION_SPEED;
+            mClockwise = diff >= 0;
+            mAnimationEndTime = mAnimationStartTime
+                    + Math.abs(diff) * 1000 / ANIMATION_SPEED;
+        } else {
+            mCurrentDegree = mTargetDegree;
+        }
 
         invalidate();
     }

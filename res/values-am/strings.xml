@@ -32,16 +32,14 @@
     <string name="preparing_sd" product="default" msgid="2914969119574812666">"የ SD  ካርድ በማዘጋጀት ላይ..."</string>
     <string name="access_sd_fail" product="nosdcard" msgid="8147993984037859354">"USB ማከማችን መድረስ አልተቻለም፡፡"</string>
     <string name="access_sd_fail" product="default" msgid="1584968646870054352">"SD ካርድን መድረስ አልተቻለም፡፡"</string>
-    <string name="confirm_restore_title" msgid="1229914538263792180">"ወደ ነባሪዎች መልስ"</string>
-    <string name="confirm_restore_message" msgid="6649481842684452641">"የካሜራ ነባሪ ቅንጅቶችን እነበረበት መልስ?"</string>
+    <string name="confirm_restore_message" msgid="4726518572923160939">"የካሜራ ነባሪ ቅንብሮች  እነበረበት መመለስ ትፈልጋለህ?"</string>
     <string name="review_play" msgid="6378271587740884696">"ተጫወት"</string>
     <string name="review_cancel" msgid="8188009385853399254">"ይቅር"</string>
     <string name="review_ok" msgid="1156261588693116433">"ተከናውኗል"</string>
     <string name="review_retake" msgid="7804864054896088338">"የተከለሰ"</string>
     <string name="camera_gallery_photos_text" msgid="6558048736561932758">"የሥነ ጥበብ ማዕከል"</string>
-    <string name="switch_camera_id" msgid="837545176602471325">"ካሜራ ቀይር"</string>
     <string name="time_lapse_title" msgid="4360632427760662691">"በመቅዳት የሚፈጀውን ጊዜ"</string>
-    <string name="pref_camera_id_title" msgid="6023059405578511534">"ካሜራ ምረጥ"</string>
+    <string name="pref_camera_id_title" msgid="4040791582294635851">"ካሜራ ምረጥ"</string>
     <string name="pref_camera_id_entry_back" msgid="5142699735103692485">"ተመለስ"</string>
     <string name="pref_camera_id_entry_front" msgid="5668958706828733669">"የፊት"</string>
     <string name="pref_camera_recordlocation_title" msgid="371208839215448917">"ሥፍራ"</string>
@@ -80,9 +78,6 @@
     <string name="spaceIsLow_content" product="nosdcard" msgid="4401325203349203177">"የUSB  ማከማቻዎቦታ እየሞላበት ነው።የጥራት ቅንብር ይለውጡ ወይም አንዳንድ ምስሎችን ወይም ሌላ ፋይሎች ይሰርዙ።"</string>
     <string name="spaceIsLow_content" product="default" msgid="1732882643101247179">"የSD ካርድዎ ቦታ እያለቀበት ነው። የጥራት ቅንብሩን ይልወጡ ወይም አንዳንድ ምስሎችንወይም ሌሎች ፋይሎችን ይሰርዙ።"</string>
     <string name="video_reach_size_limit" msgid="6179877322015552390">"መጠኑ ላይ ደርሷል፡፡"</string>
-    <string name="switch_to_camera_label" msgid="9148663083850199582">"ወደ ካሜራ ቀይር"</string>
-    <string name="switch_to_video_label" msgid="1167994386902254398">"ወደ ቪዲዮ ቀይር"</string>
-    <string name="switch_to_panorama_label" msgid="858801335653517864">"ወደ ፓኖራማ ቀይር"</string>
     <string name="share_picture_via" msgid="1375127849431890447">"ፎቶ  አጋራ  በ"</string>
     <string name="share_video_via" msgid="5152302809166549015">"ይህን ቪዲዮ አጋራ  በ"</string>
     <string name="no_picture_to_share" msgid="5352574090121328815">"ለማጋራት ምንም ፎቶ የለም"</string>
@@ -92,6 +87,7 @@
     <string name="pano_dialog_panorama_failed" msgid="2155692796549642116">"ፓኖራማ  ማስቀመጥ አልተቻለም::"</string>
     <string name="pano_dialog_title" msgid="5755531234434437697">"ፓኖራማ"</string>
     <string name="pano_capture_indication" msgid="8248825828264374507">"ፓኖራማ በማንሳት ላይ"</string>
+    <string name="pano_dialog_waiting_previous" msgid="7800325815031423516">"ቀዳሚ ፓኖራማ በመጠበቅ ላይ"</string>
     <string name="pano_review_saving_indication_str" msgid="2054886016665130188">"በማስቀመጥ ላይ&amp;hellip;"</string>
     <string name="tap_to_focus" msgid="8863427645591903760">"ዳሰስ ለማተኮር፡፡"</string>
     <string name="pref_video_effect_title" msgid="8243182968457289488">"ማሳመሪያዎች"</string>
@@ -104,11 +100,10 @@
     <string name="effect_goofy_face_small_eyes" msgid="1070355596290331271">"ትናንሽ ዓይኖች"</string>
     <string name="effect_backdropper_space" msgid="7935661090723068402">"ቦታ ውስጥ"</string>
     <string name="effect_backdropper_sunset" msgid="45198943771777870">"ፀሀይ ስትጠልቅ"</string>
-    <string name="effect_backdropper_disco" msgid="8494822051982972854">"ዲስኮ"</string>
-    <string name="effect_backdropper_gallery" msgid="3271387403091819540">"የራስህን  ምረጥ"</string>
-    <string name="bg_replacement_message" msgid="6828585054971662284">"መሳሪያህን ወደታች"\n" አስቀምጥ ለትንሽ ቆይታ ከዕይታ ውጪ ሁን"</string>
-    <string name="not_selectable_in_effect" msgid="7967729203855039239">"ማሳመሪያው ሲበራ  ሊመረጥ አይችልም::"</string>
-    <string name="video_snapshot_hint" msgid="8159602664271448241">"የቅድመ ዕይታ ማያን በመዳሰስ በማድረግ በቪዲዮ ቀረፃ ጊዜ ፎቶ አንሳ።"</string>
+    <string name="effect_backdropper_gallery" msgid="959158844620991906">"ቪዲዮህ"</string>
+    <string name="bg_replacement_message" msgid="9184270738916564608">"መሳሪያህን ወደታች አኑር።"\n"  ለትንሽ ቆይታ ከዕይታ ውጪ ሁን።"</string>
+    <string name="not_selectable_in_effect" msgid="4568604144269499202">"ተዕፅኖ ማድረጊያው በሚበራበት ጊዜ ሊመረጥ አይችልም።"</string>
+    <string name="video_snapshot_hint" msgid="18833576851372483">"እየቀዳህ ፎቶ ለማንሳት ንካ።"</string>
     <string name="disable_video_snapshot_hint" msgid="4957723267826476079">"ቪዲዮ ማንሻ ልዩ ማሳመሪያዎች ሲበሩ ይቦዝናል::"</string>
     <string name="clear_effects" msgid="5485339175014139481">"ማሳመሪያዎች አጽዳ"</string>
     <string name="effect_silly_faces" msgid="8107732405347155777">"ሞኛሞኝ ፊቶች"</string>
@@ -117,10 +112,13 @@
     <string name="accessibility_review_thumbnail" msgid="8961275263537513017">"በጣም የቅርብ ፎቶ"</string>
     <string name="accessibility_camera_picker" msgid="8807945470215734566">"የፊትና ኋላ ካሜራ ማብሪያና ማጥፊያ"</string>
     <string name="accessibility_mode_picker" msgid="3278002189966833100">"ካሜራ፣ቪድዮ ወይም ፓናሮማ መምረጫ"</string>
-    <string name="accessibility_second_level_indicators" msgid="3855951632917627620">"ተጨማሪ ቅንጅቶች መቈጣጠሪያ"</string>
+    <string name="accessibility_second_level_indicators" msgid="3855951632917627620">"ተጨማሪ ቅንብሮች  መቈጣጠሪያ"</string>
     <string name="accessibility_back_to_first_level" msgid="5234411571109877131">"የቅንጅት መቆጣጠሪያዎች ዝጋ"</string>
     <string name="accessibility_zoom_control" msgid="1339909363226825709">"ኣጕላ  መቆጣጠሪያ"</string>
     <string name="accessibility_decrement" msgid="1411194318538035666">"ቀንስ %1$s"</string>
     <string name="accessibility_increment" msgid="8447850530444401135">"ጨምር %1$s"</string>
     <string name="accessibility_switch" msgid="6995966685498958895">"%1s ማብሪያና ማጥፊያ"</string>
+    <string name="accessibility_switch_to_camera" msgid="5951340774212969461">"ወደ ፎቶ ቀይር"</string>
+    <string name="accessibility_switch_to_video" msgid="4991396355234561505">"ወደ ቪዲዮ ቀይር"</string>
+    <string name="accessibility_switch_to_panorama" msgid="604756878371875836">"ወደ ፓኖራማ ቀይር"</string>
 </resources>

@@ -16,18 +16,17 @@
 
 package com.android.camera.ui;
 
-import com.android.camera.CameraPreference.OnPreferenceChangedListener;
-import com.android.camera.IconListPreference;
-import com.android.camera.ListPreference;
-import com.android.camera.PreferenceGroup;
-import com.android.camera.CameraSettings;
-import com.android.camera.R;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
+import com.android.camera.CameraPreference.OnPreferenceChangedListener;
+import com.android.camera.CameraSettings;
+import com.android.camera.IconListPreference;
+import com.android.camera.ListPreference;
+import com.android.camera.PreferenceGroup;
+import com.android.camera.R;
 
 import java.util.ArrayList;
 
@@ -36,6 +35,7 @@ import java.util.ArrayList;
  */
 public abstract class IndicatorControl extends RelativeLayout implements
         IndicatorButton.Listener, OtherSettingsPopup.Listener, Rotatable {
+    @SuppressWarnings("unused")
     private static final String TAG = "IndicatorControl";
     public static final int MODE_CAMERA = 0;
     public static final int MODE_VIDEO = 1;
@@ -43,9 +43,9 @@ public abstract class IndicatorControl extends RelativeLayout implements
     private OnPreferenceChangedListener mListener;
     protected OnIndicatorEventListener mOnIndicatorEventListener;
     protected CameraPicker mCameraPicker;
+    protected ZoomControl mZoomControl;
 
     private PreferenceGroup mPreferenceGroup;
-    private int mOrientation = 0;
 
     protected int mCurrentMode = MODE_CAMERA;
 
@@ -61,13 +61,13 @@ public abstract class IndicatorControl extends RelativeLayout implements
         super(context, attrs);
     }
 
-    public void setOrientation(int orientation) {
-        mOrientation = orientation;
+    @Override
+    public void setOrientation(int orientation, boolean animation) {
         int count = getChildCount();
         for (int i = 0 ; i < count ; ++i) {
             View view = getChildAt(i);
             if (view instanceof Rotatable) {
-                ((Rotatable) view).setOrientation(orientation);
+                ((Rotatable) view).setOrientation(orientation, animation);
             }
         }
     }
@@ -104,13 +104,35 @@ public abstract class IndicatorControl extends RelativeLayout implements
         }
     }
 
+    protected void removeControls(int index, int count) {
+        for (int i = index; i < index + count; i++) {
+            AbstractIndicatorButton b = (AbstractIndicatorButton) getChildAt(i);
+            b.removePopupWindow();
+            mIndicators.remove(b);
+        }
+        removeViews(index, count);
+    }
+
     protected void initializeCameraPicker() {
+        // Ignore if camera picker has been initialized.
+        if (mCameraPicker != null) return;
+
         ListPreference pref = mPreferenceGroup.findPreference(
                 CameraSettings.KEY_CAMERA_ID);
         if (pref == null) return;
         mCameraPicker = new CameraPicker(getContext());
         mCameraPicker.initialize(pref);
         addView(mCameraPicker);
+    }
+
+    protected void initializeZoomControl(boolean zoomSupported) {
+        if (zoomSupported) {
+            mZoomControl = (ZoomControl) findViewById(R.id.zoom_control);
+            mZoomControl.setVisibility(View.VISIBLE);
+        } else if (mZoomControl != null) {
+            mZoomControl.setVisibility(View.GONE);
+            mZoomControl = null;
+        }
     }
 
     @Override
@@ -136,6 +158,7 @@ public abstract class IndicatorControl extends RelativeLayout implements
         b.setSettingChangedListener(this);
         b.setContentDescription(getResources().getString(
                 R.string.pref_camera_settings_category));
+        b.setId(R.id.other_setting_indicator);
         addView(b);
         mIndicators.add(b);
         return b;
@@ -210,6 +233,15 @@ public abstract class IndicatorControl extends RelativeLayout implements
             mCameraPicker.setEnabled(enabled);
             if (mCurrentMode == MODE_VIDEO) {
                 mCameraPicker.setVisibility(enabled ? View.VISIBLE : View.INVISIBLE);
+            }
+        }
+    }
+
+    public void setupFilter(boolean enabled) {
+        for (int i = 0, count = getChildCount(); i < count; i++) {
+            View v = getChildAt(i);
+            if (v instanceof TwoStateImageView) {
+                ((TwoStateImageView) v).enableFilter(enabled);
             }
         }
     }

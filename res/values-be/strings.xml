@@ -32,16 +32,14 @@
     <string name="preparing_sd" product="default" msgid="2914969119574812666">"Падрыхтоўка SD-карты..."</string>
     <string name="access_sd_fail" product="nosdcard" msgid="8147993984037859354">"Немагчыма атрымаць доступ да USB-назапашвальніка."</string>
     <string name="access_sd_fail" product="default" msgid="1584968646870054352">"Немагчыма атрымаць доступ да SD-карты."</string>
-    <string name="confirm_restore_title" msgid="1229914538263792180">"Аднавіць налады па змаўчанні"</string>
-    <string name="confirm_restore_message" msgid="6649481842684452641">"Аднавіць налады камеры па змаўчанні?"</string>
+    <string name="confirm_restore_message" msgid="4726518572923160939">"Аднавіць налады камеры па змаўчанні?"</string>
     <string name="review_play" msgid="6378271587740884696">"Прайграць"</string>
     <string name="review_cancel" msgid="8188009385853399254">"АДМЯНІЦЬ"</string>
     <string name="review_ok" msgid="1156261588693116433">"ГАТОВА"</string>
     <string name="review_retake" msgid="7804864054896088338">"ЗРАБІЦЬ ЗНОЎ"</string>
     <string name="camera_gallery_photos_text" msgid="6558048736561932758">"Галерэя"</string>
-    <string name="switch_camera_id" msgid="837545176602471325">"Пераключыць камеру"</string>
     <string name="time_lapse_title" msgid="4360632427760662691">"Запіс на працягу доўгага часу"</string>
-    <string name="pref_camera_id_title" msgid="6023059405578511534">"Выберыце камеру"</string>
+    <string name="pref_camera_id_title" msgid="4040791582294635851">"Выбраць камеру"</string>
     <string name="pref_camera_id_entry_back" msgid="5142699735103692485">"Назад"</string>
     <string name="pref_camera_id_entry_front" msgid="5668958706828733669">"Перад"</string>
     <string name="pref_camera_recordlocation_title" msgid="371208839215448917">"Месцазнаходжанне крамы"</string>
@@ -80,9 +78,6 @@
     <string name="spaceIsLow_content" product="nosdcard" msgid="4401325203349203177">"Месца на вашым USB-назапашвальнiку заканчваецца. Змяніце параметры якасці або выдаліце некаторыя выявы цi іншыя файлы."</string>
     <string name="spaceIsLow_content" product="default" msgid="1732882643101247179">"Месца на вашай SD-карце заканчваецца. Змяніце параметры якасці або выдаліце некаторыя выявы цi іншыя файлы."</string>
     <string name="video_reach_size_limit" msgid="6179877322015552390">"Дасягнуты максімальны памер."</string>
-    <string name="switch_to_camera_label" msgid="9148663083850199582">"Пераключэнне ў рэжым камеры"</string>
-    <string name="switch_to_video_label" msgid="1167994386902254398">"Пераключэнне ў рэжым відэа"</string>
-    <string name="switch_to_panorama_label" msgid="858801335653517864">"Пераключэнне ў рэжым панарамы"</string>
     <string name="share_picture_via" msgid="1375127849431890447">"Апублікаваць малюнак з дапам."</string>
     <string name="share_video_via" msgid="5152302809166549015">"Апублікаваць відэа з дапам."</string>
     <string name="no_picture_to_share" msgid="5352574090121328815">"Няма выяў для публiкацыi"</string>
@@ -92,6 +87,7 @@
     <string name="pano_dialog_panorama_failed" msgid="2155692796549642116">"Немагчыма захаваць панараму."</string>
     <string name="pano_dialog_title" msgid="5755531234434437697">"Панарама"</string>
     <string name="pano_capture_indication" msgid="8248825828264374507">"Захоп панарамы"</string>
+    <string name="pano_dialog_waiting_previous" msgid="7800325815031423516">"Чаканне папярэдняй панарамы"</string>
     <string name="pano_review_saving_indication_str" msgid="2054886016665130188">"Захаванне..."</string>
     <string name="tap_to_focus" msgid="8863427645591903760">"Націсніце, каб наладзiць фокус."</string>
     <string name="pref_video_effect_title" msgid="8243182968457289488">"Эфекты"</string>
@@ -104,11 +100,10 @@
     <string name="effect_goofy_face_small_eyes" msgid="1070355596290331271">"Маленькiя вочы"</string>
     <string name="effect_backdropper_space" msgid="7935661090723068402">"У космасе"</string>
     <string name="effect_backdropper_sunset" msgid="45198943771777870">"Заход"</string>
-    <string name="effect_backdropper_disco" msgid="8494822051982972854">"Дыскатэка"</string>
-    <string name="effect_backdropper_gallery" msgid="3271387403091819540">"Выбірайце свой"</string>
-    <string name="bg_replacement_message" msgid="6828585054971662284">"Усталюйце прыладу"\n"На імгненне выйдзіце з поля зроку"</string>
-    <string name="not_selectable_in_effect" msgid="7967729203855039239">"Немагчыма выбраць, калі эфект уключаны."</string>
-    <string name="video_snapshot_hint" msgid="8159602664271448241">"Зрабіце фота падчас запiсу вiдэа, дакрануўшыся да экрану папярэдняга прагляду."</string>
+    <string name="effect_backdropper_gallery" msgid="959158844620991906">"Вашы відэа"</string>
+    <string name="bg_replacement_message" msgid="9184270738916564608">"Наладзьце прыладу."\n"На хвіліну выйдзіце з поля зроку."</string>
+    <string name="not_selectable_in_effect" msgid="4568604144269499202">"Немагчыма выбраць, калі ўключаны эфект."</string>
+    <string name="video_snapshot_hint" msgid="18833576851372483">"Націсніце, каб зрабiць здымак падчас запісу."</string>
     <string name="disable_video_snapshot_hint" msgid="4957723267826476079">"Капiяванне кадра з відэа адключаецца, калі ўключаны спецэфекты."</string>
     <string name="clear_effects" msgid="5485339175014139481">"Выдалiць эфекты"</string>
     <string name="effect_silly_faces" msgid="8107732405347155777">"ПАЦЕШНЫЯ СМАЙЛIКI"</string>
@@ -123,4 +118,7 @@
     <string name="accessibility_decrement" msgid="1411194318538035666">"Памяншэнне на %1$s"</string>
     <string name="accessibility_increment" msgid="8447850530444401135">"Павелічэнне %1$s"</string>
     <string name="accessibility_switch" msgid="6995966685498958895">"Пераключэнне %1$s"</string>
+    <string name="accessibility_switch_to_camera" msgid="5951340774212969461">"Пераключыцца на фота"</string>
+    <string name="accessibility_switch_to_video" msgid="4991396355234561505">"Пераключыцца ў рэжым відэа"</string>
+    <string name="accessibility_switch_to_panorama" msgid="604756878371875836">"Пераключыцца ў рэжым панарамы"</string>
 </resources>

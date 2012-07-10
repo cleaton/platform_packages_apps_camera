@@ -16,28 +16,27 @@
 
 package com.android.camera.ui;
 
+import android.content.Context;
+import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
 import com.android.camera.CameraSettings;
 import com.android.camera.ListPreference;
 import com.android.camera.PreferenceGroup;
 import com.android.camera.R;
-import com.android.camera.RecordLocationPreference;
-
-import android.content.Context;
-import android.util.AttributeSet;
-import android.view.View;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /* A popup window that contains several camera settings. */
 public class OtherSettingsPopup extends AbstractSettingPopup
         implements InLineSettingItem.Listener,
         AdapterView.OnItemClickListener {
+    @SuppressWarnings("unused")
     private static final String TAG = "OtherSettingsPopup";
 
     private Listener mListener;
@@ -48,7 +47,7 @@ public class OtherSettingsPopup extends AbstractSettingPopup
         public void onRestorePreferencesClicked();
     }
 
-    private class OtherSettingsAdapter extends ArrayAdapter {
+    private class OtherSettingsAdapter extends ArrayAdapter<ListPreference> {
         LayoutInflater mInflater;
 
         OtherSettingsAdapter() {
@@ -78,6 +77,9 @@ public class OtherSettingsPopup extends AbstractSettingPopup
             int viewLayoutId = getSettingLayoutId(pref);
             InLineSettingItem view = (InLineSettingItem)
                     mInflater.inflate(viewLayoutId, parent, false);
+            if (viewLayoutId == R.layout.in_line_setting_restore) {
+                view.setId(R.id.restore_default);
+            }
 
             view.initialize(pref); // no init for restore one
             view.setSettingChangedListener(OtherSettingsPopup.this);
@@ -103,7 +105,7 @@ public class OtherSettingsPopup extends AbstractSettingPopup
         // Prepare the restore setting line.
         mListItem.add(null);
 
-        ArrayAdapter mListItemAdapter = new OtherSettingsAdapter();
+        ArrayAdapter<ListPreference> mListItemAdapter = new OtherSettingsAdapter();
         ((ListView) mSettingList).setAdapter(mListItemAdapter);
         ((ListView) mSettingList).setOnItemClickListener(this);
         ((ListView) mSettingList).setSelector(android.R.color.transparent);
@@ -123,7 +125,7 @@ public class OtherSettingsPopup extends AbstractSettingPopup
             String key = keyvalues[i];
             String value = keyvalues[i + 1];
             for (int j = 0; j < count; j++) {
-                ListPreference pref = (ListPreference) mListItem.get(j);
+                ListPreference pref = mListItem.get(j);
                 if (pref != null && key.equals(pref.getKey())) {
                     InLineSettingItem settingItem =
                             (InLineSettingItem) mSettingList.getChildAt(j);
@@ -145,7 +147,7 @@ public class OtherSettingsPopup extends AbstractSettingPopup
     public void reloadPreference() {
         int count = mSettingList.getChildCount();
         for (int i = 0; i < count; i++) {
-            ListPreference pref = (ListPreference) mListItem.get(i);
+            ListPreference pref = mListItem.get(i);
             if (pref != null) {
                 InLineSettingItem settingItem =
                         (InLineSettingItem) mSettingList.getChildAt(i);

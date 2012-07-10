@@ -27,6 +27,8 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
+import com.android.camera.CameraManager.CameraProxy;
+
 import java.io.IOException;
 
 /**
@@ -44,14 +46,17 @@ import java.io.IOException;
  */
 public class CameraHolder {
     private static final String TAG = "CameraHolder";
-    private android.hardware.Camera mCameraDevice;
-    private long mKeepBeforeTime = 0;  // Keep the Camera before this time.
+    private CameraProxy mCameraDevice;
+    private long mKeepBeforeTime;  // Keep the Camera before this time.
     private final Handler mHandler;
-    private int mUsers = 0;  // number of open() - number of release()
-    private int mNumberOfCameras;
+    private boolean mCameraOpened;  // true if camera is opened
+    private final int mNumberOfCameras;
     private int mCameraId = -1;  // current camera id
-    private int mBackCameraId = -1, mFrontCameraId = -1;
-    private CameraInfo[] mInfo;
+    private int mBackCameraId = -1;
+    private int mFrontCameraId = -1;
+    private final CameraInfo[] mInfo;
+    private static CameraProxy mMockCamera[];
+    private static CameraInfo mMockCameraInfo[];
 
     // We store the camera parameters when we actually open the device,
     // so we can restore them in the subsequent open() requests by the user.
@@ -84,26 +89,40 @@ public class CameraHolder {
                         // there is a chance that this message has been handled
                         // before being removed. So, we need to add a check
                         // here:
-                        if (CameraHolder.this.mUsers == 0) releaseCamera();
+                        if (!mCameraOpened) release();
                     }
                     break;
             }
         }
     }
 
+    public static void injectMockCamera(CameraInfo[] info, CameraProxy[] camera) {
+        mMockCameraInfo = info;
+        mMockCamera = camera;
+        sHolder = new CameraHolder();
+    }
+
     private CameraHolder() {
         HandlerThread ht = new HandlerThread("CameraHolder");
         ht.start();
         mHandler = new MyHandler(ht.getLooper());
-        mNumberOfCameras = android.hardware.Camera.getNumberOfCameras();
-        mInfo = new CameraInfo[mNumberOfCameras];
+        if (mMockCameraInfo != null) {
+            mNumberOfCameras = mMockCameraInfo.length;
+            mInfo = mMockCameraInfo;
+        } else {
+            mNumberOfCameras = android.hardware.Camera.getNumberOfCameras();
+            mInfo = new CameraInfo[mNumberOfCameras];
+            for (int i = 0; i < mNumberOfCameras; i++) {
+                mInfo[i] = new CameraInfo();
+                android.hardware.Camera.getCameraInfo(i, mInfo[i]);
+            }
+        }
+
+        // get the first (smallest) back and first front camera id
         for (int i = 0; i < mNumberOfCameras; i++) {
-            mInfo[i] = new CameraInfo();
-            android.hardware.Camera.getCameraInfo(i, mInfo[i]);
             if (mBackCameraId == -1 && mInfo[i].facing == CameraInfo.CAMERA_FACING_BACK) {
                 mBackCameraId = i;
-            }
-            if (mFrontCameraId == -1 && mInfo[i].facing == CameraInfo.CAMERA_FACING_FRONT) {
+            } else if (mFrontCameraId == -1 && mInfo[i].facing == CameraInfo.CAMERA_FACING_FRONT) {
                 mFrontCameraId = i;
             }
         }
@@ -117,9 +136,9 @@ public class CameraHolder {
         return mInfo;
     }
 
-    public synchronized android.hardware.Camera open(int cameraId)
+    public synchronized CameraProxy open(int cameraId)
             throws CameraHardwareException {
-        Assert(mUsers == 0);
+        Assert(!mCameraOpened);
         if (mCameraDevice != null && mCameraId != cameraId) {
             mCameraDevice.release();
             mCameraDevice = null;
@@ -128,7 +147,13 @@ public class CameraHolder {
         if (mCameraDevice == null) {
             try {
                 Log.v(TAG, "open camera " + cameraId);
-                mCameraDevice = android.hardware.Camera.open(cameraId);
+                if (mMockCameraInfo == null) {
+                    mCameraDevice = CameraManager.instance().cameraOpen(cameraId);
+                } else {
+                    if (mMockCamera == null)
+                        throw new RuntimeException();
+                    mCameraDevice = mMockCamera[cameraId];
+                }
                 mCameraId = cameraId;
             } catch (RuntimeException e) {
                 Log.e(TAG, "fail to connect Camera", e);
@@ -144,7 +169,7 @@ public class CameraHolder {
             }
             mCameraDevice.setParameters(mParameters);
         }
-        ++mUsers;
+        mCameraOpened = true;
         mHandler.removeMessages(RELEASE_CAMERA);
         mKeepBeforeTime = 0;
         return mCameraDevice;
@@ -154,9 +179,9 @@ public class CameraHolder {
      * Tries to open the hardware camera. If the camera is being used or
      * unavailable then return {@code null}.
      */
-    public synchronized android.hardware.Camera tryOpen(int cameraId) {
+    public synchronized CameraProxy tryOpen(int cameraId) {
         try {
-            return mUsers == 0 ? open(cameraId) : null;
+            return !mCameraOpened ? open(cameraId) : null;
         } catch (CameraHardwareException e) {
             // In eng build, we throw the exception so that test tool
             // can detect it and report it
@@ -168,21 +193,19 @@ public class CameraHolder {
     }
 
     public synchronized void release() {
-        Assert(mUsers == 1);
-        --mUsers;
-        mCameraDevice.stopPreview();
-        releaseCamera();
-    }
-
-    private synchronized void releaseCamera() {
-        Assert(mUsers == 0);
         Assert(mCameraDevice != null);
+
         long now = System.currentTimeMillis();
         if (now < mKeepBeforeTime) {
+            if (mCameraOpened) {
+                mCameraOpened = false;
+                mCameraDevice.stopPreview();
+            }
             mHandler.sendEmptyMessageDelayed(RELEASE_CAMERA,
                     mKeepBeforeTime - now);
             return;
         }
+        mCameraOpened = false;
         mCameraDevice.release();
         mCameraDevice = null;
         // We must set this to null because it has a reference to Camera.
@@ -192,10 +215,10 @@ public class CameraHolder {
     }
 
     public synchronized void keep() {
-        // We allow (mUsers == 0) for the convenience of the calling activity.
-        // The activity may not have a chance to call open() before the user
-        // choose the menu item to switch to another activity.
-        Assert(mUsers == 1 || mUsers == 0);
+        // We allow mCameraOpened in either state for the convenience of the
+        // calling activity. The activity may not have a chance to call open()
+        // before the user switches to another activity.
+
         // Keep the camera instance for 3 seconds.
         mKeepBeforeTime = System.currentTimeMillis() + 3000;
     }

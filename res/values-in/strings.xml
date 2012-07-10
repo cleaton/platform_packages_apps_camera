@@ -16,7 +16,7 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="camera_error_title" msgid="6484667504938477337">"Galat kamera"</string>
+    <string name="camera_error_title" msgid="6484667504938477337">"Kesalahan kamera"</string>
     <string name="cannot_connect_camera" msgid="955440687597185163">"Tidak dapat terhubung ke kamera."</string>
     <string name="camera_disabled" msgid="8923911090533439312">"Kamera telah dinonaktifkan karena kebijakan keamanan."</string>
     <string name="camera_label" msgid="6346560772074764302">"Kamera"</string>
@@ -32,16 +32,14 @@
     <string name="preparing_sd" product="default" msgid="2914969119574812666">"Menyiapkan kartu SD…"</string>
     <string name="access_sd_fail" product="nosdcard" msgid="8147993984037859354">"Tidak dapat mengakses penyimpanan USB."</string>
     <string name="access_sd_fail" product="default" msgid="1584968646870054352">"Tidak dapat mengakses kartu SD."</string>
-    <string name="confirm_restore_title" msgid="1229914538263792180">"Pulihkan bawaan"</string>
-    <string name="confirm_restore_message" msgid="6649481842684452641">"Pulihkan setelan bawaan Kamera?"</string>
+    <string name="confirm_restore_message" msgid="4726518572923160939">"Pulihkan setelan default kamera?"</string>
     <string name="review_play" msgid="6378271587740884696">"Putar"</string>
     <string name="review_cancel" msgid="8188009385853399254">"BATAL"</string>
     <string name="review_ok" msgid="1156261588693116433">"SELESAI"</string>
     <string name="review_retake" msgid="7804864054896088338">"AMBIL ULANG"</string>
     <string name="camera_gallery_photos_text" msgid="6558048736561932758">"Galeri"</string>
-    <string name="switch_camera_id" msgid="837545176602471325">"Ubah Kamera"</string>
     <string name="time_lapse_title" msgid="4360632427760662691">"Perekaman time lapse"</string>
-    <string name="pref_camera_id_title" msgid="6023059405578511534">"Pilih kamera"</string>
+    <string name="pref_camera_id_title" msgid="4040791582294635851">"Pilih kamera"</string>
     <string name="pref_camera_id_entry_back" msgid="5142699735103692485">"Belakang"</string>
     <string name="pref_camera_id_entry_front" msgid="5668958706828733669">"Depan"</string>
     <string name="pref_camera_recordlocation_title" msgid="371208839215448917">"Lokasi penyimpanan"</string>
@@ -74,15 +72,12 @@
     <string name="pref_camera_scenemode_entry_party" msgid="907053529286788253">"Pesta"</string>
     <string name="not_selectable_in_scene_mode" msgid="2970291701448555126">"Tidak dapat dipilih dalam mode adegan."</string>
     <string name="pref_restore_title" msgid="6479274979730178961">"Setelan kamera"</string>
-    <string name="pref_restore_detail" msgid="5732490002291044791">"Pulihkan bawaan"</string>
+    <string name="pref_restore_detail" msgid="5732490002291044791">"Pulihkan default"</string>
     <string name="pref_exposure_title" msgid="1229093066434614811">"Pencahayaan"</string>
-    <string name="dialog_ok" msgid="6263301364153382152">"OK"</string>
-    <string name="spaceIsLow_content" product="nosdcard" msgid="4401325203349203177">"Penyimpanan USB Anda kehabisan ruang kosong. Ubah setelan kualitas atau hapus beberapa gambar atau berkas lain."</string>
-    <string name="spaceIsLow_content" product="default" msgid="1732882643101247179">"Kartu SD Anda kehabisan ruang kosong. Ubah setelan kualitas atau hapus beberapa gambar atau berkas lain."</string>
+    <string name="dialog_ok" msgid="6263301364153382152">"Oke"</string>
+    <string name="spaceIsLow_content" product="nosdcard" msgid="4401325203349203177">"Penyimpanan USB Anda kehabisan ruang kosong. Ubah setelan kualitas atau hapus beberapa gambar atau file lain."</string>
+    <string name="spaceIsLow_content" product="default" msgid="1732882643101247179">"Kartu SD Anda kehabisan ruang kosong. Ubah setelan kualitas atau hapus beberapa gambar atau file lain."</string>
     <string name="video_reach_size_limit" msgid="6179877322015552390">"Batas ukuran tercapai."</string>
-    <string name="switch_to_camera_label" msgid="9148663083850199582">"Beralih ke kamera"</string>
-    <string name="switch_to_video_label" msgid="1167994386902254398">"Beralih ke video"</string>
-    <string name="switch_to_panorama_label" msgid="858801335653517864">"Beralih ke panorama"</string>
     <string name="share_picture_via" msgid="1375127849431890447">"Bagikan gambar melalui"</string>
     <string name="share_video_via" msgid="5152302809166549015">"Bagikan video melalui"</string>
     <string name="no_picture_to_share" msgid="5352574090121328815">"Tak ada gambar utk dibagikan."</string>
@@ -92,6 +87,7 @@
     <string name="pano_dialog_panorama_failed" msgid="2155692796549642116">"Tidak dapat menyimpan panorama."</string>
     <string name="pano_dialog_title" msgid="5755531234434437697">"Panorama"</string>
     <string name="pano_capture_indication" msgid="8248825828264374507">"Mengambil gambar panorama"</string>
+    <string name="pano_dialog_waiting_previous" msgid="7800325815031423516">"Menunggu panorama sebelumnya"</string>
     <string name="pano_review_saving_indication_str" msgid="2054886016665130188">"Menyimpan…"</string>
     <string name="tap_to_focus" msgid="8863427645591903760">"Sentuh untuk memfokuskan."</string>
     <string name="pref_video_effect_title" msgid="8243182968457289488">"Efek"</string>
@@ -104,11 +100,10 @@
     <string name="effect_goofy_face_small_eyes" msgid="1070355596290331271">"Mata kecil"</string>
     <string name="effect_backdropper_space" msgid="7935661090723068402">"Luar angkasa"</string>
     <string name="effect_backdropper_sunset" msgid="45198943771777870">"Mthari trbenam"</string>
-    <string name="effect_backdropper_disco" msgid="8494822051982972854">"Disko"</string>
-    <string name="effect_backdropper_gallery" msgid="3271387403091819540">"Plh mlik sndri"</string>
-    <string name="bg_replacement_message" msgid="6828585054971662284">"Letakkan perangkat Anda"\n"Menyingkirlah sejenak dari bidang bidik"</string>
-    <string name="not_selectable_in_effect" msgid="7967729203855039239">"Tidak dapat dipilih jika efek dinyalakan."</string>
-    <string name="video_snapshot_hint" msgid="8159602664271448241">"Ambil foto saat merekam video dengan menyentuh layar pratinjau."</string>
+    <string name="effect_backdropper_gallery" msgid="959158844620991906">"Video Anda"</string>
+    <string name="bg_replacement_message" msgid="9184270738916564608">"Letakkan perangkat Anda."\n"Menyingkirlah sejenak dari bidang bidik."</string>
+    <string name="not_selectable_in_effect" msgid="4568604144269499202">"Tidak dapat dipilih jika efek dinyalakan."</string>
+    <string name="video_snapshot_hint" msgid="18833576851372483">"Sentuh untuk mengambil foto saat sedang merekam."</string>
     <string name="disable_video_snapshot_hint" msgid="4957723267826476079">"Cuplikan video dinonaktifkan bila efek khusus aktif."</string>
     <string name="clear_effects" msgid="5485339175014139481">"Hapus efek"</string>
     <string name="effect_silly_faces" msgid="8107732405347155777">"WAJAH KONYOL"</string>
@@ -123,4 +118,7 @@
     <string name="accessibility_decrement" msgid="1411194318538035666">"Kurangi %1$s"</string>
     <string name="accessibility_increment" msgid="8447850530444401135">"Tingkatkan %1$s"</string>
     <string name="accessibility_switch" msgid="6995966685498958895">"Saklar %1$s"</string>
+    <string name="accessibility_switch_to_camera" msgid="5951340774212969461">"Alihkan ke foto"</string>
+    <string name="accessibility_switch_to_video" msgid="4991396355234561505">"Alihkan ke video"</string>
+    <string name="accessibility_switch_to_panorama" msgid="604756878371875836">"Alihkan ke panorama"</string>
 </resources>

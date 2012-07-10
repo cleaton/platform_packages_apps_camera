@@ -18,7 +18,6 @@ package com.android.camera;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.ImageView;
 
 /**
@@ -67,7 +66,7 @@ public class ShutterButton extends ImageView {
                 //    focus pressed, optional camera pressed, focus released.
                 // We want to emulate this sequence of events with the shutter
                 // button. When clicking using a trackball button, the view
-                // system changes the the drawable state before posting click
+                // system changes the drawable state before posting click
                 // notification, so the sequence of events is:
                 //    pressed(true), optional click, pressed(false)
                 // When clicking using touch events, the view system changes the
@@ -84,6 +83,7 @@ public class ShutterButton extends ImageView {
                 // sees events in this sequence:
                 //     pressed(true), optional click, pressed(false)
                 post(new Runnable() {
+                    @Override
                     public void run() {
                         callShutterButtonFocus(pressed);
                     }

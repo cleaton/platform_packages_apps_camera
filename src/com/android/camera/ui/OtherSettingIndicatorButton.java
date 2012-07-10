@@ -16,15 +16,16 @@
 
 package com.android.camera.ui;
 
-import com.android.camera.PreferenceGroup;
-import com.android.camera.R;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.android.camera.PreferenceGroup;
+import com.android.camera.R;
+
 public class OtherSettingIndicatorButton extends AbstractIndicatorButton {
-    private final String TAG = "OtherSettingIndicatorButton";
+    @SuppressWarnings("unused")
+    private static final String TAG = "OtherSettingIndicatorButton";
     private PreferenceGroup mPreferenceGroup;
     private String[] mPrefKeys;
     private OtherSettingsPopup.Listener mListener;

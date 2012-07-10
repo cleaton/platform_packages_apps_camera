@@ -32,16 +32,14 @@
     <string name="preparing_sd" product="default" msgid="2914969119574812666">"Προετοιμασία κάρτας SD…"</string>
     <string name="access_sd_fail" product="nosdcard" msgid="8147993984037859354">"Δεν ήταν δυνατή η πρόσβαση στο χώρο αποθήκευσης USB."</string>
     <string name="access_sd_fail" product="default" msgid="1584968646870054352">"Δεν ήταν δυνατή η πρόσβαση στην κάρτα SD."</string>
-    <string name="confirm_restore_title" msgid="1229914538263792180">"Επαναφορά προεπιλογών"</string>
-    <string name="confirm_restore_message" msgid="6649481842684452641">"Επαναφορά προεπιλεγμένων ρυθμίσεων φωτογραφικής μηχανής;"</string>
+    <string name="confirm_restore_message" msgid="4726518572923160939">"Θέλετε να επαναφέρετε τις προεπιλεγμένες ρυθμίσεις της φωτογραφικής μηχανής;"</string>
     <string name="review_play" msgid="6378271587740884696">"Αναπαρ."</string>
     <string name="review_cancel" msgid="8188009385853399254">"ΑΚΥΡΩΣΗ"</string>
     <string name="review_ok" msgid="1156261588693116433">"ΤΕΛΟΣ"</string>
     <string name="review_retake" msgid="7804864054896088338">"ΝΕΑ ΛΗΨΗ"</string>
     <string name="camera_gallery_photos_text" msgid="6558048736561932758">"Συλλογή"</string>
-    <string name="switch_camera_id" msgid="837545176602471325">"Εναλλαγή κάμερας"</string>
     <string name="time_lapse_title" msgid="4360632427760662691">"Εγγραφή παρέλευσης χρόνου"</string>
-    <string name="pref_camera_id_title" msgid="6023059405578511534">"Επιλογή κάμερας"</string>
+    <string name="pref_camera_id_title" msgid="4040791582294635851">"Επιλογή φωτ. μηχανής"</string>
     <string name="pref_camera_id_entry_back" msgid="5142699735103692485">"Πίσω"</string>
     <string name="pref_camera_id_entry_front" msgid="5668958706828733669">"Μπροστά"</string>
     <string name="pref_camera_recordlocation_title" msgid="371208839215448917">"Αποθήκευση τοποθεσίας"</string>
@@ -80,9 +78,6 @@
     <string name="spaceIsLow_content" product="nosdcard" msgid="4401325203349203177">"Ο διαθέσιμος χώρος USB είναι ελάχιστος. Αλλάξτε τη ρύθμιση της ποιότητας ή διαγράψτε κάποιες εικόνες ή άλλα αρχεία."</string>
     <string name="spaceIsLow_content" product="default" msgid="1732882643101247179">"Ο διαθέσιμος χώρος στην κάρτα SD είναι ελάχιστος. Αλλάξτε τη ρύθμιση ποιότητας ή διαγράψτε κάποιες εικόνες ή άλλα αρχεία."</string>
     <string name="video_reach_size_limit" msgid="6179877322015552390">"Συμπληρώθηκε το όριο μεγέθους."</string>
-    <string name="switch_to_camera_label" msgid="9148663083850199582">"Μετάβαση σε φωτογραφική μηχανή"</string>
-    <string name="switch_to_video_label" msgid="1167994386902254398">"Μετάβαση σε λειτουργία βίντεο"</string>
-    <string name="switch_to_panorama_label" msgid="858801335653517864">"Μετάβαση σε πανόραμα"</string>
     <string name="share_picture_via" msgid="1375127849431890447">"Κοινή χρήση εικόνας μέσω"</string>
     <string name="share_video_via" msgid="5152302809166549015">"Κοινή χρήση βίντεο μέσω"</string>
     <string name="no_picture_to_share" msgid="5352574090121328815">"Καμία εικόνα για κοινή χρήση."</string>
@@ -92,6 +87,7 @@
     <string name="pano_dialog_panorama_failed" msgid="2155692796549642116">"Δεν ήταν δυνατή η αποθήκευση του πανοράματος."</string>
     <string name="pano_dialog_title" msgid="5755531234434437697">"Πανόραμα"</string>
     <string name="pano_capture_indication" msgid="8248825828264374507">"Λήψη πανοράματος"</string>
+    <string name="pano_dialog_waiting_previous" msgid="7800325815031423516">"Αναμονή για προηγ. πανοραμική εικόνα"</string>
     <string name="pano_review_saving_indication_str" msgid="2054886016665130188">"Aποθήκευση..."</string>
     <string name="tap_to_focus" msgid="8863427645591903760">"Πατήστε για εστίαση."</string>
     <string name="pref_video_effect_title" msgid="8243182968457289488">"Εφέ"</string>
@@ -104,11 +100,10 @@
     <string name="effect_goofy_face_small_eyes" msgid="1070355596290331271">"Μικρά μάτια"</string>
     <string name="effect_backdropper_space" msgid="7935661090723068402">"Στο διάστημα"</string>
     <string name="effect_backdropper_sunset" msgid="45198943771777870">"Δύση ηλίου"</string>
-    <string name="effect_backdropper_disco" msgid="8494822051982972854">"Ντίσκο"</string>
-    <string name="effect_backdropper_gallery" msgid="3271387403091819540">"Επιλέξτε το δικό σας"</string>
-    <string name="bg_replacement_message" msgid="6828585054971662284">"Αφήστε τη συσκευή σας κάτω"\n"Απομακρυνθείτε από το πεδίο προβολής"</string>
-    <string name="not_selectable_in_effect" msgid="7967729203855039239">"Δεν υπάρχει δυνατότητα επιλογής όταν το εφέ είναι ενεργοποιημένο."</string>
-    <string name="video_snapshot_hint" msgid="8159602664271448241">"Βγάλτε μια φωτογραφία κατά τη διάρκεια της εγγραφής βίντεο πατώντας την οθόνη προεπισκόπησης."</string>
+    <string name="effect_backdropper_gallery" msgid="959158844620991906">"Το βίντεό σας"</string>
+    <string name="bg_replacement_message" msgid="9184270738916564608">"Αφήστε τη συσκευή σας κάτω"\n"Απομακρυνθείτε για λίγο από την εμβέλειά της."</string>
+    <string name="not_selectable_in_effect" msgid="4568604144269499202">"Αδύνατη η επιλογή όταν το εφέ είναι ενεργό."</string>
+    <string name="video_snapshot_hint" msgid="18833576851372483">"Αγγίξτε για λήψη φωτογραφίας κατά την εγγραφή."</string>
     <string name="disable_video_snapshot_hint" msgid="4957723267826476079">"Το στιγμιότυπο οθόνης βίντεο απενεργοποιείται με ενεργά τα εφέ."</string>
     <string name="clear_effects" msgid="5485339175014139481">"Διαγραφή εφέ"</string>
     <string name="effect_silly_faces" msgid="8107732405347155777">"ΑΣΤΕΙΑ ΠΡΟΣΩΠΑ"</string>
@@ -123,4 +118,7 @@
     <string name="accessibility_decrement" msgid="1411194318538035666">"Μείωση %1$s"</string>
     <string name="accessibility_increment" msgid="8447850530444401135">"Αύξηση %1$s"</string>
     <string name="accessibility_switch" msgid="6995966685498958895">"Διακόπτης %1$s"</string>
+    <string name="accessibility_switch_to_camera" msgid="5951340774212969461">"Μετάβαση σε φωτογραφία"</string>
+    <string name="accessibility_switch_to_video" msgid="4991396355234561505">"Μετάβαση σε λειτουργία βίντεο"</string>
+    <string name="accessibility_switch_to_panorama" msgid="604756878371875836">"Μετάβαση σε πανόραμα"</string>
 </resources>

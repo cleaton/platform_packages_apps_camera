@@ -40,17 +40,17 @@
 
             <View
                     android:layout_width="match_parent"
-                    android:layout_height="1px"
+                    android:layout_height="1dp"
                     android:background="#aaaaaa" />
 
-            <Button android:id="@+id/bg_replace_cancel_button"
-                    android:layout_width="match_parent"
+            <Button android:layout_width="match_parent"
                     android:layout_height="48dip"
                     android:layout_gravity="center"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     style="?android:attr/borderlessButtonStyle"
                     android:text="@android:string/cancel"
-                    android:onClick="onCancelBgTraining"/>
+                    android:onClick="onCancelBgTraining"
+                    android:contentDescription="@android:string/cancel" />
         </LinearLayout>
     </com.android.camera.ui.RotateLayout>
 </RelativeLayout>

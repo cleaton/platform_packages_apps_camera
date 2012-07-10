@@ -32,16 +32,14 @@
     <string name="preparing_sd" product="default" msgid="2914969119574812666">"Preparing SD card…"</string>
     <string name="access_sd_fail" product="nosdcard" msgid="8147993984037859354">"Couldn\'t access USB storage."</string>
     <string name="access_sd_fail" product="default" msgid="1584968646870054352">"Couldn\'t access SD card."</string>
-    <string name="confirm_restore_title" msgid="1229914538263792180">"Restore defaults"</string>
-    <string name="confirm_restore_message" msgid="6649481842684452641">"Restore Camera default settings?"</string>
+    <string name="confirm_restore_message" msgid="4726518572923160939">"Do you want to restore camera default settings?"</string>
     <string name="review_play" msgid="6378271587740884696">"Play"</string>
     <string name="review_cancel" msgid="8188009385853399254">"CANCEL"</string>
     <string name="review_ok" msgid="1156261588693116433">"DONE"</string>
     <string name="review_retake" msgid="7804864054896088338">"RETAKE"</string>
     <string name="camera_gallery_photos_text" msgid="6558048736561932758">"Gallery"</string>
-    <string name="switch_camera_id" msgid="837545176602471325">"Switch Camera"</string>
     <string name="time_lapse_title" msgid="4360632427760662691">"Time lapse recording"</string>
-    <string name="pref_camera_id_title" msgid="6023059405578511534">"Select camera"</string>
+    <string name="pref_camera_id_title" msgid="4040791582294635851">"Choose camera"</string>
     <string name="pref_camera_id_entry_back" msgid="5142699735103692485">"Back"</string>
     <string name="pref_camera_id_entry_front" msgid="5668958706828733669">"Front"</string>
     <string name="pref_camera_recordlocation_title" msgid="371208839215448917">"Store location"</string>
@@ -80,9 +78,6 @@
     <string name="spaceIsLow_content" product="nosdcard" msgid="4401325203349203177">"Your USB storage is running out of space. Change the quality setting or delete some images or other files."</string>
     <string name="spaceIsLow_content" product="default" msgid="1732882643101247179">"Your SD card is running out of space. Change the quality setting or delete some images or other files."</string>
     <string name="video_reach_size_limit" msgid="6179877322015552390">"Size limit reached."</string>
-    <string name="switch_to_camera_label" msgid="9148663083850199582">"Switch to camera"</string>
-    <string name="switch_to_video_label" msgid="1167994386902254398">"Switch to video"</string>
-    <string name="switch_to_panorama_label" msgid="858801335653517864">"Switch to panorama"</string>
     <string name="share_picture_via" msgid="1375127849431890447">"Share picture via"</string>
     <string name="share_video_via" msgid="5152302809166549015">"Share video via"</string>
     <string name="no_picture_to_share" msgid="5352574090121328815">"No picture to share."</string>
@@ -92,6 +87,7 @@
     <string name="pano_dialog_panorama_failed" msgid="2155692796549642116">"Couldn\'t save panorama."</string>
     <string name="pano_dialog_title" msgid="5755531234434437697">"Panorama"</string>
     <string name="pano_capture_indication" msgid="8248825828264374507">"Capturing panorama"</string>
+    <string name="pano_dialog_waiting_previous" msgid="7800325815031423516">"Waiting for previous panorama"</string>
     <string name="pano_review_saving_indication_str" msgid="2054886016665130188">"Saving…"</string>
     <string name="tap_to_focus" msgid="8863427645591903760">"Touch to focus."</string>
     <string name="pref_video_effect_title" msgid="8243182968457289488">"Effects"</string>
@@ -104,11 +100,10 @@
     <string name="effect_goofy_face_small_eyes" msgid="1070355596290331271">"Small eyes"</string>
     <string name="effect_backdropper_space" msgid="7935661090723068402">"In space"</string>
     <string name="effect_backdropper_sunset" msgid="45198943771777870">"Sunset"</string>
-    <string name="effect_backdropper_disco" msgid="8494822051982972854">"Disco"</string>
-    <string name="effect_backdropper_gallery" msgid="3271387403091819540">"Choose your own"</string>
-    <string name="bg_replacement_message" msgid="6828585054971662284">"Put your device down"\n"Step out of view for a moment"</string>
-    <string name="not_selectable_in_effect" msgid="7967729203855039239">"Not selectable when the effect is on."</string>
-    <string name="video_snapshot_hint" msgid="8159602664271448241">"Take a photo during video recording by touching the preview screen."</string>
+    <string name="effect_backdropper_gallery" msgid="959158844620991906">"Your video"</string>
+    <string name="bg_replacement_message" msgid="9184270738916564608">"Set your device down."\n"Move out of view for a moment."</string>
+    <string name="not_selectable_in_effect" msgid="4568604144269499202">"Not selectable when effect is on."</string>
+    <string name="video_snapshot_hint" msgid="18833576851372483">"Touch to take photo while recording."</string>
     <string name="disable_video_snapshot_hint" msgid="4957723267826476079">"Video snapshot is disabled when special effects are on."</string>
     <string name="clear_effects" msgid="5485339175014139481">"Clear effects"</string>
     <string name="effect_silly_faces" msgid="8107732405347155777">"SILLY FACES"</string>
@@ -123,4 +118,7 @@
     <string name="accessibility_decrement" msgid="1411194318538035666">"Decrease %1$s"</string>
     <string name="accessibility_increment" msgid="8447850530444401135">"Increase %1$s"</string>
     <string name="accessibility_switch" msgid="6995966685498958895">"%1$s switch"</string>
+    <string name="accessibility_switch_to_camera" msgid="5951340774212969461">"Switch to photo"</string>
+    <string name="accessibility_switch_to_video" msgid="4991396355234561505">"Switch to video"</string>
+    <string name="accessibility_switch_to_panorama" msgid="604756878371875836">"Switch to panorama"</string>
 </resources>

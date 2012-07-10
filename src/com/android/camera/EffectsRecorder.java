@@ -17,7 +17,6 @@
 package com.android.camera;
 
 import android.content.Context;
-import android.content.res.AssetFileDescriptor;
 import android.filterfw.GraphEnvironment;
 import android.filterfw.core.Filter;
 import android.filterfw.core.GLEnvironment;
@@ -29,24 +28,19 @@ import android.filterpacks.videoproc.BackDropperFilter;
 import android.filterpacks.videoproc.BackDropperFilter.LearningDoneListener;
 import android.filterpacks.videosink.MediaEncoderFilter.OnRecordingDoneListener;
 import android.filterpacks.videosrc.SurfaceTextureSource.SurfaceTextureSourceListener;
-
+import android.filterpacks.videosrc.SurfaceTextureTarget;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
-import android.hardware.CameraSound;
-import android.media.MediaRecorder;
 import android.media.CamcorderProfile;
+import android.media.MediaActionSound;
+import android.media.MediaRecorder;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.Surface;
-import android.view.SurfaceHolder;
 
-import java.io.IOException;
-import java.io.FileNotFoundException;
-import java.io.File;
-import java.lang.Runnable;
 import java.io.FileDescriptor;
+import java.io.IOException;
 
 
 /**
@@ -76,12 +70,11 @@ public class EffectsRecorder {
 
     private Context mContext;
     private Handler mHandler;
-    private boolean mReleased;
 
     private Camera mCameraDevice;
     private CamcorderProfile mProfile;
     private double mCaptureRate = 0;
-    private SurfaceHolder mPreviewSurfaceHolder;
+    private SurfaceTexture mPreviewSurfaceTexture;
     private int mPreviewWidth;
     private int mPreviewHeight;
     private MediaRecorder.OnInfoListener mInfoListener;
@@ -93,7 +86,7 @@ public class EffectsRecorder {
     private long mMaxFileSize = 0;
     private int mMaxDurationMs = 0;
     private int mCameraFacing = Camera.CameraInfo.CAMERA_FACING_BACK;
-    private boolean mAppIsLandscape;
+    private int mCameraDisplayOrientation;
 
     private int mEffect = EFFECT_NONE;
     private int mCurrentEffect = EFFECT_NONE;
@@ -117,8 +110,8 @@ public class EffectsRecorder {
     private int mState = STATE_CONFIGURE;
 
     private boolean mLogVerbose = Log.isLoggable(TAG, Log.VERBOSE);
-    private static final String TAG = "effectsrecorder";
-    private CameraSound mCameraSound;
+    private static final String TAG = "EffectsRecorder";
+    private MediaActionSound mCameraSound;
 
     /** Determine if a given effect is supported at runtime
      * Some effects require libraries not available on all devices
@@ -126,7 +119,8 @@ public class EffectsRecorder {
     public static boolean isEffectSupported(int effectId) {
         switch (effectId) {
             case EFFECT_GOOFY_FACE:
-                return Filter.isAvailable("com.google.android.filterpacks.facedetect.GoofyRenderFilter");
+                return Filter.isAvailable(
+                    "com.google.android.filterpacks.facedetect.GoofyRenderFilter");
             case EFFECT_BACKDROPPER:
                 return Filter.isAvailable("android.filterpacks.videoproc.BackDropperFilter");
             default:
@@ -138,10 +132,12 @@ public class EffectsRecorder {
         if (mLogVerbose) Log.v(TAG, "EffectsRecorder created (" + this + ")");
         mContext = context;
         mHandler = new Handler(Looper.getMainLooper());
-        mCameraSound = new CameraSound();
+        mCameraSound = new MediaActionSound();
+        mCameraSound.load(MediaActionSound.START_VIDEO_RECORDING);
+        mCameraSound.load(MediaActionSound.STOP_VIDEO_RECORDING);
     }
 
-    public void setCamera(Camera cameraDevice) {
+    public synchronized void setCamera(Camera cameraDevice) {
         switch (mState) {
             case STATE_PREVIEW:
                 throw new RuntimeException("setCamera cannot be called while previewing!");
@@ -207,7 +203,8 @@ public class EffectsRecorder {
             case STATE_RECORD:
                 throw new RuntimeException("setMaxFileSize cannot be called while recording!");
             case STATE_RELEASED:
-                throw new RuntimeException("setMaxFileSize called on an already released recorder!");
+                throw new RuntimeException(
+                    "setMaxFileSize called on an already released recorder!");
             default:
                 break;
         }
@@ -223,7 +220,8 @@ public class EffectsRecorder {
             case STATE_RECORD:
                 throw new RuntimeException("setMaxDuration cannot be called while recording!");
             case STATE_RELEASED:
-                throw new RuntimeException("setMaxDuration called on an already released recorder!");
+                throw new RuntimeException(
+                    "setMaxDuration called on an already released recorder!");
             default:
                 break;
         }
@@ -236,7 +234,8 @@ public class EffectsRecorder {
             case STATE_RECORD:
                 throw new RuntimeException("setCaptureRate cannot be called while recording!");
             case STATE_RELEASED:
-                throw new RuntimeException("setCaptureRate called on an already released recorder!");
+                throw new RuntimeException(
+                    "setCaptureRate called on an already released recorder!");
             default:
                 break;
         }
@@ -245,20 +244,22 @@ public class EffectsRecorder {
         mCaptureRate = fps;
     }
 
-    public void setPreviewDisplay(SurfaceHolder previewSurfaceHolder,
+    public void setPreviewSurfaceTexture(SurfaceTexture previewSurfaceTexture,
                                   int previewWidth,
                                   int previewHeight) {
-        if (mLogVerbose) Log.v(TAG, "setPreviewDisplay (" + this + ")");
+        if (mLogVerbose) Log.v(TAG, "setPreviewSurfaceTexture(" + this + ")");
         switch (mState) {
             case STATE_RECORD:
-                throw new RuntimeException("setPreviewDisplay cannot be called while recording!");
+                throw new RuntimeException(
+                    "setPreviewSurfaceTexture cannot be called while recording!");
             case STATE_RELEASED:
-                throw new RuntimeException("setPreviewDisplay called on an already released recorder!");
+                throw new RuntimeException(
+                    "setPreviewSurfaceTexture called on an already released recorder!");
             default:
                 break;
         }
 
-        mPreviewSurfaceHolder = previewSurfaceHolder;
+        mPreviewSurfaceTexture= previewSurfaceTexture;
         mPreviewWidth = previewWidth;
         mPreviewHeight = previewHeight;
 
@@ -353,14 +354,12 @@ public class EffectsRecorder {
         setRecordingOrientation();
     }
 
-    /** Passes the native orientation of the Camera app (device dependent)
-     * to allow for correct output aspect ratio. Defaults to portrait */
-    public void setAppToLandscape(boolean landscape) {
+    public void setCameraDisplayOrientation(int orientation) {
         if (mState != STATE_CONFIGURE) {
             throw new RuntimeException(
-                "setAppToLandscape called after configuration!");
+                "setCameraDisplayOrientation called after configuration!");
         }
-        mAppIsLandscape = landscape;
+        mCameraDisplayOrientation = orientation;
     }
 
     public void setCameraFacing(int facing) {
@@ -380,7 +379,8 @@ public class EffectsRecorder {
             case STATE_RECORD:
                 throw new RuntimeException("setInfoListener cannot be called while recording!");
             case STATE_RELEASED:
-                throw new RuntimeException("setInfoListener called on an already released recorder!");
+                throw new RuntimeException(
+                    "setInfoListener called on an already released recorder!");
             default:
                 break;
         }
@@ -392,7 +392,8 @@ public class EffectsRecorder {
             case STATE_RECORD:
                 throw new RuntimeException("setErrorListener cannot be called while recording!");
             case STATE_RELEASED:
-                throw new RuntimeException("setErrorListener called on an already released recorder!");
+                throw new RuntimeException(
+                    "setErrorListener called on an already released recorder!");
             default:
                 break;
         }
@@ -403,20 +404,18 @@ public class EffectsRecorder {
         mGraphEnv = new GraphEnvironment();
         mGraphEnv.createGLEnvironment();
 
-        if (mLogVerbose) {
-            Log.v(TAG, "Effects framework initializing. Recording size "
-                  + mProfile.videoFrameWidth + ", " + mProfile.videoFrameHeight);
+        int videoFrameWidth = mProfile.videoFrameWidth;
+        int videoFrameHeight = mProfile.videoFrameHeight;
+        if (mCameraDisplayOrientation == 90 || mCameraDisplayOrientation == 270) {
+            int tmp = videoFrameWidth;
+            videoFrameWidth = videoFrameHeight;
+            videoFrameHeight = tmp;
         }
-        if (!mAppIsLandscape) {
-            int tmp;
-            tmp = mProfile.videoFrameWidth;
-            mProfile.videoFrameWidth = mProfile.videoFrameHeight;
-            mProfile.videoFrameHeight = tmp;
-        }
+
         mGraphEnv.addReferences(
                 "textureSourceCallback", mSourceReadyCallback,
-                "recordingWidth", mProfile.videoFrameWidth,
-                "recordingHeight", mProfile.videoFrameHeight,
+                "recordingWidth", videoFrameWidth,
+                "recordingHeight", videoFrameHeight,
                 "recordingProfile", mProfile,
                 "learningDoneListener", mLearningDoneListener,
                 "recordingDoneListener", mRecordingDoneListener);
@@ -429,13 +428,9 @@ public class EffectsRecorder {
         if (forceReset ||
             mCurrentEffect != mEffect ||
             mCurrentEffect == EFFECT_BACKDROPPER) {
-            if (mLogVerbose) {
-                Log.v(TAG, "Effect initializing. Preview size "
-                       + mPreviewWidth + ", " + mPreviewHeight);
-            }
 
             mGraphEnv.addReferences(
-                    "previewSurface", mPreviewSurfaceHolder.getSurface(),
+                    "previewSurfaceTexture", mPreviewSurfaceTexture,
                     "previewWidth", mPreviewWidth,
                     "previewHeight", mPreviewHeight,
                     "orientation", mOrientationHint);
@@ -489,8 +484,7 @@ public class EffectsRecorder {
             case EFFECT_BACKDROPPER:
                 tryEnableVideoStabilization(false);
                 Filter backgroundSrc = mRunner.getGraph().getFilter("background");
-                backgroundSrc.setInputValue("sourceUrl",
-                                            (String)mEffectParameter);
+                backgroundSrc.setInputValue("sourceUrl", mEffectParameter);
                 // For front camera, the background video needs to be mirrored in the
                 // backdropper filter
                 if (mCameraFacing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
@@ -532,8 +526,8 @@ public class EffectsRecorder {
         if (mProfile == null) {
             throw new RuntimeException("No recording profile provided!");
         }
-        if (mPreviewSurfaceHolder == null) {
-            if (mLogVerbose) Log.v(TAG, "Passed a null surface holder; waiting for valid one");
+        if (mPreviewSurfaceTexture == null) {
+            if (mLogVerbose) Log.v(TAG, "Passed a null surface; waiting for valid one");
             mState = STATE_WAITING_FOR_SURFACE;
             return;
         }
@@ -541,13 +535,10 @@ public class EffectsRecorder {
             throw new RuntimeException("No camera to record from!");
         }
 
-        if (mLogVerbose) Log.v(TAG, "Initializing filter graph");
-
+        if (mLogVerbose) Log.v(TAG, "Initializing filter framework and running the graph.");
         initializeFilterFramework();
 
         initializeEffect(true);
-
-        if (mLogVerbose) Log.v(TAG, "Starting filter graph");
 
         mState = STATE_STARTING_PREVIEW;
         mRunner.run();
@@ -556,6 +547,7 @@ public class EffectsRecorder {
 
     private SurfaceTextureSourceListener mSourceReadyCallback =
             new SurfaceTextureSourceListener() {
+        @Override
         public void onSurfaceTextureSourceReady(SurfaceTexture source) {
             if (mLogVerbose) Log.v(TAG, "SurfaceTexture ready callback received");
             synchronized(EffectsRecorder.this) {
@@ -575,19 +567,20 @@ public class EffectsRecorder {
                     return;
                 }
                 if (source == null) {
+                    if (mLogVerbose) {
+                        Log.v(TAG, "Ready callback: source null! Looks like graph was closed!");
+                    }
                     if (mState == STATE_PREVIEW ||
                             mState == STATE_STARTING_PREVIEW ||
                             mState == STATE_RECORD) {
                         // A null source here means the graph is shutting down
                         // unexpectedly, so we need to turn off preview before
                         // the surface texture goes away.
-                        mCameraDevice.stopPreview();
-                        try {
-                            mCameraDevice.setPreviewTexture(null);
-                        } catch(IOException e) {
-                            throw new RuntimeException("Unable to disconnect " +
-                                    "camera from effect input", e);
+                        if (mLogVerbose) {
+                            Log.v(TAG, "Ready callback: State: " + mState + ". stopCameraPreview");
                         }
+
+                        stopCameraPreview();
                     }
                     return;
                 }
@@ -620,6 +613,7 @@ public class EffectsRecorder {
 
     private LearningDoneListener mLearningDoneListener =
             new LearningDoneListener() {
+        @Override
         public void onLearningDone(BackDropperFilter filter) {
             if (mLogVerbose) Log.v(TAG, "Learning done callback triggered");
             // Called in a processing thread, so have to post message back to UI
@@ -633,6 +627,7 @@ public class EffectsRecorder {
     private OnRecordingDoneListener mRecordingDoneListener =
             new OnRecordingDoneListener() {
         // Forward the callback to the VideoCamera object (as an asynchronous event).
+        @Override
         public void onRecordingDone() {
             if (mLogVerbose) Log.v(TAG, "Recording done callback triggered");
             sendMessage(EFFECT_NONE, EFFECT_MSG_RECORDING_DONE);
@@ -646,7 +641,8 @@ public class EffectsRecorder {
             case STATE_RECORD:
                 throw new RuntimeException("Already recording, cannot begin anew!");
             case STATE_RELEASED:
-                throw new RuntimeException("startRecording called on an already released recorder!");
+                throw new RuntimeException(
+                    "startRecording called on an already released recorder!");
             default:
                 break;
         }
@@ -693,7 +689,7 @@ public class EffectsRecorder {
         recorder.setInputValue("maxFileSize", mMaxFileSize);
         recorder.setInputValue("maxDurationMs", mMaxDurationMs);
         recorder.setInputValue("recording", true);
-        mCameraSound.playSound(CameraSound.START_VIDEO_RECORDING);
+        mCameraSound.play(MediaActionSound.START_VIDEO_RECORDING);
         mState = STATE_RECORD;
     }
 
@@ -713,14 +709,52 @@ public class EffectsRecorder {
         }
         Filter recorder = mRunner.getGraph().getFilter("recorder");
         recorder.setInputValue("recording", false);
-        mCameraSound.playSound(CameraSound.STOP_VIDEO_RECORDING);
+        mCameraSound.play(MediaActionSound.STOP_VIDEO_RECORDING);
         mState = STATE_PREVIEW;
+    }
+
+    // Called to tell the filter graph that the display surfacetexture is not valid anymore.
+    // So the filter graph should not hold any reference to the surface created with that.
+    public synchronized void disconnectDisplay() {
+        if (mLogVerbose) Log.v(TAG, "Disconnecting the graph from the " +
+            "SurfaceTexture");
+        SurfaceTextureTarget display = (SurfaceTextureTarget)
+            mRunner.getGraph().getFilter("display");
+        display.disconnect(mGraphEnv.getContext());
+    }
+
+    // The VideoCamera will call this to notify that the camera is being
+    // released to the outside world. This call should happen after the
+    // stopRecording call. Else, the effects may throw an exception.
+    // With the recording stopped, the stopPreview call will not try to
+    // release the camera again.
+    // This must be called in onPause() if the effects are ON.
+    public synchronized void disconnectCamera() {
+        if (mLogVerbose) Log.v(TAG, "Disconnecting the effects from Camera");
+        stopCameraPreview();
+        mCameraDevice = null;
+    }
+
+    // In a normal case, when the disconnect is not called, we should not
+    // set the camera device to null, since on return callback, we try to
+    // enable 3A locks, which need the cameradevice.
+    public synchronized void stopCameraPreview() {
+        if (mLogVerbose) Log.v(TAG, "Stopping camera preview.");
+        if (mCameraDevice == null) {
+            Log.d(TAG, "Camera already null. Nothing to disconnect");
+            return;
+        }
+        mCameraDevice.stopPreview();
+        try {
+            mCameraDevice.setPreviewTexture(null);
+        } catch(IOException e) {
+            throw new RuntimeException("Unable to disconnect camera");
+        }
     }
 
     // Stop and release effect resources
     public synchronized void stopPreview() {
         if (mLogVerbose) Log.v(TAG, "Stopping preview (" + this + ")");
-
         switch (mState) {
             case STATE_CONFIGURE:
                 Log.w(TAG, "StopPreview called when preview not active!");
@@ -737,13 +771,8 @@ public class EffectsRecorder {
 
         mCurrentEffect = EFFECT_NONE;
 
-        mCameraDevice.stopPreview();
-        try {
-            mCameraDevice.setPreviewTexture(null);
-        } catch(IOException e) {
-            throw new RuntimeException("Unable to connect camera to effect input", e);
-        }
-        mCameraSound.release();
+        // This will not do anything if the camera has already been disconnected.
+        stopCameraPreview();
 
         mState = STATE_CONFIGURE;
         mOldRunner = mRunner;
@@ -753,7 +782,13 @@ public class EffectsRecorder {
     }
 
     // Try to enable/disable video stabilization if supported; otherwise return false
+    // It is called from a synchronized block.
     boolean tryEnableVideoStabilization(boolean toggle) {
+        if (mLogVerbose) Log.v(TAG, "tryEnableVideoStabilization.");
+        if (mCameraDevice == null) {
+            Log.d(TAG, "Camera already null. Not enabling video stabilization.");
+            return false;
+        }
         Camera.Parameters params = mCameraDevice.getParameters();
 
         String vstabSupported = params.get("video-stabilization-supported");
@@ -768,7 +803,12 @@ public class EffectsRecorder {
     }
 
     // Try to enable/disable 3A locks if supported; otherwise return false
-    boolean tryEnable3ALocks(boolean toggle) {
+    synchronized boolean tryEnable3ALocks(boolean toggle) {
+        if (mLogVerbose) Log.v(TAG, "tryEnable3ALocks");
+        if (mCameraDevice == null) {
+            Log.d(TAG, "Camera already null. Not tryenabling 3A locks.");
+            return false;
+        }
         Camera.Parameters params = mCameraDevice.getParameters();
         if (params.isAutoExposureLockSupported() &&
             params.isAutoWhiteBalanceLockSupported() ) {
@@ -782,7 +822,12 @@ public class EffectsRecorder {
 
     // Try to enable/disable 3A locks if supported; otherwise, throw error
     // Use this when locks are essential to success
-    void enable3ALocks(boolean toggle) {
+    synchronized void enable3ALocks(boolean toggle) {
+        if (mLogVerbose) Log.v(TAG, "Enable3ALocks");
+        if (mCameraDevice == null) {
+            Log.d(TAG, "Camera already null. Not enabling 3A locks.");
+            return;
+        }
         Camera.Parameters params = mCameraDevice.getParameters();
         if (!tryEnable3ALocks(toggle)) {
             throw new RuntimeException("Attempt to lock 3A on camera with no locking support!");
@@ -791,6 +836,7 @@ public class EffectsRecorder {
 
     private OnRunnerDoneListener mRunnerDoneCallback =
             new OnRunnerDoneListener() {
+        @Override
         public void onRunnerDone(int result) {
             synchronized(EffectsRecorder.this) {
                 if (mLogVerbose) {
@@ -826,8 +872,25 @@ public class EffectsRecorder {
                 if (mState == STATE_PREVIEW ||
                         mState == STATE_STARTING_PREVIEW) {
                     // Switching effects, start up the new runner
-                    if (mLogVerbose) Log.v(TAG, "Previous effect halted, starting new effect.");
+                    if (mLogVerbose) {
+                        Log.v(TAG, "Previous effect halted. Running graph again. state: " + mState);
+                    }
                     tryEnable3ALocks(false);
+                    // In case of an error, the graph restarts from beginning and in case
+                    // of the BACKDROPPER effect, the learner re-learns the background.
+                    // Hence, we need to show the learning dialogue to the user
+                    // to avoid recording before the learning is done. Else, the user
+                    // could start recording before the learning is done and the new
+                    // background comes up later leading to an end result video
+                    // with a heterogeneous background.
+                    // For BACKDROPPER effect, this path is also executed sometimes at
+                    // the end of a normal recording session. In such a case, the graph
+                    // does not restart and hence the learner does not re-learn. So we
+                    // do not want to show the learning dialogue then.
+                    if (result == GraphRunner.RESULT_ERROR &&
+                            mCurrentEffect == EFFECT_BACKDROPPER) {
+                        sendMessage(EFFECT_BACKDROPPER, EFFECT_MSG_STARTED_LEARNING);
+                    }
                     mRunner.run();
                 } else if (mState != STATE_RELEASED) {
                     // Shutting down effects
@@ -852,6 +915,10 @@ public class EffectsRecorder {
                 stopPreview();
                 // Fall-through
             default:
+                if (mCameraSound != null) {
+                    mCameraSound.release();
+                    mCameraSound = null;
+                }
                 mState = STATE_RELEASED;
                 break;
         }
@@ -860,6 +927,7 @@ public class EffectsRecorder {
     private void sendMessage(final int effect, final int msg) {
         if (mEffectsListener != null) {
             mHandler.post(new Runnable() {
+                @Override
                 public void run() {
                     mEffectsListener.onEffectsUpdate(effect, msg);
                 }
@@ -870,6 +938,7 @@ public class EffectsRecorder {
     private void raiseError(final Exception exception) {
         if (mEffectsListener != null) {
             mHandler.post(new Runnable() {
+                @Override
                 public void run() {
                     if (mFd != null) {
                         mEffectsListener.onEffectsError(exception, null);

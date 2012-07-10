@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.hardware.Camera;
@@ -37,9 +38,9 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
-import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
+import android.util.FloatMath;
 import android.util.Log;
 import android.view.Display;
 import android.view.OrientationEventListener;
@@ -63,15 +64,6 @@ import java.util.StringTokenizer;
  */
 public class Util {
     private static final String TAG = "Util";
-    private static final int DIRECTION_LEFT = 0;
-    private static final int DIRECTION_RIGHT = 1;
-    private static final int DIRECTION_UP = 2;
-    private static final int DIRECTION_DOWN = 3;
-
-    // The brightness setting used when it is set to automatic in the system.
-    // The reason why it is set to 0.7 is just because 1.0 is too bright.
-    // Use the same setting among the Camera, VideoCamera and Panorama modes.
-    private static final float DEFAULT_CAMERA_BRIGHTNESS = 0.7f;
 
     // Orientation hysteresis amount used in rounding, in degrees
     public static final int ORIENTATION_HYSTERESIS = 5;
@@ -82,7 +74,6 @@ public class Util {
     private static final String EXTRAS_CAMERA_FACING =
             "android.intent.extras.CAMERA_FACING";
 
-    private static boolean sIsTabletUI;
     private static float sPixelDensity = 1;
     private static ImageFileNamer sImageFileNamer;
 
@@ -90,8 +81,6 @@ public class Util {
     }
 
     public static void initialize(Context context) {
-        sIsTabletUI = (context.getResources().getConfiguration().smallestScreenWidthDp >= 600);
-
         DisplayMetrics metrics = new DisplayMetrics();
         WindowManager wm = (WindowManager)
                 context.getSystemService(Context.WINDOW_SERVICE);
@@ -99,10 +88,6 @@ public class Util {
         sPixelDensity = metrics.density;
         sImageFileNamer = new ImageFileNamer(
                 context.getString(R.string.image_file_name_format));
-    }
-
-    public static boolean isTabletUI() {
-        return sIsTabletUI;
     }
 
     public static int dpToPixel(int dp) {
@@ -126,9 +111,9 @@ public class Util {
                 m.postScale(-1, 1);
                 degrees = (degrees + 360) % 360;
                 if (degrees == 0 || degrees == 180) {
-                    m.postTranslate((float) b.getWidth(), 0);
+                    m.postTranslate(b.getWidth(), 0);
                 } else if (degrees == 90 || degrees == 270) {
-                    m.postTranslate((float) b.getHeight(), 0);
+                    m.postTranslate(b.getHeight(), 0);
                 } else {
                     throw new IllegalArgumentException("Invalid degrees=" + degrees);
                 }
@@ -254,7 +239,7 @@ public class Util {
         }
     }
 
-    public static android.hardware.Camera openCamera(Activity activity, int cameraId)
+    public static CameraManager.CameraProxy openCamera(Activity activity, int cameraId)
             throws CameraHardwareException, CameraDisabledException {
         // Check if device policy has disabled the camera.
         DevicePolicyManager dpm = (DevicePolicyManager) activity.getSystemService(
@@ -279,6 +264,7 @@ public class Util {
     public static void showErrorAndFinish(final Activity activity, int msgId) {
         DialogInterface.OnClickListener buttonListener =
                 new DialogInterface.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialog, int which) {
                 activity.finish();
             }
@@ -314,7 +300,7 @@ public class Util {
     public static float distance(float x, float y, float sx, float sy) {
         float dx = x - sx;
         float dy = y - sy;
-        return (float) Math.sqrt(dx * dx + dy * dy);
+        return FloatMath.sqrt(dx * dx + dy * dy);
     }
 
     public static int clamp(int x, int min, int max) {
@@ -382,17 +368,13 @@ public class Util {
 
         // Because of bugs of overlay and layout, we sometimes will try to
         // layout the viewfinder in the portrait orientation and thus get the
-        // wrong size of mSurfaceView. When we change the preview size, the
+        // wrong size of preview surface. When we change the preview size, the
         // new overlay will be created before the old one closed, which causes
-        // an exception. For now, just get the screen size
-
+        // an exception. For now, just get the screen size.
         Display display = currentActivity.getWindowManager().getDefaultDisplay();
-        int targetHeight = Math.min(display.getHeight(), display.getWidth());
-
-        if (targetHeight <= 0) {
-            // We don't know the size of SurfaceView, use screen height
-            targetHeight = display.getHeight();
-        }
+        Point point = new Point();
+        display.getSize(point);
+        int targetHeight = Math.min(point.x, point.y);
 
         // Try to find an size match aspect ratio and size
         for (Size size : sizes) {
@@ -470,7 +452,7 @@ public class Util {
         }
 
         try {
-            Class partypes[] = new Class[0];
+            Class<?> partypes[] = new Class[0];
             Method sIsVoiceCapable = TelephonyManager.class.getMethod(
                     "isVoiceCapable", partypes);
 
@@ -519,13 +501,23 @@ public class Util {
         return (intentCameraId == android.hardware.Camera.CameraInfo.CAMERA_FACING_BACK);
     }
 
-    private static int mLocation[] = new int[2];
+    private static int sLocation[] = new int[2];
 
     // This method is not thread-safe.
     public static boolean pointInView(float x, float y, View v) {
-        v.getLocationInWindow(mLocation);
-        return x >= mLocation[0] && x < (mLocation[0] + v.getWidth())
-                && y >= mLocation[1] && y < (mLocation[1] + v.getHeight());
+        v.getLocationInWindow(sLocation);
+        return x >= sLocation[0] && x < (sLocation[0] + v.getWidth())
+                && y >= sLocation[1] && y < (sLocation[1] + v.getHeight());
+    }
+
+    public static int[] getRelativeLocation(View reference, View view) {
+        reference.getLocationInWindow(sLocation);
+        int referenceX = sLocation[0];
+        int referenceY = sLocation[1];
+        view.getLocationInWindow(sLocation);
+        sLocation[0] -= referenceX;
+        sLocation[1] -= referenceY;
+        return sLocation;
     }
 
     public static boolean isUriValid(Uri uri, ContentResolver resolver) {
@@ -597,25 +589,35 @@ public class Util {
         context.sendBroadcast(new Intent("com.android.camera.NEW_PICTURE", uri));
     }
 
-    public static void fadeIn(View view) {
+    public static void fadeIn(View view, float startAlpha, float endAlpha, long duration) {
         if (view.getVisibility() == View.VISIBLE) return;
 
         view.setVisibility(View.VISIBLE);
-        Animation animation = new AlphaAnimation(0F, 1F);
-        animation.setDuration(400);
+        Animation animation = new AlphaAnimation(startAlpha, endAlpha);
+        animation.setDuration(duration);
         view.startAnimation(animation);
+    }
+
+    public static void fadeIn(View view) {
+        fadeIn(view, 0F, 1F, 400);
+
+        // We disabled the button in fadeOut(), so enable it here.
+        view.setEnabled(true);
     }
 
     public static void fadeOut(View view) {
         if (view.getVisibility() != View.VISIBLE) return;
 
+        // Since the button is still clickable before fade-out animation
+        // ends, we disable the button first to block click.
+        view.setEnabled(false);
         Animation animation = new AlphaAnimation(1F, 0F);
         animation.setDuration(400);
         view.startAnimation(animation);
         view.setVisibility(View.GONE);
     }
 
-    public static void setRotationParameter(Parameters parameters, int cameraId, int orientation) {
+    public static int getJpegRotation(int cameraId, int orientation) {
         // See android.hardware.Camera.Parameters.setRotation for
         // documentation.
         int rotation = 0;
@@ -627,7 +629,7 @@ public class Util {
                 rotation = (info.orientation + orientation) % 360;
             }
         }
-        parameters.setRotation(rotation);
+        return rotation;
     }
 
     public static void setGpsParameters(Parameters parameters, Location loc) {
@@ -665,23 +667,6 @@ public class Util {
             } else {
                 loc = null;
             }
-        }
-    }
-
-    public static void enterLightsOutMode(Window window) {
-        WindowManager.LayoutParams params = window.getAttributes();
-        params.systemUiVisibility = View.SYSTEM_UI_FLAG_LOW_PROFILE;
-        window.setAttributes(params);
-    }
-
-    public static void initializeScreenBrightness(Window win, ContentResolver resolver) {
-        // Overright the brightness settings if it is automatic
-        int mode = Settings.System.getInt(resolver, Settings.System.SCREEN_BRIGHTNESS_MODE,
-                Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
-        if (mode == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC) {
-            WindowManager.LayoutParams winParams = win.getAttributes();
-            winParams.screenBrightness = DEFAULT_CAMERA_BRIGHTNESS;
-            win.setAttributes(winParams);
         }
     }
 

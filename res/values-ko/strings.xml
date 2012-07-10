@@ -32,16 +32,14 @@
     <string name="preparing_sd" product="default" msgid="2914969119574812666">"SD 카드 준비중..."</string>
     <string name="access_sd_fail" product="nosdcard" msgid="8147993984037859354">"USB 저장소에 액세스하지 못했습니다."</string>
     <string name="access_sd_fail" product="default" msgid="1584968646870054352">"SD 카드에 액세스하지 못했습니다."</string>
-    <string name="confirm_restore_title" msgid="1229914538263792180">"기본값 복원"</string>
-    <string name="confirm_restore_message" msgid="6649481842684452641">"카메라 기본 설정값을 복원하시겠습니까?"</string>
+    <string name="confirm_restore_message" msgid="4726518572923160939">"카메라 기본 설정값을 복원하시겠습니까?"</string>
     <string name="review_play" msgid="6378271587740884696">"재생"</string>
     <string name="review_cancel" msgid="8188009385853399254">"취소"</string>
     <string name="review_ok" msgid="1156261588693116433">"완료"</string>
     <string name="review_retake" msgid="7804864054896088338">"다시 촬영"</string>
     <string name="camera_gallery_photos_text" msgid="6558048736561932758">"갤러리"</string>
-    <string name="switch_camera_id" msgid="837545176602471325">"카메라 방향 전환"</string>
     <string name="time_lapse_title" msgid="4360632427760662691">"저속 촬영"</string>
-    <string name="pref_camera_id_title" msgid="6023059405578511534">"카메라 선택"</string>
+    <string name="pref_camera_id_title" msgid="4040791582294635851">"카메라 선택"</string>
     <string name="pref_camera_id_entry_back" msgid="5142699735103692485">"후방"</string>
     <string name="pref_camera_id_entry_front" msgid="5668958706828733669">"전방"</string>
     <string name="pref_camera_recordlocation_title" msgid="371208839215448917">"위치 저장"</string>
@@ -80,9 +78,6 @@
     <string name="spaceIsLow_content" product="nosdcard" msgid="4401325203349203177">"USB 저장장치의 공간이 부족합니다. 화질 설정을 변경하거나 일부 이미지 또는 기타 파일을 삭제하세요."</string>
     <string name="spaceIsLow_content" product="default" msgid="1732882643101247179">"SD 카드의 공간이 부족합니다. 화질 설정을 변경하거나 일부 이미지 또는 기타 파일을 삭제하세요."</string>
     <string name="video_reach_size_limit" msgid="6179877322015552390">"크기 한도에 도달했습니다."</string>
-    <string name="switch_to_camera_label" msgid="9148663083850199582">"카메라로 전환"</string>
-    <string name="switch_to_video_label" msgid="1167994386902254398">"동영상으로 전환"</string>
-    <string name="switch_to_panorama_label" msgid="858801335653517864">"파노라마로 전환"</string>
     <string name="share_picture_via" msgid="1375127849431890447">"사진 공유 애플리케이션"</string>
     <string name="share_video_via" msgid="5152302809166549015">"동영상 공유 애플리케이션"</string>
     <string name="no_picture_to_share" msgid="5352574090121328815">"공유할 사진 없음"</string>
@@ -92,6 +87,7 @@
     <string name="pano_dialog_panorama_failed" msgid="2155692796549642116">"파노라마를 저장하지 못했습니다."</string>
     <string name="pano_dialog_title" msgid="5755531234434437697">"파노라마"</string>
     <string name="pano_capture_indication" msgid="8248825828264374507">"파노라마 캡처 중"</string>
+    <string name="pano_dialog_waiting_previous" msgid="7800325815031423516">"이전 파노라마가 완료되기를 기다리는 중"</string>
     <string name="pano_review_saving_indication_str" msgid="2054886016665130188">"저장 중…"</string>
     <string name="tap_to_focus" msgid="8863427645591903760">"초점을 맞추려면 터치하세요."</string>
     <string name="pref_video_effect_title" msgid="8243182968457289488">"효과"</string>
@@ -104,11 +100,10 @@
     <string name="effect_goofy_face_small_eyes" msgid="1070355596290331271">"눈 작게"</string>
     <string name="effect_backdropper_space" msgid="7935661090723068402">"우주"</string>
     <string name="effect_backdropper_sunset" msgid="45198943771777870">"일몰"</string>
-    <string name="effect_backdropper_disco" msgid="8494822051982972854">"디스코"</string>
-    <string name="effect_backdropper_gallery" msgid="3271387403091819540">"내 동영상 선택"</string>
-    <string name="bg_replacement_message" msgid="6828585054971662284">"기기를 내려놓습니다."\n"잠시 동안 시야를 벗어납니다."</string>
-    <string name="not_selectable_in_effect" msgid="7967729203855039239">"효과를 사용 중일 때는 선택할 수 없습니다."</string>
-    <string name="video_snapshot_hint" msgid="8159602664271448241">"동영상을 촬영하는 동안 미리보기 화면을 터치하여 사진을 찍을 수 있습니다."</string>
+    <string name="effect_backdropper_gallery" msgid="959158844620991906">"내 동영상"</string>
+    <string name="bg_replacement_message" msgid="9184270738916564608">"기기를 내려놓습니다."\n"잠시 동안 시야를 벗어납니다."</string>
+    <string name="not_selectable_in_effect" msgid="4568604144269499202">"효과를 사용 중일 때는 선택할 수 없습니다."</string>
+    <string name="video_snapshot_hint" msgid="18833576851372483">"녹화 중에 사진을 찍으려면 터치하세요."</string>
     <string name="disable_video_snapshot_hint" msgid="4957723267826476079">"특수 효과가 설정되어 있으면 동영상 스냅샷이 사용 중지됩니다."</string>
     <string name="clear_effects" msgid="5485339175014139481">"효과 제거"</string>
     <string name="effect_silly_faces" msgid="8107732405347155777">"웃긴 얼굴"</string>
@@ -123,4 +118,7 @@
     <string name="accessibility_decrement" msgid="1411194318538035666">"%1$s 축소"</string>
     <string name="accessibility_increment" msgid="8447850530444401135">"%1$s 확대"</string>
     <string name="accessibility_switch" msgid="6995966685498958895">"%1$s 전환"</string>
+    <string name="accessibility_switch_to_camera" msgid="5951340774212969461">"사진으로 전환"</string>
+    <string name="accessibility_switch_to_video" msgid="4991396355234561505">"동영상으로 전환"</string>
+    <string name="accessibility_switch_to_panorama" msgid="604756878371875836">"파노라마로 전환"</string>
 </resources>

@@ -16,10 +16,10 @@
 
 package com.android.camera.ui;
 
-import com.android.camera.PreferenceGroup;
-
 import android.content.Context;
 import android.util.AttributeSet;
+
+import com.android.camera.PreferenceGroup;
 
 public abstract class IndicatorControlContainer extends IndicatorControl
         implements OnIndicatorEventListener {
@@ -33,4 +33,12 @@ public abstract class IndicatorControlContainer extends IndicatorControl
     public abstract void enableZoom(boolean enabled);
 
     public abstract void dismissSecondLevelIndicator();
+
+    public abstract void enableFilter(boolean enabled);
+
+    public void startTimeLapseAnimation(int timeLapseInterval, long startTime) {
+    }
+
+    public void stopTimeLapseAnimation() {
+    }
 }

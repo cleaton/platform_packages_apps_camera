@@ -16,10 +16,6 @@
 
 package com.android.camera.ui;
 
-import com.android.camera.CameraPreference.OnPreferenceChangedListener;
-import com.android.camera.PreferenceGroup;
-import com.android.camera.R;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -28,11 +24,17 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 
+import com.android.camera.CameraPreference.OnPreferenceChangedListener;
+import com.android.camera.PreferenceGroup;
+import com.android.camera.R;
+
 /**
- * The IndicatorControlBarContainer is a IndicatorControl containing
- * IndicatorControlBar, SecondIndicatorControlBar and ZoomControlBar for Phone UI.
+ * The IndicatorControlBarContainer is an IndicatorControlContainer containing
+ * IndicatorControlBar, SecondLevelIndicatorControlBar and ZoomControlBar for
+ * Phone UI.
  */
 public class IndicatorControlBarContainer extends IndicatorControlContainer {
+    @SuppressWarnings("unused")
     private static final String TAG = "IndicatorControlBarContainer";
 
     private Animation mFadeIn, mFadeOut;
@@ -75,9 +77,10 @@ public class IndicatorControlBarContainer extends IndicatorControlContainer {
                 secondLevelKeys, secondLevelOtherSettingKeys);
     }
 
-    public void setOrientation(int orientation) {
-        mIndicatorControlBar.setOrientation(orientation);
-        mSecondLevelIndicatorControlBar.setOrientation(orientation);
+    @Override
+    public void setOrientation(int orientation, boolean animation) {
+        mIndicatorControlBar.setOrientation(orientation, animation);
+        mSecondLevelIndicatorControlBar.setOrientation(orientation, animation);
     }
 
     @Override
@@ -91,6 +94,7 @@ public class IndicatorControlBarContainer extends IndicatorControlContainer {
     }
 
     private AnimationListener mAnimationListener = new AnimationListener() {
+        @Override
         public void onAnimationEnd(Animation animation) {
             if (animation == mSecondLevelFadeOut) {
                 mSecondLevelIndicatorControlBar.setVisibility(View.GONE);
@@ -99,9 +103,11 @@ public class IndicatorControlBarContainer extends IndicatorControlContainer {
             }
         }
 
+        @Override
         public void onAnimationRepeat(Animation animation) {
         }
 
+        @Override
         public void onAnimationStart(Animation animation) {
         }
     };
@@ -112,6 +118,7 @@ public class IndicatorControlBarContainer extends IndicatorControlContainer {
         mSecondLevelIndicatorControlBar.startAnimation(mSecondLevelFadeOut);
     }
 
+    @Override
     public void onIndicatorEvent(int event) {
         switch (event) {
             case OnIndicatorEventListener.EVENT_ENTER_SECOND_LEVEL_INDICATOR_BAR:
@@ -126,11 +133,13 @@ public class IndicatorControlBarContainer extends IndicatorControlContainer {
         }
     }
 
+    @Override
     public void reloadPreferences() {
         mIndicatorControlBar.reloadPreferences();
         mSecondLevelIndicatorControlBar.reloadPreferences();
     }
 
+    @Override
     public void setListener(OnPreferenceChangedListener listener) {
         mIndicatorControlBar.setListener(listener);
         mSecondLevelIndicatorControlBar.setListener(listener);
@@ -146,6 +155,7 @@ public class IndicatorControlBarContainer extends IndicatorControlContainer {
         return null;
     }
 
+    @Override
     public boolean dismissSettingPopup() {
         if (mIndicatorControlBar.getVisibility() == View.VISIBLE) {
             return mIndicatorControlBar.dismissSettingPopup();
@@ -176,5 +186,11 @@ public class IndicatorControlBarContainer extends IndicatorControlContainer {
         if (mSecondLevelIndicatorControlBar.getVisibility() == View.VISIBLE) {
             leaveSecondLevelIndicator();
         }
+    }
+
+    @Override
+    public void enableFilter(boolean enabled) {
+        mIndicatorControlBar.setupFilter(enabled);
+        mSecondLevelIndicatorControlBar.setupFilter(enabled);
     }
 }

@@ -32,16 +32,14 @@
     <string name="preparing_sd" product="default" msgid="2914969119574812666">"正在準備 SD 卡..."</string>
     <string name="access_sd_fail" product="nosdcard" msgid="8147993984037859354">"無法存取 USB 儲存裝置。"</string>
     <string name="access_sd_fail" product="default" msgid="1584968646870054352">"無法存取 SD 卡。"</string>
-    <string name="confirm_restore_title" msgid="1229914538263792180">"還原預設值"</string>
-    <string name="confirm_restore_message" msgid="6649481842684452641">"要還原相機預設值嗎？"</string>
+    <string name="confirm_restore_message" msgid="4726518572923160939">"您要還原相機預設設定嗎？"</string>
     <string name="review_play" msgid="6378271587740884696">"播放"</string>
     <string name="review_cancel" msgid="8188009385853399254">"取消"</string>
     <string name="review_ok" msgid="1156261588693116433">"完成"</string>
     <string name="review_retake" msgid="7804864054896088338">"重拍"</string>
     <string name="camera_gallery_photos_text" msgid="6558048736561932758">"圖庫"</string>
-    <string name="switch_camera_id" msgid="837545176602471325">"切換相機"</string>
     <string name="time_lapse_title" msgid="4360632427760662691">"延時攝影錄製"</string>
-    <string name="pref_camera_id_title" msgid="6023059405578511534">"選取鏡頭"</string>
+    <string name="pref_camera_id_title" msgid="4040791582294635851">"選擇相機"</string>
     <string name="pref_camera_id_entry_back" msgid="5142699735103692485">"後置鏡頭"</string>
     <string name="pref_camera_id_entry_front" msgid="5668958706828733669">"前置鏡頭"</string>
     <string name="pref_camera_recordlocation_title" msgid="371208839215448917">"儲存位置"</string>
@@ -80,9 +78,6 @@
     <string name="spaceIsLow_content" product="nosdcard" msgid="4401325203349203177">"您的 USB 儲存裝置的空間即將用盡，請變更圖片的品質設定，或是刪除部分圖片或其他檔案。"</string>
     <string name="spaceIsLow_content" product="default" msgid="1732882643101247179">"您 SD 卡的空間即將不足，請變更圖片的品質設定，或是刪除部分圖片或其他檔案。"</string>
     <string name="video_reach_size_limit" msgid="6179877322015552390">"已達大小上限。"</string>
-    <string name="switch_to_camera_label" msgid="9148663083850199582">"切換至相機"</string>
-    <string name="switch_to_video_label" msgid="1167994386902254398">"切換至影片"</string>
-    <string name="switch_to_panorama_label" msgid="858801335653517864">"切換至全景模式"</string>
     <string name="share_picture_via" msgid="1375127849431890447">"相片分享方式"</string>
     <string name="share_video_via" msgid="5152302809166549015">"影片分享方式"</string>
     <string name="no_picture_to_share" msgid="5352574090121328815">"沒有可供分享的相片。"</string>
@@ -92,6 +87,7 @@
     <string name="pano_dialog_panorama_failed" msgid="2155692796549642116">"無法儲存全景。"</string>
     <string name="pano_dialog_title" msgid="5755531234434437697">"全景"</string>
     <string name="pano_capture_indication" msgid="8248825828264374507">"全景拍攝中"</string>
+    <string name="pano_dialog_waiting_previous" msgid="7800325815031423516">"正在等待先前的全景處理完成"</string>
     <string name="pano_review_saving_indication_str" msgid="2054886016665130188">"儲存中..."</string>
     <string name="tap_to_focus" msgid="8863427645591903760">"輕觸即可對焦。"</string>
     <string name="pref_video_effect_title" msgid="8243182968457289488">"效果"</string>
@@ -104,11 +100,10 @@
     <string name="effect_goofy_face_small_eyes" msgid="1070355596290331271">"小眼睛"</string>
     <string name="effect_backdropper_space" msgid="7935661090723068402">"太空"</string>
     <string name="effect_backdropper_sunset" msgid="45198943771777870">"黃昏"</string>
-    <string name="effect_backdropper_disco" msgid="8494822051982972854">"迪斯可"</string>
-    <string name="effect_backdropper_gallery" msgid="3271387403091819540">"選擇您自己的影片"</string>
-    <string name="bg_replacement_message" msgid="6828585054971662284">"放下您的裝置"\n"暫時離開畫面"</string>
-    <string name="not_selectable_in_effect" msgid="7967729203855039239">"效果啟用時無法選取。"</string>
-    <string name="video_snapshot_hint" msgid="8159602664271448241">"影片錄製期間，只要輕觸預覽畫面即可拍攝相片。"</string>
+    <string name="effect_backdropper_gallery" msgid="959158844620991906">"您的影片"</string>
+    <string name="bg_replacement_message" msgid="9184270738916564608">"放下您的裝置"\n"暫時離開畫面。"</string>
+    <string name="not_selectable_in_effect" msgid="4568604144269499202">"效果啟用時無法選取。"</string>
+    <string name="video_snapshot_hint" msgid="18833576851372483">"輕觸即可在錄製期間拍照。"</string>
     <string name="disable_video_snapshot_hint" msgid="4957723267826476079">"特殊效果啟用時無法使用影片快照。"</string>
     <string name="clear_effects" msgid="5485339175014139481">"清除效果"</string>
     <string name="effect_silly_faces" msgid="8107732405347155777">"耍笨臉"</string>
@@ -123,4 +118,7 @@
     <string name="accessibility_decrement" msgid="1411194318538035666">"縮小 %1$s"</string>
     <string name="accessibility_increment" msgid="8447850530444401135">"放大 %1$s"</string>
     <string name="accessibility_switch" msgid="6995966685498958895">"%1$s 開關"</string>
+    <string name="accessibility_switch_to_camera" msgid="5951340774212969461">"切換至相片模式"</string>
+    <string name="accessibility_switch_to_video" msgid="4991396355234561505">"切換至影片模式"</string>
+    <string name="accessibility_switch_to_panorama" msgid="604756878371875836">"切換至全景模式"</string>
 </resources>

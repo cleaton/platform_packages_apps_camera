@@ -32,21 +32,19 @@
     <string name="preparing_sd" product="default" msgid="2914969119574812666">"در حال آماده سازی کارت SD..."</string>
     <string name="access_sd_fail" product="nosdcard" msgid="8147993984037859354">"دسترسی به حافظه USB ممکن نیست."</string>
     <string name="access_sd_fail" product="default" msgid="1584968646870054352">"دسترسی به کارت SD ممکن نیست."</string>
-    <string name="confirm_restore_title" msgid="1229914538263792180">"بازیابی پیش فرض ها"</string>
-    <string name="confirm_restore_message" msgid="6649481842684452641">"بازیابی تنظیمات پیش‌فرض دوربین؟"</string>
+    <string name="confirm_restore_message" msgid="4726518572923160939">"آیا می‌خواهید تنظیمات پیش‌فرض دوربین را بازگردانید؟"</string>
     <string name="review_play" msgid="6378271587740884696">"پخش"</string>
     <string name="review_cancel" msgid="8188009385853399254">"لغو"</string>
     <string name="review_ok" msgid="1156261588693116433">"انجام شد"</string>
     <string name="review_retake" msgid="7804864054896088338">"دریافت مجدد"</string>
     <string name="camera_gallery_photos_text" msgid="6558048736561932758">"گالری"</string>
-    <string name="switch_camera_id" msgid="837545176602471325">"جابجایی به دوربین"</string>
     <string name="time_lapse_title" msgid="4360632427760662691">"زمان سپری شده ضبط"</string>
-    <string name="pref_camera_id_title" msgid="6023059405578511534">"انتخاب دوربین"</string>
+    <string name="pref_camera_id_title" msgid="4040791582294635851">"انتخاب دوربین"</string>
     <string name="pref_camera_id_entry_back" msgid="5142699735103692485">"برگشت"</string>
     <string name="pref_camera_id_entry_front" msgid="5668958706828733669">"جلو"</string>
     <string name="pref_camera_recordlocation_title" msgid="371208839215448917">"ذخیره موقعیت مکانی"</string>
     <string name="pref_camera_recordlocation_entry_off" msgid="8888142742988946038">"خاموش"</string>
-    <string name="pref_camera_recordlocation_entry_on" msgid="7954533529969575594">"در"</string>
+    <string name="pref_camera_recordlocation_entry_on" msgid="7954533529969575594">"فعال"</string>
     <string name="pref_video_quality_title" msgid="8245379279801096922">"کیفیت ویدیو"</string>
     <string name="pref_video_time_lapse_frame_interval_title" msgid="5262531404348504642">"فاصله زمانی سپری شده"</string>
     <string name="pref_camera_settings_category" msgid="2576236450859613120">"تنظیمات دوربین"</string>
@@ -58,7 +56,7 @@
     <string name="pref_camera_focusmode_entry_macro" msgid="4424489110551866161">"ماکرو"</string>
     <string name="pref_camera_flashmode_title" msgid="2287362477238791017">"حالت فلاش"</string>
     <string name="pref_camera_flashmode_entry_auto" msgid="7288383434237457709">"خودکار"</string>
-    <string name="pref_camera_flashmode_entry_on" msgid="5330043918845197616">"در"</string>
+    <string name="pref_camera_flashmode_entry_on" msgid="5330043918845197616">"روشن"</string>
     <string name="pref_camera_flashmode_entry_off" msgid="867242186958805761">"خاموش"</string>
     <string name="pref_camera_whitebalance_title" msgid="677420930596673340">"توازن سفیدی"</string>
     <string name="pref_camera_whitebalance_entry_auto" msgid="6580665476983469293">"خودکار"</string>
@@ -80,9 +78,6 @@
     <string name="spaceIsLow_content" product="nosdcard" msgid="4401325203349203177">"حافظه USB پر است. تنظیمات کیفیت را تغییر دهید یا برخی تصاویر یا سایر فایل ها را حذف کنید."</string>
     <string name="spaceIsLow_content" product="default" msgid="1732882643101247179">"کارت SD شما پر شده است. تنظیمات کیفیت را تغییر دهید یا برخی تصاویر یا فایل های دیگر را حذف کنید."</string>
     <string name="video_reach_size_limit" msgid="6179877322015552390">"بیش از حداکثر مجاز."</string>
-    <string name="switch_to_camera_label" msgid="9148663083850199582">"رفتن به دوربین"</string>
-    <string name="switch_to_video_label" msgid="1167994386902254398">"رفتن به ویدیو"</string>
-    <string name="switch_to_panorama_label" msgid="858801335653517864">"رفتن به پانوراما"</string>
     <string name="share_picture_via" msgid="1375127849431890447">"اشتراک گذاری تصویر از طریق"</string>
     <string name="share_video_via" msgid="5152302809166549015">"اشتراک گذاری ویدیو از طریق"</string>
     <string name="no_picture_to_share" msgid="5352574090121328815">"عکسی برای اشتراک وجود ندارد."</string>
@@ -92,6 +87,7 @@
     <string name="pano_dialog_panorama_failed" msgid="2155692796549642116">"ذخیره پانوراما امکان‌پذیر نیست."</string>
     <string name="pano_dialog_title" msgid="5755531234434437697">"پانوراما"</string>
     <string name="pano_capture_indication" msgid="8248825828264374507">"گرفتن عکس پانوراما"</string>
+    <string name="pano_dialog_waiting_previous" msgid="7800325815031423516">"درحال انتظار برای پانورامای قبلی"</string>
     <string name="pano_review_saving_indication_str" msgid="2054886016665130188">"در حال ذخیره..."</string>
     <string name="tap_to_focus" msgid="8863427645591903760">"برای فوکوس لمس کنید."</string>
     <string name="pref_video_effect_title" msgid="8243182968457289488">"جلوه‌ها"</string>
@@ -104,11 +100,10 @@
     <string name="effect_goofy_face_small_eyes" msgid="1070355596290331271">"چشمان کوچک"</string>
     <string name="effect_backdropper_space" msgid="7935661090723068402">"در فضا"</string>
     <string name="effect_backdropper_sunset" msgid="45198943771777870">"غروب آفتاب"</string>
-    <string name="effect_backdropper_disco" msgid="8494822051982972854">"دیسکو"</string>
-    <string name="effect_backdropper_gallery" msgid="3271387403091819540">"انتخاب مورد خود"</string>
-    <string name="bg_replacement_message" msgid="6828585054971662284">"دستگاه خود را کنار بگذارید"\n"چند لحظه از دید خارج شوید"</string>
-    <string name="not_selectable_in_effect" msgid="7967729203855039239">"زمان روشن بودن جلوه قابل انتخاب نیست."</string>
-    <string name="video_snapshot_hint" msgid="8159602664271448241">"در حین ضبط ویدیو با لمس کردن صفحه پیش‌نمایش یک عکس بگیرید."</string>
+    <string name="effect_backdropper_gallery" msgid="959158844620991906">"ویدیوی شما"</string>
+    <string name="bg_replacement_message" msgid="9184270738916564608">"دستگاه خود را کنار بگذارید."\n"برای یک لحظه از دید خارج شوید."</string>
+    <string name="not_selectable_in_effect" msgid="4568604144269499202">"وقتی جلوه روشن است، قابل انتخاب نیست."</string>
+    <string name="video_snapshot_hint" msgid="18833576851372483">"برای گرفتن عکس در هنگام ضبط لمس کنید."</string>
     <string name="disable_video_snapshot_hint" msgid="4957723267826476079">"هنگام فعال بودن جلوه‌های ویژه، عکس فوری از ویدیو غیرفعال است."</string>
     <string name="clear_effects" msgid="5485339175014139481">"پاک کردن جلوه‌ها"</string>
     <string name="effect_silly_faces" msgid="8107732405347155777">"چهره‌های احمقانه"</string>
@@ -123,4 +118,7 @@
     <string name="accessibility_decrement" msgid="1411194318538035666">"کاهش %1$s"</string>
     <string name="accessibility_increment" msgid="8447850530444401135">"افزایش %1$s"</string>
     <string name="accessibility_switch" msgid="6995966685498958895">"کلید %1$s"</string>
+    <string name="accessibility_switch_to_camera" msgid="5951340774212969461">"رفتن به عکس"</string>
+    <string name="accessibility_switch_to_video" msgid="4991396355234561505">"رفتن به ویدیو"</string>
+    <string name="accessibility_switch_to_panorama" msgid="604756878371875836">"رفتن به پانوراما"</string>
 </resources>

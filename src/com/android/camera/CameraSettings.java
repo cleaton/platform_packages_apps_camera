@@ -24,6 +24,7 @@ import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.Parameters;
 import android.hardware.Camera.Size;
 import android.media.CamcorderProfile;
+import android.util.FloatMath;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -214,8 +215,8 @@ public class CameraSettings {
         float step = mParameters.getExposureCompensationStep();
 
         // show only integer values for exposure compensation
-        int maxValue = (int) Math.floor(max * step);
-        int minValue = (int) Math.ceil(min * step);
+        int maxValue = (int) FloatMath.floor(max * step);
+        int minValue = (int) FloatMath.ceil(min * step);
         CharSequence entries[] = new CharSequence[maxValue - minValue + 1];
         CharSequence entryValues[] = new CharSequence[maxValue - minValue + 1];
         for (int i = minValue; i <= maxValue; ++i) {
@@ -322,6 +323,11 @@ public class CameraSettings {
     }
 
     public static void upgradeGlobalPreferences(SharedPreferences pref) {
+        upgradeOldVersion(pref);
+        upgradeCameraId(pref);
+    }
+
+    private static void upgradeOldVersion(SharedPreferences pref) {
         int version;
         try {
             version = pref.getInt(KEY_VERSION, 0);
@@ -365,6 +371,20 @@ public class CameraSettings {
 
         editor.putInt(KEY_VERSION, CURRENT_VERSION);
         editor.apply();
+    }
+
+    private static void upgradeCameraId(SharedPreferences pref) {
+        // The id stored in the preference may be out of range if we are running
+        // inside the emulator and a webcam is removed.
+        // Note: This method accesses the global preferences directly, not the
+        // combo preferences.
+        int cameraId = readPreferredCameraId(pref);
+        if (cameraId == 0) return;  // fast path
+
+        int n = CameraHolder.instance().getNumberOfCameras();
+        if (cameraId < 0 || cameraId >= n) {
+            writePreferredCameraId(pref, 0);
+        }
     }
 
     public static int readPreferredCameraId(SharedPreferences pref) {

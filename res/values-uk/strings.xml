@@ -32,16 +32,14 @@
     <string name="preparing_sd" product="default" msgid="2914969119574812666">"Підготовка карти SD…"</string>
     <string name="access_sd_fail" product="nosdcard" msgid="8147993984037859354">"Не вдалося отримати доступ до носія USB."</string>
     <string name="access_sd_fail" product="default" msgid="1584968646870054352">"Не вдалося отримати доступ до карти SD."</string>
-    <string name="confirm_restore_title" msgid="1229914538263792180">"Знач-ня за умовч."</string>
-    <string name="confirm_restore_message" msgid="6649481842684452641">"Відновити налаштування Камери за умовчанням?"</string>
+    <string name="confirm_restore_message" msgid="4726518572923160939">"Відновити налаштування камери за умовчанням?"</string>
     <string name="review_play" msgid="6378271587740884696">"Відтворити"</string>
     <string name="review_cancel" msgid="8188009385853399254">"СКАСУВАТИ"</string>
     <string name="review_ok" msgid="1156261588693116433">"ГОТОВО"</string>
     <string name="review_retake" msgid="7804864054896088338">"ПОВТОР"</string>
     <string name="camera_gallery_photos_text" msgid="6558048736561932758">"Галерея"</string>
-    <string name="switch_camera_id" msgid="837545176602471325">"Змінити камеру"</string>
     <string name="time_lapse_title" msgid="4360632427760662691">"Запис уповільненої зйомки"</string>
-    <string name="pref_camera_id_title" msgid="6023059405578511534">"Вибрати камеру"</string>
+    <string name="pref_camera_id_title" msgid="4040791582294635851">"Вибрати камеру"</string>
     <string name="pref_camera_id_entry_back" msgid="5142699735103692485">"Задня камера"</string>
     <string name="pref_camera_id_entry_front" msgid="5668958706828733669">"Передня камера"</string>
     <string name="pref_camera_recordlocation_title" msgid="371208839215448917">"Місце зберігання"</string>
@@ -80,9 +78,6 @@
     <string name="spaceIsLow_content" product="nosdcard" msgid="4401325203349203177">"На носії USB недостатньо місця. Змініть налаштування якості чи видаліть зображення або інші файли."</string>
     <string name="spaceIsLow_content" product="default" msgid="1732882643101247179">"На карті SD недостатньо місця. Змініть налаштування якості чи видаліть зображення або інші файли."</string>
     <string name="video_reach_size_limit" msgid="6179877322015552390">"Досягн. макс. розмір."</string>
-    <string name="switch_to_camera_label" msgid="9148663083850199582">"Перейти в режим камери"</string>
-    <string name="switch_to_video_label" msgid="1167994386902254398">"Перейти в режим відео"</string>
-    <string name="switch_to_panorama_label" msgid="858801335653517864">"Перейти в режим панорами"</string>
     <string name="share_picture_via" msgid="1375127849431890447">"Надіслати фото через"</string>
     <string name="share_video_via" msgid="5152302809166549015">"Надіслати відео через"</string>
     <string name="no_picture_to_share" msgid="5352574090121328815">"Немає знімків для надсилання."</string>
@@ -92,6 +87,7 @@
     <string name="pano_dialog_panorama_failed" msgid="2155692796549642116">"Не вдалося зберегти панораму."</string>
     <string name="pano_dialog_title" msgid="5755531234434437697">"Панорама"</string>
     <string name="pano_capture_indication" msgid="8248825828264374507">"Панорамна зйомка"</string>
+    <string name="pano_dialog_waiting_previous" msgid="7800325815031423516">"Очікування на попередню панораму"</string>
     <string name="pano_review_saving_indication_str" msgid="2054886016665130188">"Збереження..."</string>
     <string name="tap_to_focus" msgid="8863427645591903760">"Торкніться, щоб фокусувати."</string>
     <string name="pref_video_effect_title" msgid="8243182968457289488">"Ефекти"</string>
@@ -104,11 +100,10 @@
     <string name="effect_goofy_face_small_eyes" msgid="1070355596290331271">"Маленькі очі"</string>
     <string name="effect_backdropper_space" msgid="7935661090723068402">"У космосі"</string>
     <string name="effect_backdropper_sunset" msgid="45198943771777870">"Захід сонця"</string>
-    <string name="effect_backdropper_disco" msgid="8494822051982972854">"Диско"</string>
-    <string name="effect_backdropper_gallery" msgid="3271387403091819540">"Вибрати власне"</string>
-    <string name="bg_replacement_message" msgid="6828585054971662284">"Покладіть свій пристрій"\n"На декілька секунд вийдіть із поля зору"</string>
-    <string name="not_selectable_in_effect" msgid="7967729203855039239">"Неможливо вибрати, якщо ввімкнено ефект."</string>
-    <string name="video_snapshot_hint" msgid="8159602664271448241">"Зробіть фото під час відеозйомки, торкнувшись екрана перегляду."</string>
+    <string name="effect_backdropper_gallery" msgid="959158844620991906">"Ваше відео"</string>
+    <string name="bg_replacement_message" msgid="9184270738916564608">"Покладіть свій пристрій."\n"На декілька секунд вийдіть із поля зору."</string>
+    <string name="not_selectable_in_effect" msgid="4568604144269499202">"Неможливо вибрати, якщо ввімкнено ефект."</string>
+    <string name="video_snapshot_hint" msgid="18833576851372483">"Торкніться, щоб сфотографувати під час запису."</string>
     <string name="disable_video_snapshot_hint" msgid="4957723267826476079">"Функцію миттєвого знімка відео вимкнено, коли ввімк. спецефекти."</string>
     <string name="clear_effects" msgid="5485339175014139481">"Очистити ефекти"</string>
     <string name="effect_silly_faces" msgid="8107732405347155777">"КУМЕДНІ ОБЛИЧЧЯ"</string>
@@ -123,4 +118,7 @@
     <string name="accessibility_decrement" msgid="1411194318538035666">"Зменшити %1$s"</string>
     <string name="accessibility_increment" msgid="8447850530444401135">"Збільшити %1$s"</string>
     <string name="accessibility_switch" msgid="6995966685498958895">"Перемикач %1$s"</string>
+    <string name="accessibility_switch_to_camera" msgid="5951340774212969461">"Перейти в режим фото"</string>
+    <string name="accessibility_switch_to_video" msgid="4991396355234561505">"Перейти в режим відео"</string>
+    <string name="accessibility_switch_to_panorama" msgid="604756878371875836">"Перейти в режим панорами"</string>
 </resources>

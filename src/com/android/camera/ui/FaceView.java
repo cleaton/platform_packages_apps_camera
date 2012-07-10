@@ -16,9 +16,6 @@
 
 package com.android.camera.ui;
 
-import com.android.camera.R;
-import com.android.camera.Util;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
@@ -29,8 +26,11 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import com.android.camera.R;
+import com.android.camera.Util;
+
 public class FaceView extends View implements FocusIndicator, Rotatable {
-    private final String TAG = "FaceView";
+    private static final String TAG = "FaceView";
     private final boolean LOGV = false;
     // The value for android.hardware.Camera.setDisplayOrientation.
     private int mDisplayOrientation;
@@ -68,7 +68,8 @@ public class FaceView extends View implements FocusIndicator, Rotatable {
         if (LOGV) Log.v(TAG, "mDisplayOrientation=" + orientation);
     }
 
-    public void setOrientation(int orientation) {
+    @Override
+    public void setOrientation(int orientation, boolean animation) {
         mOrientation = orientation;
         invalidate();
     }
@@ -88,14 +89,16 @@ public class FaceView extends View implements FocusIndicator, Rotatable {
         invalidate();
     }
 
+    // Ignore the parameter. No autofocus animation for face detection.
     @Override
-    public void showSuccess() {
+    public void showSuccess(boolean timeout) {
         mFaceIndicator = mDrawableFocused;
         invalidate();
     }
 
+    // Ignore the parameter. No autofocus animation for face detection.
     @Override
-    public void showFail() {
+    public void showFail(boolean timeout) {
         mFaceIndicator = mDrawableFocusFailed;
         invalidate();
     }

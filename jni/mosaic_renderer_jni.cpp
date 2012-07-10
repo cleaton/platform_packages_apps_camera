@@ -173,11 +173,34 @@ static void printGLString(const char *name, GLenum s) {
     LOGI("GL %s = %s", name, v);
 }
 
+void checkFramebufferStatus(const char* name) {
+    GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+    if (status == 0) {
+      LOGE("Checking completeness of Framebuffer:%s", name);
+      checkGlError("checkFramebufferStatus (is the target \"GL_FRAMEBUFFER\"?)");
+    } else if (status != GL_FRAMEBUFFER_COMPLETE) {
+        const char* msg = "not listed";
+        switch (status) {
+          case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT: msg = "attachment"; break;
+          case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS: msg = "dimensions"; break;
+          case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT: msg = "missing attachment"; break;
+          case GL_FRAMEBUFFER_UNSUPPORTED: msg = "unsupported"; break;
+        }
+        LOGE("Framebuffer: %s is INCOMPLETE: %s, %x", name, msg, status);
+    }
+}
+
 // @return false if there was an error
-bool checkGlError(const char* op) {
+bool checkGLErrorDetail(const char* file, int line, const char* op) {
     GLint error = glGetError();
+    const char* err_msg = "NOT_LISTED";
     if (error != 0) {
-        LOGE("after %s() glError (0x%x)", op, error);
+        switch (error) {
+            case GL_INVALID_VALUE: err_msg = "NOT_LISTED_YET"; break;
+            case GL_INVALID_OPERATION: err_msg = "INVALID_OPERATION"; break;
+            case GL_INVALID_ENUM: err_msg = "INVALID_ENUM"; break;
+        }
+        LOGE("Error after %s(). glError: %s (0x%x) in line %d of %s", op, err_msg, error, line, file);
         return false;
     }
     return true;
@@ -367,15 +390,11 @@ void AllocateTextureMemory(int widthHR, int heightHR, int widthLR, int heightLR)
     gPreviewImageWidth[LR] = widthLR;
     gPreviewImageHeight[LR] = heightLR;
 
-    sem_init(&gPreviewImage_semaphore, 0, 1);
-
     sem_wait(&gPreviewImage_semaphore);
     gPreviewImage[LR] = ImageUtils::allocateImage(gPreviewImageWidth[LR],
             gPreviewImageHeight[LR], 4);
-    ClearPreviewImage(LR);
     gPreviewImage[HR] = ImageUtils::allocateImage(gPreviewImageWidth[HR],
             gPreviewImageHeight[HR], 4);
-    ClearPreviewImage(HR);
     sem_post(&gPreviewImage_semaphore);
 
     gPreviewFBOWidth = PREVIEW_FBO_WIDTH_SCALE * gPreviewImageWidth[HR];
@@ -453,30 +472,43 @@ void FreeTextureMemory()
     ImageUtils::freeImage(gPreviewImage[LR]);
     ImageUtils::freeImage(gPreviewImage[HR]);
     sem_post(&gPreviewImage_semaphore);
-
-    sem_destroy(&gPreviewImage_semaphore);
 }
 
 extern "C"
 {
-    JNIEXPORT jint JNICALL Java_com_android_camera_panorama_MosaicRenderer_init(
+    JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved);
+    JNIEXPORT void JNICALL JNI_OnUnload(JavaVM* vm, void* reserved);
+    JNIEXPORT jint JNICALL Java_com_android_camera_MosaicRenderer_init(
             JNIEnv * env, jobject obj);
-    JNIEXPORT void JNICALL Java_com_android_camera_panorama_MosaicRenderer_reset(
+    JNIEXPORT void JNICALL Java_com_android_camera_MosaicRenderer_reset(
             JNIEnv * env, jobject obj,  jint width, jint height,
             jboolean isLandscapeOrientation);
-    JNIEXPORT void JNICALL Java_com_android_camera_panorama_MosaicRenderer_preprocess(
+    JNIEXPORT void JNICALL Java_com_android_camera_MosaicRenderer_preprocess(
             JNIEnv * env, jobject obj, jfloatArray stMatrix);
-    JNIEXPORT void JNICALL Java_com_android_camera_panorama_MosaicRenderer_transferGPUtoCPU(
+    JNIEXPORT void JNICALL Java_com_android_camera_MosaicRenderer_transferGPUtoCPU(
             JNIEnv * env, jobject obj);
-    JNIEXPORT void JNICALL Java_com_android_camera_panorama_MosaicRenderer_step(
+    JNIEXPORT void JNICALL Java_com_android_camera_MosaicRenderer_step(
             JNIEnv * env, jobject obj);
-    JNIEXPORT void JNICALL Java_com_android_camera_panorama_MosaicRenderer_ready(
+    JNIEXPORT void JNICALL Java_com_android_camera_MosaicRenderer_updateMatrix(
             JNIEnv * env, jobject obj);
-    JNIEXPORT void JNICALL Java_com_android_camera_panorama_MosaicRenderer_setWarping(
+    JNIEXPORT void JNICALL Java_com_android_camera_MosaicRenderer_setWarping(
             JNIEnv * env, jobject obj, jboolean flag);
 };
 
-JNIEXPORT jint JNICALL Java_com_android_camera_panorama_MosaicRenderer_init(
+
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved)
+{
+    sem_init(&gPreviewImage_semaphore, 0, 1);
+
+    return JNI_VERSION_1_4;
+}
+
+
+JNIEXPORT void JNICALL JNI_OnUnload(JavaVM* vm, void* reserved)
+{
+    sem_destroy(&gPreviewImage_semaphore);
+}
+JNIEXPORT jint JNICALL Java_com_android_camera_MosaicRenderer_init(
         JNIEnv * env, jobject obj)
 {
     gSurfTexRenderer[LR].InitializeGLProgram();
@@ -540,7 +572,7 @@ void calculateUILayoutScaling(int width, int height, bool isLandscape) {
     }
 }
 
-JNIEXPORT void JNICALL Java_com_android_camera_panorama_MosaicRenderer_reset(
+JNIEXPORT void JNICALL Java_com_android_camera_MosaicRenderer_reset(
         JNIEnv * env, jobject obj,  jint width, jint height, jboolean isLandscapeOrientation)
 {
     gIsLandscapeOrientation = isLandscapeOrientation;
@@ -561,40 +593,37 @@ JNIEXPORT void JNICALL Java_com_android_camera_panorama_MosaicRenderer_reset(
     gBufferInputYVU[HR].Init(gPreviewImageWidth[HR],
             gPreviewImageHeight[HR], GL_RGBA);
 
-    sem_wait(&gPreviewImage_semaphore);
-    ClearPreviewImage(LR);
-    ClearPreviewImage(HR);
-    sem_post(&gPreviewImage_semaphore);
-
     // bind the surface texture
     bindSurfaceTexture(gSurfaceTextureID[0]);
 
+    // To speed up, there is no need to clear the destination buffers
+    // (offscreen/screen buffers) of gSurfTexRenderer, gYVURenderer
+    // and gPreview because we always fill the whole destination buffers
+    // when we draw something to those offscreen/screen buffers.
     gSurfTexRenderer[LR].SetupGraphics(&gBufferInput[LR]);
-    gSurfTexRenderer[LR].Clear(0.0, 0.0, 0.0, 1.0);
     gSurfTexRenderer[LR].SetViewportMatrix(1, 1, 1, 1);
     gSurfTexRenderer[LR].SetScalingMatrix(1.0f, -1.0f);
     gSurfTexRenderer[LR].SetInputTextureName(gSurfaceTextureID[0]);
     gSurfTexRenderer[LR].SetInputTextureType(GL_TEXTURE_EXTERNAL_OES_ENUM);
 
     gSurfTexRenderer[HR].SetupGraphics(&gBufferInput[HR]);
-    gSurfTexRenderer[HR].Clear(0.0, 0.0, 0.0, 1.0);
     gSurfTexRenderer[HR].SetViewportMatrix(1, 1, 1, 1);
     gSurfTexRenderer[HR].SetScalingMatrix(1.0f, -1.0f);
     gSurfTexRenderer[HR].SetInputTextureName(gSurfaceTextureID[0]);
     gSurfTexRenderer[HR].SetInputTextureType(GL_TEXTURE_EXTERNAL_OES_ENUM);
 
     gYVURenderer[LR].SetupGraphics(&gBufferInputYVU[LR]);
-    gYVURenderer[LR].Clear(0.0, 0.0, 0.0, 1.0);
     gYVURenderer[LR].SetInputTextureName(gBufferInput[LR].GetTextureName());
     gYVURenderer[LR].SetInputTextureType(GL_TEXTURE_2D);
 
     gYVURenderer[HR].SetupGraphics(&gBufferInputYVU[HR]);
-    gYVURenderer[HR].Clear(0.0, 0.0, 0.0, 1.0);
     gYVURenderer[HR].SetInputTextureName(gBufferInput[HR].GetTextureName());
     gYVURenderer[HR].SetInputTextureType(GL_TEXTURE_2D);
 
     // gBuffer[1-gCurrentFBOIndex] --> gWarper1 --> gBuffer[gCurrentFBOIndex]
     gWarper1.SetupGraphics(&gBuffer[gCurrentFBOIndex]);
+
+    // Clear the destination buffer of gWarper1.
     gWarper1.Clear(0.0, 0.0, 0.0, 1.0);
     gWarper1.SetViewportMatrix(1, 1, 1, 1);
     gWarper1.SetScalingMatrix(1.0f, 1.0f);
@@ -603,7 +632,9 @@ JNIEXPORT void JNICALL Java_com_android_camera_panorama_MosaicRenderer_reset(
 
     // gBufferInput[HR] --> gWarper2 --> gBuffer[gCurrentFBOIndex]
     gWarper2.SetupGraphics(&gBuffer[gCurrentFBOIndex]);
-    gWarper2.Clear(0.0, 0.0, 0.0, 1.0);
+
+    // gWarp2's destination buffer is the same to gWarp1's. No need to clear it
+    // again.
     gWarper2.SetViewportMatrix(gPreviewImageWidth[HR],
             gPreviewImageHeight[HR], gBuffer[gCurrentFBOIndex].GetWidth(),
             gBuffer[gCurrentFBOIndex].GetHeight());
@@ -611,8 +642,8 @@ JNIEXPORT void JNICALL Java_com_android_camera_panorama_MosaicRenderer_reset(
     gWarper2.SetInputTextureName(gBufferInput[HR].GetTextureName());
     gWarper2.SetInputTextureType(GL_TEXTURE_2D);
 
+    // gBuffer[gCurrentFBOIndex] --> gPreview --> Screen
     gPreview.SetupGraphics(width, height);
-    gPreview.Clear(0.0, 0.0, 0.0, 1.0);
     gPreview.SetViewportMatrix(1, 1, 1, 1);
 
     // Scale the previewFBO so that the viewfinder window fills the layout height
@@ -622,7 +653,7 @@ JNIEXPORT void JNICALL Java_com_android_camera_panorama_MosaicRenderer_reset(
     gPreview.SetInputTextureType(GL_TEXTURE_2D);
 }
 
-JNIEXPORT void JNICALL Java_com_android_camera_panorama_MosaicRenderer_preprocess(
+JNIEXPORT void JNICALL Java_com_android_camera_MosaicRenderer_preprocess(
         JNIEnv * env, jobject obj, jfloatArray stMatrix)
 {
     jfloat *stmat = env->GetFloatArrayElements(stMatrix, 0);
@@ -651,7 +682,7 @@ now_ms(void)
 
 
 
-JNIEXPORT void JNICALL Java_com_android_camera_panorama_MosaicRenderer_transferGPUtoCPU(
+JNIEXPORT void JNICALL Java_com_android_camera_MosaicRenderer_transferGPUtoCPU(
         JNIEnv * env, jobject obj)
 {
     double t0, t1, time_c;
@@ -671,7 +702,7 @@ JNIEXPORT void JNICALL Java_com_android_camera_panorama_MosaicRenderer_transferG
                  GL_UNSIGNED_BYTE,
                  gPreviewImage[LR]);
 
-    checkGlError("glReadPixels LR");
+    checkGlError("glReadPixels LR (MosaicRenderer.transferGPUtoCPU())");
 
     // Bind to the input HR FBO and read the high-res data from there...
     glBindFramebuffer(GL_FRAMEBUFFER, gBufferInputYVU[HR].GetFrameBufferName());
@@ -684,12 +715,12 @@ JNIEXPORT void JNICALL Java_com_android_camera_panorama_MosaicRenderer_transferG
                  GL_UNSIGNED_BYTE,
                  gPreviewImage[HR]);
 
-    checkGlError("glReadPixels HR");
+    checkGlError("glReadPixels HR (MosaicRenderer.transferGPUtoCPU())");
 
     sem_post(&gPreviewImage_semaphore);
 }
 
-JNIEXPORT void JNICALL Java_com_android_camera_panorama_MosaicRenderer_step(
+JNIEXPORT void JNICALL Java_com_android_camera_MosaicRenderer_step(
         JNIEnv * env, jobject obj)
 {
     if(!gWarpImage) // ViewFinder
@@ -723,7 +754,7 @@ JNIEXPORT void JNICALL Java_com_android_camera_panorama_MosaicRenderer_step(
     }
 }
 
-JNIEXPORT void JNICALL Java_com_android_camera_panorama_MosaicRenderer_setWarping(
+JNIEXPORT void JNICALL Java_com_android_camera_MosaicRenderer_setWarping(
         JNIEnv * env, jobject obj, jboolean flag)
 {
     // TODO: Review this logic
@@ -749,8 +780,7 @@ JNIEXPORT void JNICALL Java_com_android_camera_panorama_MosaicRenderer_setWarpin
     gWarpImage = (bool)flag;
 }
 
-
-JNIEXPORT void JNICALL Java_com_android_camera_panorama_MosaicRenderer_ready(
+JNIEXPORT void JNICALL Java_com_android_camera_MosaicRenderer_updateMatrix(
         JNIEnv * env, jobject obj)
 {
     for(int i=0; i<16; i++)

@@ -16,10 +16,8 @@
 
 package com.android.camera.ui;
 
-import com.android.camera.R;
-import com.android.camera.Util;
-
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -28,38 +26,40 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.android.camera.R;
+import com.android.camera.Util;
+
 /**
  * A view that contains camera zoom control and its layout. In addition to the
  * zoom control, the method {@link #rotate} is added for rotation animation
  * which is called in switching between first-level and second-level indicators.
  */
 public class ZoomControlWheel extends ZoomControl {
+    @SuppressWarnings("unused")
     private static final String TAG = "ZoomControlWheel";
-    private static final int HIGHLIGHT_WIDTH = 4;
     private static final int HIGHLIGHT_DEGREES = 30;
     private static final int TRAIL_WIDTH = 2;
-    private static final int ZOOM_IN_ICON_DEGREES = 96;
-    private static final int ZOOM_OUT_ICON_DEGREES = 264;
-    private static final int MAX_SLIDER_ANGLE =
-            ZOOM_OUT_ICON_DEGREES - (HIGHLIGHT_DEGREES / 2);
-    private static final int MIN_SLIDER_ANGLE =
-            ZOOM_IN_ICON_DEGREES + (HIGHLIGHT_DEGREES / 2);
-    private static final int DEFAULT_SLIDER_POSITION = MAX_SLIDER_ANGLE;
-    private static final float EDGE_STROKE_WIDTH = 6f;
-    private static final double BUFFER_RADIANS = Math.toRadians(HIGHLIGHT_DEGREES / 2);
-    private static final double SLIDER_RANGE =
-            Math.toRadians(MAX_SLIDER_ANGLE - MIN_SLIDER_ANGLE);
-    private double mSliderRadians = DEFAULT_SLIDER_POSITION;
 
-    private final int HIGHLIGHT_COLOR;
+    private static final int LANDSCAPE_ZOOM_IN_ICON_DEGREES = 96;
+    private static final int LANDSCAPE_ZOOM_OUT_ICON_DEGREES = 264;
+
+    // Will be calculated based on screen orientation.
+    private final int ZOOM_IN_ICON_DEGREES;
+    private final int ZOOM_OUT_ICON_DEGREES;
+    private final int MAX_SLIDER_ANGLE;
+    private final int MIN_SLIDER_ANGLE;
+    private final int DEFAULT_SLIDER_POSITION;
+    private final double SLIDER_RANGE;
+    private double mSliderRadians;
+
     private final int TRAIL_COLOR;
 
     // The center of the shutter button.
     private int mCenterX, mCenterY;
     // The width of the wheel stroke.
-    private int mStrokeWidth;
-    private double mShutterButtonRadius;
-    private double mWheelRadius;
+    private int mStrokeWidth;  // in pixel
+    private double mShutterButtonRadius;  // in pixel
+    private double mWheelRadius;  // in pixel
     private Paint mBackgroundPaint;
     private RectF mBackgroundRect;
 
@@ -75,12 +75,27 @@ public class ZoomControlWheel extends ZoomControl {
 
         mBackgroundRect = new RectF();
         Resources resources = context.getResources();
-        HIGHLIGHT_COLOR = resources.getColor(R.color.review_control_pressed_color);
         TRAIL_COLOR = resources.getColor(R.color.icon_disabled_color);
 
-        mShutterButtonRadius = IndicatorControlWheelContainer.SHUTTER_BUTTON_RADIUS;
+        mShutterButtonRadius = Util.dpToPixel(IndicatorControlWheelContainer.SHUTTER_BUTTON_RADIUS);
         mStrokeWidth = Util.dpToPixel(IndicatorControlWheelContainer.STROKE_WIDTH);
         mWheelRadius = mShutterButtonRadius + mStrokeWidth * 0.5;
+
+        if (getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE) {
+            // tablet in landscape orientation
+            ZOOM_IN_ICON_DEGREES = LANDSCAPE_ZOOM_IN_ICON_DEGREES;
+            ZOOM_OUT_ICON_DEGREES = LANDSCAPE_ZOOM_OUT_ICON_DEGREES;
+        } else {
+            // tablet in portrait orientation
+            ZOOM_IN_ICON_DEGREES = LANDSCAPE_ZOOM_IN_ICON_DEGREES - 90;
+            ZOOM_OUT_ICON_DEGREES = LANDSCAPE_ZOOM_OUT_ICON_DEGREES - 90;
+        }
+        MAX_SLIDER_ANGLE = ZOOM_OUT_ICON_DEGREES - (HIGHLIGHT_DEGREES / 2);
+        MIN_SLIDER_ANGLE = ZOOM_IN_ICON_DEGREES + (HIGHLIGHT_DEGREES / 2);
+        DEFAULT_SLIDER_POSITION = MAX_SLIDER_ANGLE;
+        SLIDER_RANGE = Math.toRadians(MAX_SLIDER_ANGLE - MIN_SLIDER_ANGLE);
+        mSliderRadians = DEFAULT_SLIDER_POSITION;
     }
 
     @Override
@@ -143,19 +158,20 @@ public class ZoomControlWheel extends ZoomControl {
     @Override
     protected void onLayout(
             boolean changed, int left, int top, int right, int bottom) {
-        mCenterX = right - left - Util.dpToPixel(
-                IndicatorControlWheelContainer.FULL_WHEEL_RADIUS);
-        mCenterY = (bottom - top) / 2;
+        if (getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE) {
+            mCenterX = right - left - Util.dpToPixel(
+                    IndicatorControlWheelContainer.WHEEL_CENTER_TO_SECANT);
+            mCenterY = (bottom - top) / 2;
+        } else {
+            mCenterX = (right - left) / 2;
+            mCenterY = bottom - top - Util.dpToPixel(
+                    IndicatorControlWheelContainer.WHEEL_CENTER_TO_SECANT);
+        }
         layoutIcon(mZoomIn, Math.toRadians(ZOOM_IN_ICON_DEGREES));
         layoutIcon(mZoomOut, Math.toRadians(ZOOM_OUT_ICON_DEGREES));
         layoutIcon(mZoomSlider, getSliderDrawAngle(mSliderRadians));
    }
-
-    private double getZoomIndexAngle() {
-        if (mZoomMax == 0) return Math.PI;
-        return Math.toRadians(MAX_SLIDER_ANGLE -
-                (MAX_SLIDER_ANGLE - MIN_SLIDER_ANGLE) * mZoomIndex / mZoomMax);
-    }
 
     private void drawArc(Canvas canvas, int startAngle, int sweepAngle,
             double radius, int color, int width) {
@@ -178,8 +194,17 @@ public class ZoomControlWheel extends ZoomControl {
         super.onDraw(canvas);
     }
 
+    @Override
     public void rotate(double angle) {
         mRotateAngle = angle;
         requestLayout();
     }
+
+     @Override
+     public void setZoomIndex(int index) {
+         super.setZoomIndex(index);
+         double offsetAngle = (double) (MAX_SLIDER_ANGLE - MIN_SLIDER_ANGLE) / mZoomMax * mZoomIndex;
+         mSliderRadians = Math.toRadians(MAX_SLIDER_ANGLE - offsetAngle);
+     }
+
 }

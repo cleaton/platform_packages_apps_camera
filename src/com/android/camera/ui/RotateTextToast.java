@@ -16,15 +16,15 @@
 
 package com.android.camera.ui;
 
-import com.android.camera.R;
-import com.android.camera.Util;
-
 import android.app.Activity;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.android.camera.R;
+import com.android.camera.Util;
 
 public class RotateTextToast {
     private static final int TOAST_DURATION = 5000; // milliseconds
@@ -39,11 +39,12 @@ public class RotateTextToast {
         mToast = (RotateLayout) v.findViewById(R.id.rotate_toast);
         TextView tv = (TextView) mToast.findViewById(R.id.message);
         tv.setText(textResourceId);
-        mToast.setOrientation(orientation);
+        mToast.setOrientation(orientation, false);
         mHandler = new Handler();
     }
 
     private final Runnable mRunnable = new Runnable() {
+        @Override
         public void run() {
             Util.fadeOut(mToast);
             mLayoutRoot.removeView(mToast);

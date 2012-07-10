@@ -32,16 +32,14 @@
     <string name="preparing_sd" product="default" msgid="2914969119574812666">"Ruošiama SD kortelė..."</string>
     <string name="access_sd_fail" product="nosdcard" msgid="8147993984037859354">"Nepavyko pasiekti USB atminties."</string>
     <string name="access_sd_fail" product="default" msgid="1584968646870054352">"Nepavyko pasiekti SD kortelės."</string>
-    <string name="confirm_restore_title" msgid="1229914538263792180">"Atkurti numatytuosius nustatymus"</string>
-    <string name="confirm_restore_message" msgid="6649481842684452641">"Atkurti numatytuosius fotoaparato nustatymus?"</string>
+    <string name="confirm_restore_message" msgid="4726518572923160939">"Ar norite atkurti numatytuosius fotoaparato nustatymus?"</string>
     <string name="review_play" msgid="6378271587740884696">"Paleisti"</string>
     <string name="review_cancel" msgid="8188009385853399254">"ATŠAUKTI"</string>
     <string name="review_ok" msgid="1156261588693116433">"ATLIKTA"</string>
     <string name="review_retake" msgid="7804864054896088338">"FOTOGRAFUOTI IŠ NAUJO"</string>
     <string name="camera_gallery_photos_text" msgid="6558048736561932758">"Galerija"</string>
-    <string name="switch_camera_id" msgid="837545176602471325">"Perjungti fotokamerą"</string>
     <string name="time_lapse_title" msgid="4360632427760662691">"Laiko tarpo įrašymas"</string>
-    <string name="pref_camera_id_title" msgid="6023059405578511534">"Pasirinkti fotokam."</string>
+    <string name="pref_camera_id_title" msgid="4040791582294635851">"Pasirin. fotoaparatą"</string>
     <string name="pref_camera_id_entry_back" msgid="5142699735103692485">"Atgal"</string>
     <string name="pref_camera_id_entry_front" msgid="5668958706828733669">"Šriftas"</string>
     <string name="pref_camera_recordlocation_title" msgid="371208839215448917">"Išsaugoti vietą"</string>
@@ -80,9 +78,6 @@
     <string name="spaceIsLow_content" product="nosdcard" msgid="4401325203349203177">"USB atmintinėje trūksta vietos. Pakeiskite kokybės nustatymą arba ištrinkite kelis vaizdus ar kitus failus."</string>
     <string name="spaceIsLow_content" product="default" msgid="1732882643101247179">"SD kortelėje trūksta vietos. Pakeiskite kokybės nustatymą arba ištrinkite kelis vaizdus ar kitus failus."</string>
     <string name="video_reach_size_limit" msgid="6179877322015552390">"Pasiekta dydžio riba."</string>
-    <string name="switch_to_camera_label" msgid="9148663083850199582">"Perjungti į fotoaparato režimą"</string>
-    <string name="switch_to_video_label" msgid="1167994386902254398">"Perjungti į vaizdo įrašo režimą"</string>
-    <string name="switch_to_panorama_label" msgid="858801335653517864">"Perjungti į panoramos režimą"</string>
     <string name="share_picture_via" msgid="1375127849431890447">"Bendrinti paveikslėlį per"</string>
     <string name="share_video_via" msgid="5152302809166549015">"Bendrinti vaizdo įrašą per"</string>
     <string name="no_picture_to_share" msgid="5352574090121328815">"Nėra bendrinamo paveikslėlio."</string>
@@ -92,6 +87,7 @@
     <string name="pano_dialog_panorama_failed" msgid="2155692796549642116">"Nepavyko išsaugoti panoramos."</string>
     <string name="pano_dialog_title" msgid="5755531234434437697">"Panorama"</string>
     <string name="pano_capture_indication" msgid="8248825828264374507">"Fiksuojama panorama"</string>
+    <string name="pano_dialog_waiting_previous" msgid="7800325815031423516">"Laukiama ankstesnės panoramos"</string>
     <string name="pano_review_saving_indication_str" msgid="2054886016665130188">"Išsaugoma..."</string>
     <string name="tap_to_focus" msgid="8863427645591903760">"Palieskite, kad fokusuot."</string>
     <string name="pref_video_effect_title" msgid="8243182968457289488">"Efektai"</string>
@@ -104,11 +100,10 @@
     <string name="effect_goofy_face_small_eyes" msgid="1070355596290331271">"Mažos akys"</string>
     <string name="effect_backdropper_space" msgid="7935661090723068402">"Kosmose"</string>
     <string name="effect_backdropper_sunset" msgid="45198943771777870">"Saulėlydis"</string>
-    <string name="effect_backdropper_disco" msgid="8494822051982972854">"Disko"</string>
-    <string name="effect_backdropper_gallery" msgid="3271387403091819540">"Pasir. savo"</string>
-    <string name="bg_replacement_message" msgid="6828585054971662284">"Išjunkite įrenginį"\n"Trumpam pašalinkite iš rodinio"</string>
-    <string name="not_selectable_in_effect" msgid="7967729203855039239">"Negalima pasirinkti, kai įjungtas efektas."</string>
-    <string name="video_snapshot_hint" msgid="8159602664271448241">"Kai įrašomas vaizdo įraš., fotograf. paliesdami peržiūros ekraną."</string>
+    <string name="effect_backdropper_gallery" msgid="959158844620991906">"Vaizdo įr."</string>
+    <string name="bg_replacement_message" msgid="9184270738916564608">"Išjunkite įrenginį."\n"Trumpam išeikite iš rodinio."</string>
+    <string name="not_selectable_in_effect" msgid="4568604144269499202">"Negalima pasirinkti, kai efektas įjungtas."</string>
+    <string name="video_snapshot_hint" msgid="18833576851372483">"Palieskite, kad įrašydami nufotografuotumėte."</string>
     <string name="disable_video_snapshot_hint" msgid="4957723267826476079">"Moment. vaizdo įrašo vaizdas neleidž., kai įjungti spec. efektai."</string>
     <string name="clear_effects" msgid="5485339175014139481">"Išvalyti efektus"</string>
     <string name="effect_silly_faces" msgid="8107732405347155777">"JUOKINGI VEIDAI"</string>
@@ -123,4 +118,7 @@
     <string name="accessibility_decrement" msgid="1411194318538035666">"Sumažinti %1$s"</string>
     <string name="accessibility_increment" msgid="8447850530444401135">"Padidinti %1$s"</string>
     <string name="accessibility_switch" msgid="6995966685498958895">"%1$s jungiklis"</string>
+    <string name="accessibility_switch_to_camera" msgid="5951340774212969461">"Perjungti į fotografavimo režimą"</string>
+    <string name="accessibility_switch_to_video" msgid="4991396355234561505">"Perjungti į vaizdo įrašo režimą"</string>
+    <string name="accessibility_switch_to_panorama" msgid="604756878371875836">"Perjungti į panoramos režimą"</string>
 </resources>

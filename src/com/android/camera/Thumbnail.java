@@ -44,7 +44,7 @@ import java.io.IOException;
 public class Thumbnail {
     private static final String TAG = "Thumbnail";
 
-    public static final String LAST_THUMB_FILENAME = "last_thumb";
+    private static final String LAST_THUMB_FILENAME = "last_thumb";
     private static final int BUFSIZE = 4096;
 
     private Uri mUri;
@@ -53,13 +53,12 @@ public class Thumbnail {
     private boolean mFromFile = false;
 
     // Camera, VideoCamera, and Panorama share the same thumbnail. Use sLock
-    // to serialize the access.
+    // to serialize the storage access.
     private static Object sLock = new Object();
 
-    public Thumbnail(Uri uri, Bitmap bitmap, int orientation) {
+    private Thumbnail(Uri uri, Bitmap bitmap, int orientation) {
         mUri = uri;
         mBitmap = rotateImage(bitmap, orientation);
-        if (mBitmap == null) throw new IllegalArgumentException("null bitmap");
     }
 
     public Uri getUri() {
@@ -100,7 +99,8 @@ public class Thumbnail {
     }
 
     // Stores the bitmap to the specified file.
-    public void saveTo(File file) {
+    public void saveLastThumbnailToFile(File filesDir) {
+        File file = new File(filesDir, LAST_THUMB_FILENAME);
         FileOutputStream f = null;
         BufferedOutputStream b = null;
         DataOutputStream d = null;
@@ -123,8 +123,9 @@ public class Thumbnail {
     }
 
     // Loads the data from the specified file.
-    // Returns null if failure.
-    public static Thumbnail loadFrom(File file) {
+    // Returns null if failure or the Uri is invalid.
+    public static Thumbnail getLastThumbnailFromFile(File filesDir, ContentResolver resolver) {
+        File file = new File(filesDir, LAST_THUMB_FILENAME);
         Uri uri = null;
         Bitmap bitmap = null;
         FileInputStream f = null;
@@ -136,6 +137,10 @@ public class Thumbnail {
                 b = new BufferedInputStream(f, BUFSIZE);
                 d = new DataInputStream(b);
                 uri = Uri.parse(d.readUTF());
+                if (!Util.isUriValid(uri, resolver)) {
+                    d.close();
+                    return null;
+                }
                 bitmap = BitmapFactory.decodeStream(d);
                 d.close();
             } catch (IOException e) {
@@ -152,10 +157,15 @@ public class Thumbnail {
         return thumbnail;
     }
 
-    public static Thumbnail getLastThumbnail(ContentResolver resolver) {
+    public static final int THUMBNAIL_NOT_FOUND = 0;
+    public static final int THUMBNAIL_FOUND = 1;
+    // The media is deleted while we are getting its thumbnail from media provider.
+    public static final int THUMBNAIL_DELETED = 2;
+
+    public static int getLastThumbnailFromContentResolver(ContentResolver resolver, Thumbnail[] result) {
         Media image = getLastImageThumbnail(resolver);
         Media video = getLastVideoThumbnail(resolver);
-        if (image == null && video == null) return null;
+        if (image == null && video == null) return THUMBNAIL_NOT_FOUND;
 
         Bitmap bitmap = null;
         Media lastMedia;
@@ -173,9 +183,10 @@ public class Thumbnail {
 
         // Ensure database and storage are in sync.
         if (Util.isUriValid(lastMedia.uri, resolver)) {
-            return createThumbnail(lastMedia.uri, bitmap, lastMedia.orientation);
+            result[0] = createThumbnail(lastMedia.uri, bitmap, lastMedia.orientation);
+            return THUMBNAIL_FOUND;
         }
-        return null;
+        return THUMBNAIL_DELETED;
     }
 
     private static class Media {
@@ -192,7 +203,7 @@ public class Thumbnail {
         public final Uri uri;
     }
 
-    public static Media getLastImageThumbnail(ContentResolver resolver) {
+    private static Media getLastImageThumbnail(ContentResolver resolver) {
         Uri baseUri = Images.Media.EXTERNAL_CONTENT_URI;
 
         Uri query = baseUri.buildUpon().appendQueryParameter("limit", "1").build();
@@ -208,7 +219,7 @@ public class Thumbnail {
             if (cursor != null && cursor.moveToFirst()) {
                 long id = cursor.getLong(0);
                 return new Media(id, cursor.getInt(1), cursor.getLong(2),
-                        ContentUris.withAppendedId(baseUri, id));
+                                 ContentUris.withAppendedId(baseUri, id));
             }
         } finally {
             if (cursor != null) {
@@ -253,15 +264,16 @@ public class Thumbnail {
         return createThumbnail(uri, bitmap, orientation);
     }
 
-    public static Bitmap createVideoThumbnail(FileDescriptor fd, int targetWidth) {
-        return createVideoThumbnail(null, fd, targetWidth);
+    public static Bitmap createVideoThumbnailBitmap(FileDescriptor fd, int targetWidth) {
+        return createVideoThumbnailBitmap(null, fd, targetWidth);
     }
 
-    public static Bitmap createVideoThumbnail(String filePath, int targetWidth) {
-        return createVideoThumbnail(filePath, null, targetWidth);
+    public static Bitmap createVideoThumbnailBitmap(String filePath, int targetWidth) {
+        return createVideoThumbnailBitmap(filePath, null, targetWidth);
     }
 
-    private static Bitmap createVideoThumbnail(String filePath, FileDescriptor fd, int targetWidth) {
+    private static Bitmap createVideoThumbnailBitmap(String filePath, FileDescriptor fd,
+            int targetWidth) {
         Bitmap bitmap = null;
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
         try {
@@ -296,16 +308,11 @@ public class Thumbnail {
         return bitmap;
     }
 
-    private static Thumbnail createThumbnail(Uri uri, Bitmap bitmap, int orientation) {
+    public static Thumbnail createThumbnail(Uri uri, Bitmap bitmap, int orientation) {
         if (bitmap == null) {
             Log.e(TAG, "Failed to create thumbnail from null bitmap");
             return null;
         }
-        try {
-            return new Thumbnail(uri, bitmap, orientation);
-        } catch (IllegalArgumentException e) {
-            Log.e(TAG, "Failed to construct thumbnail", e);
-            return null;
-        }
+        return new Thumbnail(uri, bitmap, orientation);
     }
 }

@@ -24,24 +24,22 @@
     <string name="gallery_camera_bucket_name" msgid="2924618424339240831">"Kamera resimleri"</string>
     <string name="gallery_camera_videos_bucket_name" msgid="3369151581398551623">"Kamera videoları"</string>
     <string name="wait" msgid="8600187532323801552">"Lütfen bekleyin..."</string>
-    <string name="no_storage" product="nosdcard" msgid="7335975356349008814">"Kamerayı kullanmadan önce USB depolama birimini ekleyin."</string>
+    <string name="no_storage" product="nosdcard" msgid="7335975356349008814">"Kamerayı kullanmadan önce USB bellek ekleyin."</string>
     <string name="no_storage" product="default" msgid="5137703033746873624">"Kamerayı kullanmadan önce bir SD kart takın."</string>
-    <string name="not_enough_space" product="nosdcard" msgid="6452370395538050134">"USB depolama biriminiz dolu."</string>
+    <string name="not_enough_space" product="nosdcard" msgid="6452370395538050134">"USB belleğiniz dolu."</string>
     <string name="not_enough_space" product="default" msgid="6655334407957844653">"SD kartınız dolu."</string>
-    <string name="preparing_sd" product="nosdcard" msgid="6104019983528341353">"USB deplm birimi hazırlanıyor…"</string>
+    <string name="preparing_sd" product="nosdcard" msgid="6104019983528341353">"USB bellek hazırlanıyor…"</string>
     <string name="preparing_sd" product="default" msgid="2914969119574812666">"SD kart hazırlanıyor..."</string>
-    <string name="access_sd_fail" product="nosdcard" msgid="8147993984037859354">"USB depolama birimine erişilemedi."</string>
+    <string name="access_sd_fail" product="nosdcard" msgid="8147993984037859354">"USB belleğe erişilemedi."</string>
     <string name="access_sd_fail" product="default" msgid="1584968646870054352">"SD karta erişilemedi."</string>
-    <string name="confirm_restore_title" msgid="1229914538263792180">"Varsayılanları geri yükle"</string>
-    <string name="confirm_restore_message" msgid="6649481842684452641">"Kameranın varsayılan ayarları geri yüklensin mi?"</string>
+    <string name="confirm_restore_message" msgid="4726518572923160939">"Kameranın varsayılan ayarlarını geri yüklemek istiyor musunuz?"</string>
     <string name="review_play" msgid="6378271587740884696">"Oynat"</string>
     <string name="review_cancel" msgid="8188009385853399254">"İPTAL"</string>
     <string name="review_ok" msgid="1156261588693116433">"BİTTİ"</string>
     <string name="review_retake" msgid="7804864054896088338">"YENİDEN ÇEK"</string>
     <string name="camera_gallery_photos_text" msgid="6558048736561932758">"Galeri"</string>
-    <string name="switch_camera_id" msgid="837545176602471325">"Kamerayı Değiştir"</string>
     <string name="time_lapse_title" msgid="4360632427760662691">"Zaman atlamalı kayıt"</string>
-    <string name="pref_camera_id_title" msgid="6023059405578511534">"Kamera seçin"</string>
+    <string name="pref_camera_id_title" msgid="4040791582294635851">"Kamera seç"</string>
     <string name="pref_camera_id_entry_back" msgid="5142699735103692485">"Arka"</string>
     <string name="pref_camera_id_entry_front" msgid="5668958706828733669">"Ön"</string>
     <string name="pref_camera_recordlocation_title" msgid="371208839215448917">"Depo konumu"</string>
@@ -77,12 +75,9 @@
     <string name="pref_restore_detail" msgid="5732490002291044791">"Varsayılanları geri yükle"</string>
     <string name="pref_exposure_title" msgid="1229093066434614811">"Pozlama"</string>
     <string name="dialog_ok" msgid="6263301364153382152">"Tamam"</string>
-    <string name="spaceIsLow_content" product="nosdcard" msgid="4401325203349203177">"USB depolama biriminizde boş alan azaldı. Kalite ayarını değiştirin veya bazı resimleri ya da diğer dosyaları silin."</string>
+    <string name="spaceIsLow_content" product="nosdcard" msgid="4401325203349203177">"USB belleğinizde boş alan azaldı. Kalite ayarını değiştirin veya bazı resimleri ya da diğer dosyaları silin."</string>
     <string name="spaceIsLow_content" product="default" msgid="1732882643101247179">"SD kartınızda boş alan azaldı. Kalite ayarını değiştirin veya bazı resimleri ya da diğer dosyaları silin."</string>
     <string name="video_reach_size_limit" msgid="6179877322015552390">"Boyut sınırına ulaşıldı."</string>
-    <string name="switch_to_camera_label" msgid="9148663083850199582">"Kameraya geç"</string>
-    <string name="switch_to_video_label" msgid="1167994386902254398">"Videoya geç"</string>
-    <string name="switch_to_panorama_label" msgid="858801335653517864">"Panorama moduna geç"</string>
     <string name="share_picture_via" msgid="1375127849431890447">"Resmi şunun üzerinden paylaş:"</string>
     <string name="share_video_via" msgid="5152302809166549015">"Videoyu şunun üzerndn  paylaş:"</string>
     <string name="no_picture_to_share" msgid="5352574090121328815">"Paylaşılacak resim yok."</string>
@@ -92,6 +87,7 @@
     <string name="pano_dialog_panorama_failed" msgid="2155692796549642116">"Panorama kaydedilemedi."</string>
     <string name="pano_dialog_title" msgid="5755531234434437697">"Panorama"</string>
     <string name="pano_capture_indication" msgid="8248825828264374507">"Panorama kaydediliyor"</string>
+    <string name="pano_dialog_waiting_previous" msgid="7800325815031423516">"Önceki panorama bekleniyor"</string>
     <string name="pano_review_saving_indication_str" msgid="2054886016665130188">"Kaydediliyor..."</string>
     <string name="tap_to_focus" msgid="8863427645591903760">"Odaklamak için dokunun."</string>
     <string name="pref_video_effect_title" msgid="8243182968457289488">"Efektler"</string>
@@ -104,11 +100,10 @@
     <string name="effect_goofy_face_small_eyes" msgid="1070355596290331271">"Küçük gözler"</string>
     <string name="effect_backdropper_space" msgid="7935661090723068402">"Uzayda"</string>
     <string name="effect_backdropper_sunset" msgid="45198943771777870">"Gün Batımı"</string>
-    <string name="effect_backdropper_disco" msgid="8494822051982972854">"Disko"</string>
-    <string name="effect_backdropper_gallery" msgid="3271387403091819540">"Kendinizinkini seçin"</string>
-    <string name="bg_replacement_message" msgid="6828585054971662284">"Cihazınızı yerleştirin"\n"Kısa bir süre için görüntüden çıkın"</string>
-    <string name="not_selectable_in_effect" msgid="7967729203855039239">"Efekt açıkken seçilemez."</string>
-    <string name="video_snapshot_hint" msgid="8159602664271448241">"Video kaydı sırasında önizleme ekranına dokunarak fotoğraf çekin."</string>
+    <string name="effect_backdropper_gallery" msgid="959158844620991906">"Videonuz"</string>
+    <string name="bg_replacement_message" msgid="9184270738916564608">"Cihazınızı yerleştirin."\n"Kısa bir süre için görüntüden çıkın."</string>
+    <string name="not_selectable_in_effect" msgid="4568604144269499202">"Efekt açıkken seçilemez."</string>
+    <string name="video_snapshot_hint" msgid="18833576851372483">"Kayıt sırasında fotoğraf çekmek için dokunun."</string>
     <string name="disable_video_snapshot_hint" msgid="4957723267826476079">"Özel efektler açıkken video anlık görüntü yakalama devre dışıdır."</string>
     <string name="clear_effects" msgid="5485339175014139481">"Efektleri temizle"</string>
     <string name="effect_silly_faces" msgid="8107732405347155777">"KOMİK SURATLAR"</string>
@@ -123,4 +118,7 @@
     <string name="accessibility_decrement" msgid="1411194318538035666">"%1$s azalt"</string>
     <string name="accessibility_increment" msgid="8447850530444401135">"%1$s artır"</string>
     <string name="accessibility_switch" msgid="6995966685498958895">"%1$s anahtarı"</string>
+    <string name="accessibility_switch_to_camera" msgid="5951340774212969461">"Fotoğrafa geçiş yap"</string>
+    <string name="accessibility_switch_to_video" msgid="4991396355234561505">"Videoya geç"</string>
+    <string name="accessibility_switch_to_panorama" msgid="604756878371875836">"Panorama moduna geç"</string>
 </resources>

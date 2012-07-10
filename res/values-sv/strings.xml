@@ -32,16 +32,14 @@
     <string name="preparing_sd" product="default" msgid="2914969119574812666">"Förbereder SD-kort…"</string>
     <string name="access_sd_fail" product="nosdcard" msgid="8147993984037859354">"Det gick inte att komma åt USB-enheten."</string>
     <string name="access_sd_fail" product="default" msgid="1584968646870054352">"Det gick inte att öppna SD-kortet."</string>
-    <string name="confirm_restore_title" msgid="1229914538263792180">"Återställ standardinställningar"</string>
-    <string name="confirm_restore_message" msgid="6649481842684452641">"Vill du återställa standardinställningarna för kameran?"</string>
+    <string name="confirm_restore_message" msgid="4726518572923160939">"Vill du återställa kamerans standardinställningar?"</string>
     <string name="review_play" msgid="6378271587740884696">"Spela"</string>
     <string name="review_cancel" msgid="8188009385853399254">"AVBRYT"</string>
     <string name="review_ok" msgid="1156261588693116433">"KLAR"</string>
     <string name="review_retake" msgid="7804864054896088338">"TA OM"</string>
     <string name="camera_gallery_photos_text" msgid="6558048736561932758">"Galleri"</string>
-    <string name="switch_camera_id" msgid="837545176602471325">"Byt kamera"</string>
     <string name="time_lapse_title" msgid="4360632427760662691">"Intervallinspelning"</string>
-    <string name="pref_camera_id_title" msgid="6023059405578511534">"Välj kamera"</string>
+    <string name="pref_camera_id_title" msgid="4040791582294635851">"Välj kamera"</string>
     <string name="pref_camera_id_entry_back" msgid="5142699735103692485">"Bakre"</string>
     <string name="pref_camera_id_entry_front" msgid="5668958706828733669">"Främre"</string>
     <string name="pref_camera_recordlocation_title" msgid="371208839215448917">"Spara plats"</string>
@@ -80,9 +78,6 @@
     <string name="spaceIsLow_content" product="nosdcard" msgid="4401325203349203177">"Din USB-lagringsenhet börjar bli full. Ändra kvalitetsinställningen eller ta bort några bilder eller andra filer."</string>
     <string name="spaceIsLow_content" product="default" msgid="1732882643101247179">"Den delade lagringsenheten börjar bli full. Ändra inställningen för kvalitet eller ta bort några bilder eller andra filer."</string>
     <string name="video_reach_size_limit" msgid="6179877322015552390">"Storleksgränsen nådd."</string>
-    <string name="switch_to_camera_label" msgid="9148663083850199582">"Byt till kamera"</string>
-    <string name="switch_to_video_label" msgid="1167994386902254398">"Byt till video"</string>
-    <string name="switch_to_panorama_label" msgid="858801335653517864">"Byt till panorama"</string>
     <string name="share_picture_via" msgid="1375127849431890447">"Dela bild via"</string>
     <string name="share_video_via" msgid="5152302809166549015">"Dela video via"</string>
     <string name="no_picture_to_share" msgid="5352574090121328815">"Det finns ingen bild att dela."</string>
@@ -92,6 +87,7 @@
     <string name="pano_dialog_panorama_failed" msgid="2155692796549642116">"Det gick inte att spara panoramabild."</string>
     <string name="pano_dialog_title" msgid="5755531234434437697">"Panorama"</string>
     <string name="pano_capture_indication" msgid="8248825828264374507">"Ta panoramafoto"</string>
+    <string name="pano_dialog_waiting_previous" msgid="7800325815031423516">"Väntar på föregående panoramabild"</string>
     <string name="pano_review_saving_indication_str" msgid="2054886016665130188">"Sparar ..."</string>
     <string name="tap_to_focus" msgid="8863427645591903760">"Fokusera genom att trycka."</string>
     <string name="pref_video_effect_title" msgid="8243182968457289488">"Effekter"</string>
@@ -104,11 +100,10 @@
     <string name="effect_goofy_face_small_eyes" msgid="1070355596290331271">"Små ögon"</string>
     <string name="effect_backdropper_space" msgid="7935661090723068402">"I rymden"</string>
     <string name="effect_backdropper_sunset" msgid="45198943771777870">"Solnedgång"</string>
-    <string name="effect_backdropper_disco" msgid="8494822051982972854">"Disco"</string>
-    <string name="effect_backdropper_gallery" msgid="3271387403091819540">"Välj en egen"</string>
-    <string name="bg_replacement_message" msgid="6828585054971662284">"Lägg ned enheten"\n"Ställ dig utom synhåll för ett ögonblick"</string>
-    <string name="not_selectable_in_effect" msgid="7967729203855039239">"Det går inte att välja detta när effekten är på."</string>
-    <string name="video_snapshot_hint" msgid="8159602664271448241">"Ta ett foto under videoinspelningen genom att trycka på skärmen."</string>
+    <string name="effect_backdropper_gallery" msgid="959158844620991906">"Din video"</string>
+    <string name="bg_replacement_message" msgid="9184270738916564608">"Lägg ned enheten"\n"Ställ dig utom synhåll för ett ögonblick."</string>
+    <string name="not_selectable_in_effect" msgid="4568604144269499202">"Det går inte att välja detta när effekten är på."</string>
+    <string name="video_snapshot_hint" msgid="18833576851372483">"Tryck om du vill ta ett foto medan du spelar in."</string>
     <string name="disable_video_snapshot_hint" msgid="4957723267826476079">"Ögonblicksbilden av en video inaktiveras när specialeffekter är aktiverade."</string>
     <string name="clear_effects" msgid="5485339175014139481">"Ta bort effekter"</string>
     <string name="effect_silly_faces" msgid="8107732405347155777">"ROLIGA GRIMASER"</string>
@@ -123,4 +118,7 @@
     <string name="accessibility_decrement" msgid="1411194318538035666">"Minska %1$s"</string>
     <string name="accessibility_increment" msgid="8447850530444401135">"Öka %1$s"</string>
     <string name="accessibility_switch" msgid="6995966685498958895">"%1$s-växlare"</string>
+    <string name="accessibility_switch_to_camera" msgid="5951340774212969461">"Byt till kameraläge"</string>
+    <string name="accessibility_switch_to_video" msgid="4991396355234561505">"Byt till video"</string>
+    <string name="accessibility_switch_to_panorama" msgid="604756878371875836">"Byt till panorama"</string>
 </resources>

@@ -16,15 +16,14 @@
 
 package com.android.camera.ui;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.RelativeLayout;
 
 /**
- * A layout which handles the the width of the control panel, which contains
+ * A layout which handles the width of the control panel, which contains
  * the shutter button, thumbnail, front/back camera picker, and mode picker.
  * The purpose of this is to have a consistent width of control panel in camera,
  * camcorder, and panorama modes.
@@ -43,8 +42,8 @@ public class ControlPanelLayout extends RelativeLayout {
         int measuredSize = 0;
         int mode, longSideSize, shortSideSize, specSize;
 
-        boolean isLandscape = (((Activity) getContext()).getRequestedOrientation()
-                == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        boolean isLandscape = (getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE);
 
         if (isLandscape) {
             mode = MeasureSpec.getMode(widthSpec);
@@ -66,7 +65,13 @@ public class ControlPanelLayout extends RelativeLayout {
             Log.e(TAG, "layout_xxx of ControlPanelLayout should be wrap_content");
         }
 
-        // The width cannot be bigger than the constraint.
+        // The size cannot be smaller than minimum constraint.
+        int minimumSize = (isLandscape) ? getMinimumWidth() : getMinimumHeight();
+        if (measuredSize < minimumSize) {
+            measuredSize = minimumSize;
+        }
+
+        // The size cannot be bigger than the constraint.
         if (mode == MeasureSpec.AT_MOST && measuredSize > specSize) {
             measuredSize = specSize;
         }

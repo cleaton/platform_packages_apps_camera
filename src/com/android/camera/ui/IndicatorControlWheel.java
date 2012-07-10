@@ -16,11 +16,8 @@
 
 package com.android.camera.ui;
 
-import com.android.camera.PreferenceGroup;
-import com.android.camera.R;
-import com.android.camera.Util;
-
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -33,33 +30,67 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.android.camera.PreferenceGroup;
+import com.android.camera.R;
+import com.android.camera.Util;
+
 /**
  * A view that contains camera setting indicators in two levels. The first-level
- * indicators including the zoom, camera picker, flash and second-level control.
- * The second-level indicators are the merely for the camera settings.
+ * indicators including the zoom, camera picker and second-level control.
+ * The second-level indicators are merely for the camera settings.
  */
 public class IndicatorControlWheel extends IndicatorControl implements
         View.OnClickListener {
     public static final int HIGHLIGHT_WIDTH = 4;
 
+    @SuppressWarnings("unused")
     private static final String TAG = "IndicatorControlWheel";
     private static final int HIGHLIGHT_DEGREES = 30;
     private static final double HIGHLIGHT_RADIANS = Math.toRadians(HIGHLIGHT_DEGREES);
 
-    // The following angles are based in the zero degree on the right. Here we
-    // have the CameraPicker, ZoomControl and the Settings icons in the
+    // The following angles are based in the zero degree on the right, measured
+    // counter-clockwise.
+    //
+    // For landscape orientation:
+    //                   90
+    //             ______|______
+    //            |      |      |
+    //    180 <---|------|------|---> 0
+    //            |______|______|
+    //                   |
+    //                  270
+    //
+    // For portrait orientation:
+    //                   90
+    //                ___|___
+    //               |   |   |
+    //               |   |   |
+    //       180 <---|---|---|---> 0
+    //               |   |   |
+    //               |___|___|
+    //                   |
+    //                  270
+    //
+    // Here we have the CameraPicker, ZoomControl and the Settings icons in the
     // first-level. For consistency, we treat the zoom control as one of the
     // indicator buttons but it needs additional efforts for rotation animation.
     // For second-level indicators, the indicators are located evenly between start
     // and end angle. In addition, these indicators for the second-level hidden
     // in the same wheel with larger angle values are visible after rotation.
-    private static final int FIRST_LEVEL_START_DEGREES = 74;
-    private static final int FIRST_LEVEL_END_DEGREES = 286;
-    private static final int FIRST_LEVEL_SECTOR_DEGREES = 45;
-    private static final int SECOND_LEVEL_START_DEGREES = 60;
-    private static final int SECOND_LEVEL_END_DEGREES = 300;
-    private static final int MAX_ZOOM_CONTROL_DEGREES = 264;
-    private static final int CLOSE_ICON_DEFAULT_DEGREES = 315;
+    private static final int LANDSCAPE_FIRST_LEVEL_START_DEGREES = 74;
+    private static final int LANDSCAPE_FIRST_LEVEL_END_DEGREES = 286;
+    private static final int LANDSCAPE_SECOND_LEVEL_START_DEGREES = 60;
+    private static final int LANDSCAPE_SECOND_LEVEL_END_DEGREES = 300;
+    private static final int LANDSCAPE_MAX_ZOOM_CONTROL_DEGREES = 264;
+    private static final int LANDSCAPE_CLOSE_ICON_DEFAULT_DEGREES = 315;
+
+    // Will be calculated based on orientation.
+    private final int FIRST_LEVEL_START_DEGREES;
+    private final int FIRST_LEVEL_END_DEGREES;
+    private final int SECOND_LEVEL_START_DEGREES;
+    private final int SECOND_LEVEL_END_DEGREES;
+    private final int MAX_ZOOM_CONTROL_DEGREES;
+    private final int CLOSE_ICON_DEFAULT_DEGREES;
 
     private static final int ANIMATION_TIME = 300; // milliseconds
 
@@ -74,12 +105,13 @@ public class IndicatorControlWheel extends IndicatorControl implements
     // The center of the shutter button.
     private int mCenterX, mCenterY;
     // The width of the wheel stroke.
-    private int mStrokeWidth;
-    private double mShutterButtonRadius;
-    private double mWheelRadius;
+    private int mStrokeWidth;  // in pixel
+    private double mShutterButtonRadius;  // in pixel
+    private double mWheelRadius;  // in pixel
     private double mChildRadians[];
     private Paint mBackgroundPaint;
     private RectF mBackgroundRect;
+    private Path mFanPath;
     // The index of the child that is being pressed. -1 means no child is being
     // pressed.
     private int mPressedIndex = -1;
@@ -100,6 +132,7 @@ public class IndicatorControlWheel extends IndicatorControl implements
     private boolean mInAnimation = false;
     private Handler mHandler = new Handler();
     private final Runnable mRunnable = new Runnable() {
+        @Override
         public void run() {
             requestLayout();
         }
@@ -113,7 +146,6 @@ public class IndicatorControlWheel extends IndicatorControl implements
     private double mSectorRadians[] = new double[2];
     private double mTouchSectorRadians[] = new double[2];
 
-    private ZoomControlWheel mZoomControl;
     private boolean mInitialized;
 
     public IndicatorControlWheel(Context context, AttributeSet attrs) {
@@ -130,6 +162,26 @@ public class IndicatorControlWheel extends IndicatorControl implements
         mBackgroundPaint.setAntiAlias(true);
 
         mBackgroundRect = new RectF();
+        mFanPath = new Path();
+
+        if (getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE) {
+            // tablet in landscape orientation
+            FIRST_LEVEL_START_DEGREES = LANDSCAPE_FIRST_LEVEL_START_DEGREES;
+            FIRST_LEVEL_END_DEGREES = LANDSCAPE_FIRST_LEVEL_END_DEGREES;
+            SECOND_LEVEL_START_DEGREES = LANDSCAPE_SECOND_LEVEL_START_DEGREES;
+            SECOND_LEVEL_END_DEGREES = LANDSCAPE_SECOND_LEVEL_END_DEGREES;
+            MAX_ZOOM_CONTROL_DEGREES = LANDSCAPE_MAX_ZOOM_CONTROL_DEGREES;
+            CLOSE_ICON_DEFAULT_DEGREES = LANDSCAPE_CLOSE_ICON_DEFAULT_DEGREES;
+        } else {
+            // tablet in portrait orientation
+            FIRST_LEVEL_START_DEGREES = LANDSCAPE_FIRST_LEVEL_START_DEGREES - 90;
+            FIRST_LEVEL_END_DEGREES = LANDSCAPE_FIRST_LEVEL_END_DEGREES - 90;
+            SECOND_LEVEL_START_DEGREES = LANDSCAPE_SECOND_LEVEL_START_DEGREES - 90;
+            SECOND_LEVEL_END_DEGREES = LANDSCAPE_SECOND_LEVEL_END_DEGREES - 90;
+            MAX_ZOOM_CONTROL_DEGREES = LANDSCAPE_MAX_ZOOM_CONTROL_DEGREES - 90;
+            CLOSE_ICON_DEFAULT_DEGREES = LANDSCAPE_CLOSE_ICON_DEFAULT_DEGREES - 90;
+        }
     }
 
     private int getChildCountByLevel(int level) {
@@ -156,34 +208,49 @@ public class IndicatorControlWheel extends IndicatorControl implements
 
     public void initialize(Context context, PreferenceGroup group,
             boolean isZoomSupported, String[] keys, String[] otherSettingKeys) {
-        mShutterButtonRadius = IndicatorControlWheelContainer.SHUTTER_BUTTON_RADIUS;
+        mShutterButtonRadius = Util.dpToPixel(
+                IndicatorControlWheelContainer.SHUTTER_BUTTON_RADIUS);
         mStrokeWidth = Util.dpToPixel(IndicatorControlWheelContainer.STROKE_WIDTH);
         mWheelRadius = mShutterButtonRadius + mStrokeWidth * 0.5;
 
         setPreferenceGroup(group);
 
         // Add the ZoomControl if supported.
-        if (isZoomSupported) {
-            mZoomControl = (ZoomControlWheel) findViewById(R.id.zoom_control);
-            mZoomControl.setVisibility(View.VISIBLE);
-        }
+        initializeZoomControl(isZoomSupported);
 
         // Add CameraPicker.
         initializeCameraPicker();
 
         // Add second-level Indicator Icon.
-        mSecondLevelIcon = addImageButton(context, R.drawable.ic_settings_holo_light, true);
-        mSecondLevelStartIndex = getChildCount();
+        if (mSecondLevelIcon == null) {
+            mSecondLevelIcon = addImageButton(context,
+                    R.drawable.ic_settings_holo_light, true);
+            mSecondLevelIcon.setId(R.id.second_level_indicator);
+            mSecondLevelStartIndex = getChildCount();
+        }
 
         // Add second-level buttons.
-        mCloseIcon = addImageButton(context, R.drawable.btn_wheel_close_settings, false);
+        if (mCloseIcon == null) {
+            mCloseIcon = addImageButton(context,
+                    R.drawable.btn_wheel_close_settings, false);
+        }
+        // Remove all the views after close icon. This happens when switching
+        // between front and back cameras.
+        int index = indexOfChild(mCloseIcon) + 1;
+        int count = getChildCount() - index;
+        if (count > 0) removeControls(index, count);
+
         addControls(keys, otherSettingKeys);
 
         // The angle(in radians) of each icon for touch events.
         mChildRadians = new double[getChildCount()];
         presetFirstLevelChildRadians();
         presetSecondLevelChildRadians();
+
+        // Do not grey out the icons when taking a picture.
+        setupFilter(mCurrentMode != MODE_CAMERA);
         mInitialized = true;
+        requestLayout();
     }
 
     private ImageView addImageButton(Context context, int resourceId, boolean rotatable) {
@@ -207,34 +274,77 @@ public class IndicatorControlWheel extends IndicatorControl implements
         int sectors = count - 1;
         int startIndex = (mCurrentLevel == 0) ? 0 : mSecondLevelStartIndex;
         int endIndex;
+        double halfTouchSectorRadians = mTouchSectorRadians[mCurrentLevel];
+        // The effective touch area is defined by the range [startRadians,
+        // endRadians], counter-clockwise.
+        double startRadians = 0;
         if (mCurrentLevel == 0) {
             // Skip the first component if it is zoom control, as we will
             // deal with it specifically.
-            if (mZoomControl != null) startIndex++;
+            if (mZoomControl != null) {
+                startIndex++;
+                if (mCameraPicker == null) {
+                    startRadians = Math.toRadians(FIRST_LEVEL_START_DEGREES)
+                            + halfTouchSectorRadians;
+                } else {
+                    startRadians = mChildRadians[startIndex] - halfTouchSectorRadians;
+                }
+            } else {
+                startRadians = mChildRadians[startIndex] - halfTouchSectorRadians;
+            }
             endIndex = mSecondLevelStartIndex - 1;
         } else {
             endIndex = getChildCount() - 1;
+            startRadians = mChildRadians[startIndex] - halfTouchSectorRadians;
         }
-        // Check which indicator is touched.
-        double halfTouchSectorRadians = mTouchSectorRadians[mCurrentLevel];
-        if ((delta >= (mChildRadians[startIndex] - halfTouchSectorRadians)) &&
-                (delta <= (mChildRadians[endIndex] + halfTouchSectorRadians))) {
+
+        if (startRadians < 0) startRadians += Math.PI * 2;
+
+        double endRadians = mChildRadians[endIndex] + halfTouchSectorRadians;
+        // True if the touch point is in the effective touch area.
+        boolean touchInRange;
+        if (startRadians > endRadians) {
+            // range crosses 0 degree
+            touchInRange = (delta >= startRadians || delta <= endRadians);
+        } else {
+            touchInRange = (delta >= startRadians && delta <= endRadians);
+        }
+
+        if (touchInRange) {
+            // For portrait orientation, we offset the angles by 90 degrees to
+            // make it share the same logic with landscape orientation.
+            final int offset;
+            if (getResources().getConfiguration().orientation
+                    == Configuration.ORIENTATION_LANDSCAPE) {
+                offset = 0;
+            } else {
+                offset = 90;
+                delta = rebase(delta, offset);
+            }
+
             int index = 0;
-            if (mCurrentLevel == 1) {
-                index = (int) ((delta - mChildRadians[startIndex])
+            if (mCurrentLevel == 1) { // for second-level indicators
+                index = (int) ((delta - rebase(mChildRadians[startIndex], offset))
                         / mSectorRadians[mCurrentLevel]);
                 // greater than the center of ending indicator
                 if (index > sectors) return (startIndex + sectors);
                 // less than the center of starting indicator
                 if (index < 0) return startIndex;
             }
-            if (delta <= (mChildRadians[startIndex + index]
-                    + halfTouchSectorRadians)) {
-                return (startIndex + index);
-            }
-            if (delta >= (mChildRadians[startIndex + index + 1]
-                    - halfTouchSectorRadians)) {
-                return (startIndex + index + 1);
+            if ((mCurrentLevel == 0) && (mCameraPicker == null)) {
+                if (delta >= (rebase(mChildRadians[startIndex], offset)
+                        - halfTouchSectorRadians)) {
+                    return (startIndex + index);
+                }
+            } else {
+                if (delta <= (rebase(mChildRadians[startIndex + index], offset)
+                        + halfTouchSectorRadians)) {
+                    return (startIndex + index);
+                }
+                if (delta >= (rebase(mChildRadians[startIndex + index + 1], offset)
+                        - halfTouchSectorRadians)) {
+                    return (startIndex + index + 1);
+                }
             }
 
             // It must be for zoom control if the touch event is in the visible
@@ -242,6 +352,20 @@ public class IndicatorControlWheel extends IndicatorControl implements
             if ((mCurrentLevel == 0) && (mZoomControl != null)) return 0;
         }
         return -1;
+    }
+
+    /*
+     * Calculate the new value of the given angle based on the given offset to
+     * the 0 degree position.
+     *
+     * @param oldAngle the old value of the angle to be calculated. The unit is
+     *                 in radians, measured counter-clockwise from 0 degree
+     *                 position.
+     * @param offset   the angle offset to the 0 degree. The unit is in radians,
+     *                 towards clockwise.
+     */
+    private double rebase(double oldAngle, int offset) {
+        return (oldAngle + offset) % (Math.PI * 2);
     }
 
     private void injectMotionEvent(int viewIndex, MotionEvent event, int action) {
@@ -258,10 +382,11 @@ public class IndicatorControlWheel extends IndicatorControl implements
 
         double dx = event.getX() - mCenterX;
         double dy = mCenterY - event.getY();
-        double radius = Math.sqrt(dx * dx + dy * dy);
+        double centerToTouchPoint = Math.sqrt(dx * dx + dy * dy);
 
         // Ignore the event if too far from the shutter button.
-        if ((radius <= (mWheelRadius + mStrokeWidth)) && (radius > mShutterButtonRadius)) {
+        if ((centerToTouchPoint <= (mWheelRadius + mStrokeWidth))
+                && (centerToTouchPoint > mShutterButtonRadius)) {
             double delta = Math.atan2(dy, dx);
             if (delta < 0) delta += Math.PI * 2;
             int index = getTouchIndicatorIndex(delta);
@@ -334,12 +459,21 @@ public class IndicatorControlWheel extends IndicatorControl implements
             rotateWheel();
             mHandler.post(mRunnable);
         }
-        mCenterX = right - left - Util.dpToPixel(
-                IndicatorControlWheelContainer.FULL_WHEEL_RADIUS);
-        mCenterY = (bottom - top) / 2;
+
+        if (getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE) {
+            mCenterX = right - left - Util.dpToPixel(
+                    IndicatorControlWheelContainer.WHEEL_CENTER_TO_SECANT);
+            mCenterY = (bottom - top) / 2;
+        } else {
+            mCenterX = (right - left) / 2;
+            mCenterY = bottom - top - Util.dpToPixel(
+                    IndicatorControlWheelContainer.WHEEL_CENTER_TO_SECANT);
+        }
 
         // Layout the indicators based on the current level.
-        // The icons are spreaded on the left side of the shutter button.
+        // The icons are spread on the left (top) side of the shutter button in
+        // landscape (portrait) orientation.
         for (int i = 0; i < getChildCount(); ++i) {
             View view = getChildAt(i);
             // We still need to show the disabled indicators in the second level.
@@ -350,7 +484,10 @@ public class IndicatorControlWheel extends IndicatorControl implements
             double endVisibleRadians = mInAnimation
                     ? mEndVisibleRadians[1]
                     : mEndVisibleRadians[mCurrentLevel];
-            if ((!view.isEnabled() && (mCurrentLevel == 0))
+            // Only hide the views in video mode. Hiding the views when taking
+            // a picture is disturbing.
+            if ((!view.isEnabled() && (mCurrentLevel == 0)
+                    && (mCurrentMode == MODE_VIDEO))
                     || (radian < (startVisibleRadians - HIGHLIGHT_RADIANS / 2))
                     || (radian > (endVisibleRadians + HIGHLIGHT_RADIANS / 2))) {
                 view.setVisibility(View.GONE);
@@ -452,22 +589,22 @@ public class IndicatorControlWheel extends IndicatorControl implements
                     EDGE_STROKE_WIDTH * 0.5);
 
             // Construct the path of the fan-shaped semi-transparent area.
-            Path fanPath = new Path();
+            mFanPath.rewind();
             mBackgroundRect.set(mCenterX - innerR, mCenterY - innerR,
                     mCenterX + innerR, mCenterY + innerR);
-            fanPath.arcTo(mBackgroundRect, -degree + HIGHLIGHT_DEGREES / 2,
+            mFanPath.arcTo(mBackgroundRect, -degree + HIGHLIGHT_DEGREES / 2,
                     -HIGHLIGHT_DEGREES);
             mBackgroundRect.set(mCenterX - outerR, mCenterY - outerR,
                     mCenterX + outerR, mCenterY + outerR);
-            fanPath.arcTo(mBackgroundRect, -degree - HIGHLIGHT_DEGREES / 2,
+            mFanPath.arcTo(mBackgroundRect, -degree - HIGHLIGHT_DEGREES / 2,
                     HIGHLIGHT_DEGREES);
-            fanPath.close();
+            mFanPath.close();
 
             mBackgroundPaint.setStrokeWidth(HIGHLIGHT_WIDTH);
             mBackgroundPaint.setStrokeCap(Paint.Cap.SQUARE);
             mBackgroundPaint.setStyle(Paint.Style.FILL_AND_STROKE);
             mBackgroundPaint.setColor(HIGHLIGHT_FAN_COLOR);
-            canvas.drawPath(fanPath, mBackgroundPaint);
+            canvas.drawPath(mFanPath, mBackgroundPaint);
 
             // Draw the highlight edge
             mBackgroundPaint.setStyle(Paint.Style.STROKE);
@@ -515,13 +652,15 @@ public class IndicatorControlWheel extends IndicatorControl implements
         if (mCurrentMode == MODE_VIDEO) {
             mSecondLevelIcon.setVisibility(enabled ? View.VISIBLE : View.INVISIBLE);
             mCloseIcon.setVisibility(enabled ? View.VISIBLE : View.INVISIBLE);
-            requestLayout();
         } else {
             // We also disable the zoom button during snapshot.
             enableZoom(enabled);
         }
         mSecondLevelIcon.setEnabled(enabled);
         mCloseIcon.setEnabled(enabled);
+        // Request layout because the visibility of children may be decided by
+        // isEnabled in onLayout.
+        requestLayout();
     }
 
     public void enableZoom(boolean enabled) {
